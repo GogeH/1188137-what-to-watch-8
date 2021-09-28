@@ -1,7 +1,7 @@
 # Личный проект «Что посмотреть»
 
 * Студент: [Георгий Кириллов](https://up.htmlacademy.ru/react/8/user/1188137).
-* Наставник: `Неизвестно`.
+* Наставник: [Rail Sakhaviev](https://htmlacademy.ru/profile/id1331891).
 
 ---
 
