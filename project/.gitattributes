@@ -1,4 +1,4 @@
-git* text eol=lf
+* text eol=lf
 
 *.png binary
 *.jpg binary
@@ -6,3 +6,4 @@ git* text eol=lf
 *.webp binary
 *.woff binary
 *.woff2 binary
+*.ttf binary
