@@ -1,3 +1,5 @@
+import React from 'react';
+
 function Player(): JSX.Element {
   return (
     <div className="player">
