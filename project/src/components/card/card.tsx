@@ -1,3 +1,5 @@
+import React from 'react';
+
 function Card(): JSX.Element {
   return (
     <article className="small-film-card catalog__films-card">
