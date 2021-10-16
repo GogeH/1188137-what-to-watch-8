@@ -23,7 +23,7 @@ export const comments: Comments = [
     id: 3,
     user: {
       id: 3,
-      name: 'John',
+      name: 'Johny',
     },
     rating: 8.3,
     comment: 'fantastic film',

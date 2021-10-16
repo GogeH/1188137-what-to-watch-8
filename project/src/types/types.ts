@@ -29,5 +29,4 @@ export type Comment = {
 }
 
 export type FilmCards = FilmCard[];
-
 export type Comments = Comment[];

@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {useHistory} from 'react-router-dom';
-import Logo from '../logo/logo';
 import {  FilmCards } from '../../types/types';
 import { AppRoute } from '../../types/const';
 import CardList from '../card-list/card-list';
+import Logo from '../logo/logo';
 
 function Movie(props: {
   movies: FilmCards,

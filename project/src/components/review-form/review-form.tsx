@@ -1,4 +1,6 @@
+import React from 'react';
 import { useState, ChangeEvent } from 'react';
+
 
 function ReviewForm(): JSX.Element {
   const [rating, setRating] = useState('');
@@ -49,7 +51,14 @@ function ReviewForm(): JSX.Element {
       </div>
 
       <div className="add-review__text">
-        <textarea className="add-review__textarea" name="review-text" id="review-text" placeholder="Review text" onChange={messageChange} value={review}></textarea>
+        <textarea className="add-review__textarea"
+          name="review-text"
+          id="review-text"
+          placeholder="Review text"
+          onChange={messageChange}
+          value={review}
+        >
+        </textarea>
         <div className="add-review__submit">
           <button className="add-review__btn" type="submit">Post</button>
         </div>

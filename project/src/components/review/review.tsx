@@ -1,7 +1,7 @@
 import React from 'react';
 import Logo from '../logo/logo';
-import { FilmCard } from '../../types/types';
 import ReviewForm from '../review-form/review-form';
+import { FilmCard } from '../../types/types';
 
 function Review(props: {
   movie: FilmCard,

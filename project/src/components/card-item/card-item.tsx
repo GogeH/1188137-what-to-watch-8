@@ -4,10 +4,10 @@ import { FilmCard } from '../../types/types';
 
 function CardItem(props: {
   card: FilmCard,
-  activeMovie: (id: number) => void,
   playing: boolean,
+  activeMovie: (id: number) => void,
 }): JSX.Element {
-  const { card, activeMovie, playing } = props;
+  const { card, playing, activeMovie } = props;
   const { id, title, imgSrc } = card;
 
   const style = {

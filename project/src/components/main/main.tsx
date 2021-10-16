@@ -1,9 +1,9 @@
 import React from 'react';
 import {useHistory} from 'react-router-dom';
-import Logo from '../logo/logo';
 import { FilmCards } from '../../types/types';
-import CardList from '../card-list/card-list';
 import {AppRoute} from '../../types/const';
+import Logo from '../logo/logo';
+import CardList from '../card-list/card-list';
 
 function Main(props: {
   title: string,

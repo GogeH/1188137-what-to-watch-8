@@ -8,9 +8,9 @@ import SignIn from '../sign-in/sign-in';
 import Movie from '../movie/movie';
 import Review from '../review/review';
 import Player  from '../player/player';
-import Error from '../error/error';
 import PrivateRoute from '../private-route/private-route';
 import CardList from '../card-list/card-list';
+import Error from '../error/error';
 
 function App(props: {
   title: string,
