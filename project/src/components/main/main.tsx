@@ -1,12 +1,18 @@
 import React from 'react';
-import Card from '../card/card';
+import {useHistory} from 'react-router-dom';
 import Logo from '../logo/logo';
+import { FilmCards } from '../../types/types';
+import CardList from '../card-list/card-list';
+import {AppRoute} from '../../types/const';
 
 function Main(props: {
   title: string,
   genre: string,
   release: number,
+  movies: FilmCards,
 }): JSX.Element {
+  const history = useHistory();
+
   return (
     <div>
       <div className="visually-hidden">
@@ -92,13 +98,17 @@ function Main(props: {
               </p>
 
               <div className="film-card__buttons">
-                <button className="btn btn--play film-card__button" type="button">
+                <button className="btn btn--play film-card__button" type="button"
+                  onClick={() => history.push(AppRoute.Player)}
+                >
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"></use>
                   </svg>
                   <span>Play</span>
                 </button>
-                <button className="btn btn--list film-card__button" type="button">
+                <button className="btn btn--list film-card__button" type="button"
+                  onClick={() => history.push(AppRoute.Card)}
+                >
                   <svg viewBox="0 0 19 20" width="19" height="20">
                     <use xlinkHref="#add"></use>
                   </svg>
@@ -147,9 +157,7 @@ function Main(props: {
             </li>
           </ul>
 
-          <div className="catalog__films-list">
-            {[...Array(20).keys()].map((item) => <Card key={item}/>)}
-          </div>
+          <CardList movies={props.movies} />
 
           <div className="catalog__more">
             <button className="catalog__button" type="button">Show more</button>
