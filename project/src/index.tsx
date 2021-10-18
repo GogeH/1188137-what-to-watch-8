@@ -5,6 +5,7 @@ import App from './components/app/app';
 
 
 const title = 'The Grand Budapest Hotel';
+const genre = 'Drama';
 const release = 2014;
 
 ReactDOM.render(

@@ -7,18 +7,29 @@ function CardList(props: {
   movies: FilmCards,
 }): JSX.Element {
   const { movies } = props;
-  const [activeMovieId, setActiveMovieId] = useState(0);
+  const [activeMovie, setActiveMovie] = useState('');
 
-  function activeMovie(id: number): void {
-    setActiveMovieId(id);
-  }
+  const onSmallFilmCardHover = (evt: React.MouseEvent) => {
+    setActiveMovie(evt.currentTarget.id);
+  };
+
+  const onSmallFilmCardLeave = () => {
+    setActiveMovie('');
+  };
 
   return (
     <div className="catalog__films-list">
-      {movies.map((movie) => <CardItem key={movie.id} card={movie} playing={movie.id === activeMovieId} activeMovie={activeMovie} />)}
+      {movies.map((movie) => (
+        <CardItem card={movie}
+          key={movie.id}
+          isActive={movie.id === activeMovie}
+          onMouseOver={onSmallFilmCardHover}
+          onMouseLeave={onSmallFilmCardLeave}
+        />
+      ))}
     </div>
   );
 }
 
-
 export default CardList;
+
