@@ -1,4 +1,5 @@
 import React from 'react';
+import { MouseEvent } from 'react';
 import {Link} from 'react-router-dom';
 import { FilmCard } from '../../types/types';
 import VideoPreview from '../video-player/video-player';
@@ -6,8 +7,8 @@ import VideoPreview from '../video-player/video-player';
 function CardItem(props: {
   card: FilmCard,
   isActive: boolean,
-  onMouseOver: (evt: React.MouseEvent) => void,
-  onMouseLeave: (evt: React.MouseEvent) => void,
+  onMouseOver: (evt: MouseEvent) => void,
+  onMouseLeave: (evt: MouseEvent) => void,
 }): JSX.Element {
   const { card, isActive, onMouseOver, onMouseLeave } = props;
   const { id, title, imgSrc, link } = card;

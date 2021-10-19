@@ -1,4 +1,5 @@
 import React from 'react';
+import { MouseEvent } from 'react';
 import {useState} from 'react';
 import { FilmCards } from '../../types/types';
 import CardItem from '../card-item/card-item';
@@ -9,7 +10,7 @@ function CardList(props: {
   const { movies } = props;
   const [activeMovie, setActiveMovie] = useState('');
 
-  const onSmallFilmCardHover = (evt: React.MouseEvent) => {
+  const onSmallFilmCardHover = (evt: MouseEvent) => {
     setActiveMovie(evt.currentTarget.id);
   };
 
