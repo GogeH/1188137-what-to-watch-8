@@ -2,7 +2,7 @@ import { FilmCards } from '../types/types';
 
 export const cardMovies: FilmCards = [
   {
-    id: 1,
+    id: '1',
     title: 'The Grand Budapest Hotel',
     genre: 'Drama',
     released: 2014,
@@ -21,9 +21,9 @@ export const cardMovies: FilmCards = [
     starring: ['Bill Murray', 'Edward Norton', 'Jude Law', 'Willem Dafoe', 'Saoirse Ronan', 'Tony Revoloru', 'Tilda Swinton', 'Tom Wilkinson', 'Owen Wilkinson', 'Adrien Brody', 'Ralph Fiennes', 'Jeff Goldblum'],
     isFavorite: false,
     comment: {
-      id: 1,
+      id: '1',
       user: {
-        id: 1,
+        id: '1',
         name: 'Alex',
       },
       rating: 8.1,
@@ -31,7 +31,7 @@ export const cardMovies: FilmCards = [
     },
   },
   {
-    id: 2,
+    id: '2',
     title: 'Macbeth',
     genre: 'Drama',
     released: 2014,
@@ -50,9 +50,9 @@ export const cardMovies: FilmCards = [
     starring: ['Bill Murray', 'Edward Norton', 'Jude Law', 'Willem Dafoe', 'Saoirse Ronan', 'Tony Revoloru', 'Tilda Swinton', 'Tom Wilkinson', 'Owen Wilkinson', 'Adrien Brody', 'Ralph Fiennes', 'Jeff Goldblum'],
     isFavorite: false,
     comment: {
-      id: 2,
+      id: '2',
       user: {
-        id: 2,
+        id: '2',
         name: 'Marie',
       },
       rating: 8.2,
@@ -60,7 +60,7 @@ export const cardMovies: FilmCards = [
     },
   },
   {
-    id: 3,
+    id: '3',
     title: 'Mindhunter',
     genre: 'Drama',
     released: 2014,
@@ -79,9 +79,9 @@ export const cardMovies: FilmCards = [
     starring: ['Bill Murray', 'Edward Norton', 'Jude Law', 'Willem Dafoe', 'Saoirse Ronan', 'Tony Revoloru', 'Tilda Swinton', 'Tom Wilkinson', 'Owen Wilkinson', 'Adrien Brody', 'Ralph Fiennes', 'Jeff Goldblum'],
     isFavorite: false,
     comment: {
-      id: 3,
+      id: '3',
       user: {
-        id: 3,
+        id: '3',
         name: 'Johny',
       },
       rating: 8.3,
@@ -89,7 +89,7 @@ export const cardMovies: FilmCards = [
     },
   },
   {
-    id: 4,
+    id: '4',
     title: 'Orlando',
     genre: 'Drama',
     released: 2014,
@@ -108,9 +108,9 @@ export const cardMovies: FilmCards = [
     starring: ['Bill Murray', 'Edward Norton', 'Jude Law', 'Willem Dafoe', 'Saoirse Ronan', 'Tony Revoloru', 'Tilda Swinton', 'Tom Wilkinson', 'Owen Wilkinson', 'Adrien Brody', 'Ralph Fiennes', 'Jeff Goldblum'],
     isFavorite: false,
     comment: {
-      id: 4,
+      id: '4',
       user: {
-        id: 4,
+        id: '4',
         name: 'David',
       },
       rating: 8.4,
@@ -118,7 +118,7 @@ export const cardMovies: FilmCards = [
     },
   },
   {
-    id: 5,
+    id: '5',
     title: 'Snatch',
     genre: 'Drama',
     released: 2014,
@@ -137,9 +137,9 @@ export const cardMovies: FilmCards = [
     starring: ['Bill Murray', 'Edward Norton', 'Jude Law', 'Willem Dafoe', 'Saoirse Ronan', 'Tony Revoloru', 'Tilda Swinton', 'Tom Wilkinson', 'Owen Wilkinson', 'Adrien Brody', 'Ralph Fiennes', 'Jeff Goldblum'],
     isFavorite: false,
     comment: {
-      id: 5,
+      id: '5',
       user: {
-        id: 5,
+        id: '5',
         name: 'Natalie',
       },
       rating: 8.5,
@@ -147,7 +147,7 @@ export const cardMovies: FilmCards = [
     },
   },
   {
-    id: 6,
+    id: '6',
     title: 'Bohemian Rhapsody',
     genre: 'Drama',
     released: 2014,
@@ -166,9 +166,9 @@ export const cardMovies: FilmCards = [
     starring: ['Bill Murray', 'Edward Norton', 'Jude Law', 'Willem Dafoe', 'Saoirse Ronan', 'Tony Revoloru', 'Tilda Swinton', 'Tom Wilkinson', 'Owen Wilkinson', 'Adrien Brody', 'Ralph Fiennes', 'Jeff Goldblum'],
     isFavorite: false,
     comment: {
-      id: 6,
+      id: '6',
       user: {
-        id: 6,
+        id: '6',
         name: 'Morgan',
       },
       rating: 8.6,
@@ -176,7 +176,7 @@ export const cardMovies: FilmCards = [
     },
   },
   {
-    id: 7,
+    id: '7',
     title: 'Aviator',
     genre: 'Drama',
     released: 2014,
@@ -195,9 +195,9 @@ export const cardMovies: FilmCards = [
     starring: ['Bill Murray', 'Edward Norton', 'Jude Law', 'Willem Dafoe', 'Saoirse Ronan', 'Tony Revoloru', 'Tilda Swinton', 'Tom Wilkinson', 'Owen Wilkinson', 'Adrien Brody', 'Ralph Fiennes', 'Jeff Goldblum'],
     isFavorite: false,
     comment: {
-      id: 7,
+      id: '7',
       user: {
-        id: 7,
+        id: '7',
         name: 'Sofia',
       },
       rating: 8.8,
@@ -205,7 +205,7 @@ export const cardMovies: FilmCards = [
     },
   },
   {
-    id: 8,
+    id: '8',
     title: 'Revenant',
     genre: 'Drama',
     released: 2014,
@@ -224,10 +224,10 @@ export const cardMovies: FilmCards = [
     starring: ['Bill Murray', 'Edward Norton', 'Jude Law', 'Willem Dafoe', 'Saoirse Ronan', 'Tony Revoloru', 'Tilda Swinton', 'Tom Wilkinson', 'Owen Wilkinson', 'Adrien Brody', 'Ralph Fiennes', 'Jeff Goldblum'],
     isFavorite: false,
     comment: {
-      id: 8,
+      id: '7',
       user: {
-        id: 8,
-        name: 'Tom',
+        id: '7',
+        name: 'Sofia',
       },
       rating: 8.8,
       comment: 'fantastic film',

@@ -1,33 +1,32 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import { FilmCard } from '../../types/types';
+import VideoPreview from '../video-player/video-player';
 
 function CardItem(props: {
   card: FilmCard,
-  playing: boolean,
-  activeMovie: (id: number) => void,
+  isActive: boolean,
+  onMouseOver: (evt: React.MouseEvent) => void,
+  onMouseLeave: (evt: React.MouseEvent) => void,
 }): JSX.Element {
-  const { card, playing, activeMovie } = props;
-  const { id, title, imgSrc } = card;
-
-  const style = {
-    color: 'white',
-  };
-
-  if (playing) {
-    style.color = 'red';
-  }
+  const { card, isActive, onMouseOver, onMouseLeave } = props;
+  const { id, title, imgSrc, link } = card;
 
   return (
     <article
-      className="small-film-card catalog__films-card" onMouseOver={() => {activeMovie(id);}}
+      className="small-film-card catalog__films-card"
+      onMouseOver={onMouseOver}
+      onMouseLeave={onMouseLeave}
+      id={id}
     >
       <div className="small-film-card__image">
-        <img src={imgSrc}
-          alt="Fantastic Beasts: The Crimes of Grindelwald" width="280" height="175"
+        <VideoPreview
+          poster={imgSrc}
+          src={link}
+          isPlaying={isActive}
         />
       </div>
-      <h3 className="small-film-card__title" style={style}>
+      <h3 className="small-film-card__title">
         <Link
           className="small-film-card__link"
           to={`/films/${id}`}

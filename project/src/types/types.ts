@@ -1,5 +1,5 @@
 export type FilmCard = {
-  id: number,
+  id: string,
   title: string,
   genre: string,
   released: number,
@@ -19,9 +19,9 @@ export type FilmCard = {
 }
 
 export type Comment = {
-  id: number,
+  id: string,
   user: {
-    id: number,
+    id: string,
     name: string
   },
   rating: number,
