@@ -1,6 +1,5 @@
 import React from 'react';
-import { MouseEvent } from 'react';
-import {useState} from 'react';
+import { useState, MouseEvent } from 'react';
 import { FilmCards } from '../../types/types';
 import CardItem from '../card-item/card-item';
 

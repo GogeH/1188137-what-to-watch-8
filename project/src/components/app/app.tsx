@@ -32,8 +32,8 @@ function App(props: {
           authorizationStatus={AuthorizationStatus.NoAuth}
         />
         <Route path={AppRoute.Movie} exact render={() => <Movie movies={cardMovies}/>}/>
-        <Route path={AppRoute.Review} exact render={() => <Review movie={cardMovies[3]} />}/>
-        <Route path={AppRoute.Player} exact render={() => <Player movie={cardMovies[1]} />}/>
+        <Route path={AppRoute.Review} exact render={() => <Review movie={cardMovies[0]} />}/>
+        <Route path={AppRoute.Player} exact render={() => <Player movie={cardMovies[0]} />}/>
         <Route component={Error}/>
       </Switch>
     </BrowserRouter>

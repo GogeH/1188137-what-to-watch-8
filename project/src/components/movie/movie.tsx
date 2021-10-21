@@ -5,13 +5,18 @@ import {  FilmCards } from '../../types/types';
 import { AppRoute } from '../../types/const';
 import CardList from '../card-list/card-list';
 import Logo from '../logo/logo';
+import Tabs from '../tabs/tabs';
+import { cardMovies } from '../../mocks/card-movies';
+import { reviewsList } from '../../mocks/reviews-list';
 
 function Movie(props: {
   movies: FilmCards,
 }): JSX.Element {
   const { movies } = props;
-  const { title,  genre, released, imgSrc, backgroundImage, rating, grade, count, description, starring, director} = movies[0];
+  const { title,  genre, released, imgSrc, backgroundImage} = movies[0];
   const history = useHistory();
+
+  const te = genre;
 
   return (
     <div>
@@ -79,39 +84,8 @@ function Movie(props: {
               />
             </div>
 
-            <div className="film-card__desc">
-              <nav className="film-nav film-card__nav">
-                <ul className="film-nav__list">
-                  <li className="film-nav__item film-nav__item--active">
-                    <a href="/" className="film-nav__link">Overview</a>
-                  </li>
-                  <li className="film-nav__item">
-                    <a href="/" className="film-nav__link">Details</a>
-                  </li>
-                  <li className="film-nav__item">
-                    <a href="/" className="film-nav__link">Reviews</a>
-                  </li>
-                </ul>
-              </nav>
+            <Tabs movie={cardMovies[0]} reviews={reviewsList}/>
 
-              <div className="film-rating">
-                <div className="film-rating__score">{rating}</div>
-                <p className="film-rating__meta">
-                  <span className="film-rating__level">{grade}</span>
-                  <span className="film-rating__count">{count} ratings</span>
-                </p>
-              </div>
-
-              <div className="film-card__text">
-                <p>{description}</p>
-
-                <p className="film-card__director"><strong>Director: {director}</strong></p>
-
-                <p className="film-card__starring">
-                  <strong>{starring.join(', ')}</strong>
-                </p>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -122,7 +96,7 @@ function Movie(props: {
 
           <div className="catalog__films-list">
             <CardList
-              movies = {movies.slice(4)}
+              movies = {movies.filter((item) => item.genre === te).slice(2)}
             />
           </div>
         </section>
