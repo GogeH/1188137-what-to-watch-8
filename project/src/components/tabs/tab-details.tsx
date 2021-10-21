@@ -1,5 +1,5 @@
 import React from 'react';
-import {FilmCard} from '../../types/types';
+import { FilmCard } from '../../types/types';
 
 function TabDetails(props: {
   movie: FilmCard,

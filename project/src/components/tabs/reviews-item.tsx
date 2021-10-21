@@ -1,6 +1,6 @@
 import React from 'react';
 import { Review } from '../../types/types';
-import { datetime, humanizedDateTime} from '../../utils/date';
+import { datetime, humanizedDateTime } from '../../utils/date';
 
 function ReviewsItem (props: {
   review: Review,

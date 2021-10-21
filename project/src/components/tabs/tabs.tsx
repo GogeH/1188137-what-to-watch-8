@@ -1,6 +1,6 @@
 import React from 'react';
-import {useState} from 'react';
-import {FilmCard, Reviews} from '../../types/types';
+import { useState } from 'react';
+import { FilmCard, Reviews } from '../../types/types';
 import TabDetails from './tab-details';
 import TabOverview from './tab-overview';
 import TabReviews from './tab-reviews';

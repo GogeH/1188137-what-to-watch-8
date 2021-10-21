@@ -1,6 +1,6 @@
 import React from 'react';
 import { MouseEvent } from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { FilmCard } from '../../types/types';
 import VideoPreview from '../video-player/video-player';
 
