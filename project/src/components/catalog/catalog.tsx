@@ -1,16 +1,16 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
-import {  FilmCards } from '../../types/types';
+import {  Movies } from '../../types/types';
 import { AppRoute } from '../../types/const';
-import CardList from '../card-list/card-list';
+import MovieList from '../movie-list/movie-list';
 import Logo from '../logo/logo';
+import MovieTabs  from '../movie-tabs/movie-tabs';
+import { movieList} from '../../mocks/movie-list';
+import { reviewsList } from '../../mocks/reviews-list';
 
-function Movie(props: {
-  movies: FilmCards,
+function Catalog(props: {
+  movies: Movies,
 }): JSX.Element {
-  const { movies } = props;
-  const { title,  genre, released, imgSrc, backgroundImage, rating, grade, count, description, starring, director} = movies[0];
   const history = useHistory();
 
   return (
@@ -18,7 +18,7 @@ function Movie(props: {
       <section className="film-card film-card--full">
         <div className="film-card__hero">
           <div className="film-card__bg">
-            <img src={backgroundImage} alt="The Grand Budapest Hotel"/>
+            <img src={props.movies[0].backgroundImage} alt="The Grand Budapest Hotel"/>
           </div>
 
           <h1 className="visually-hidden">WTW</h1>
@@ -42,10 +42,10 @@ function Movie(props: {
 
           <div className="film-card__wrap">
             <div className="film-card__desc">
-              <h2 className="film-card__title">{title}</h2>
+              <h2 className="film-card__title">{props.movies[0].title}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">{genre}</span>
-                <span className="film-card__year">{released}</span>
+                <span className="film-card__genre">{props.movies[0].genre}</span>
+                <span className="film-card__year">{props.movies[0].released}</span>
               </p>
 
               <div className="film-card__buttons">
@@ -74,44 +74,13 @@ function Movie(props: {
         <div className="film-card__wrap film-card__translate-top">
           <div className="film-card__info">
             <div className="film-card__poster film-card__poster--big">
-              <img src={imgSrc} alt="The Grand Budapest Hotel poster" width="218"
+              <img src={props.movies[0].imgSrc} alt="The Grand Budapest Hotel poster" width="218"
                 height="327"
               />
             </div>
 
-            <div className="film-card__desc">
-              <nav className="film-nav film-card__nav">
-                <ul className="film-nav__list">
-                  <li className="film-nav__item film-nav__item--active">
-                    <a href="/" className="film-nav__link">Overview</a>
-                  </li>
-                  <li className="film-nav__item">
-                    <a href="/" className="film-nav__link">Details</a>
-                  </li>
-                  <li className="film-nav__item">
-                    <a href="/" className="film-nav__link">Reviews</a>
-                  </li>
-                </ul>
-              </nav>
+            <MovieTabs movie={movieList[0]} reviews={reviewsList}/>
 
-              <div className="film-rating">
-                <div className="film-rating__score">{rating}</div>
-                <p className="film-rating__meta">
-                  <span className="film-rating__level">{grade}</span>
-                  <span className="film-rating__count">{count} ratings</span>
-                </p>
-              </div>
-
-              <div className="film-card__text">
-                <p>{description}</p>
-
-                <p className="film-card__director"><strong>Director: {director}</strong></p>
-
-                <p className="film-card__starring">
-                  <strong>{starring.join(', ')}</strong>
-                </p>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -121,8 +90,8 @@ function Movie(props: {
           <h2 className="catalog__title">More like this</h2>
 
           <div className="catalog__films-list">
-            <CardList
-              movies = {movies.slice(4)}
+            <MovieList
+              movies = {props.movies.filter((item) => item.genre === props.movies[0].genre).slice(2)}
             />
           </div>
         </section>
@@ -145,4 +114,4 @@ function Movie(props: {
   );
 }
 
-export default Movie;
+export default Catalog;

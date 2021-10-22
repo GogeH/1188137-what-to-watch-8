@@ -5,34 +5,32 @@ function VideoPreview(props: {
   src: string,
   isPlaying: boolean,
 }): JSX.Element {
-  const { src, isPlaying, poster } = props;
-
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
     let timeoutId: ReturnType<typeof setTimeout>;
 
-    if (videoRef.current && isPlaying) {
+    if (videoRef.current && props.isPlaying) {
       timeoutId = setTimeout(() => {
         videoRef.current?.play();
       }, 1000);
     }
 
-    if (videoRef.current && !isPlaying) {
+    if (videoRef.current && !props.isPlaying) {
       videoRef.current.load();
     }
 
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [isPlaying, videoRef]);
+  }, [props.isPlaying, videoRef]);
 
   return (
     <video
       muted
       ref={videoRef}
-      src={src}
-      poster={poster}
+      src={props.src}
+      poster={props.poster}
       width="280"
       height="175"
     />

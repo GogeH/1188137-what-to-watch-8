@@ -1,19 +1,16 @@
 import React from 'react';
 import Logo from '../logo/logo';
 import ReviewForm from '../review-form/review-form';
-import { FilmCard } from '../../types/types';
+import { Movie } from '../../types/types';
 
 function Review(props: {
-  movie: FilmCard,
+  movie: Movie,
 }): JSX.Element {
-  const { movie } = props;
-  const { imgSrc, backgroundImage } = movie;
-
   return (
     <section className="film-card film-card--full">
       <div className="film-card__header">
         <div className="film-card__bg">
-          <img src={backgroundImage} alt="The Grand Budapest Hotel"/>
+          <img src={props.movie.backgroundImage} alt="The Grand Budapest Hotel"/>
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
@@ -47,7 +44,7 @@ function Review(props: {
         </header>
 
         <div className="film-card__poster film-card__poster--small">
-          <img src={imgSrc} alt="The Grand Budapest Hotel poster" width="218"
+          <img src={props.movie.imgSrc} alt="The Grand Budapest Hotel poster" width="218"
             height="327"
           />
         </div>

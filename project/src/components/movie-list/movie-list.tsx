@@ -1,15 +1,13 @@
-import React from 'react';
-import {useState} from 'react';
-import { FilmCards } from '../../types/types';
-import CardItem from '../card-item/card-item';
+import { useState, MouseEvent } from 'react';
+import { Movies } from '../../types/types';
+import MovieItem from '../movie-item/movie-item';
 
-function CardList(props: {
-  movies: FilmCards,
+function MovieList(props: {
+  movies: Movies,
 }): JSX.Element {
-  const { movies } = props;
   const [activeMovie, setActiveMovie] = useState('');
 
-  const onSmallFilmCardHover = (evt: React.MouseEvent) => {
+  const onSmallFilmCardHover = (evt: MouseEvent) => {
     setActiveMovie(evt.currentTarget.id);
   };
 
@@ -19,8 +17,8 @@ function CardList(props: {
 
   return (
     <div className="catalog__films-list">
-      {movies.map((movie) => (
-        <CardItem card={movie}
+      {props.movies.map((movie) => (
+        <MovieItem card={movie}
           key={movie.id}
           isActive={movie.id === activeMovie}
           onMouseOver={onSmallFilmCardHover}
@@ -31,5 +29,5 @@ function CardList(props: {
   );
 }
 
-export default CardList;
+export default MovieList;
 

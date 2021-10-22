@@ -1,4 +1,4 @@
-export type FilmCard = {
+export type Movie = {
   id: string,
   title: string,
   genre: string,
@@ -14,19 +14,17 @@ export type FilmCard = {
   description: string,
   director: string,
   starring: string[],
+  runTime: string,
   isFavorite: boolean,
-  comment: Comment,
 }
 
-export type Comment = {
+export type Review = {
   id: string,
-  user: {
-    id: string,
-    name: string
-  },
-  rating: number,
+  name: string,
+  date: Date,
   comment: string,
+  rating: string,
 }
 
-export type FilmCards = FilmCard[];
-export type Comments = Comment[];
+export type Movies = Movie[];
+export type Reviews = Review[];

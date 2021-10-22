@@ -1,22 +1,21 @@
-import React from 'react';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../types/const';
-import { FilmCards } from '../../types/types';
-import { cardMovies } from '../../mocks/card-movies';
+import { Movies } from '../../types/types';
+import { movieList} from '../../mocks/movie-list';
 import Main from '../main/main';
 import SignIn from '../sign-in/sign-in';
-import Movie from '../movie/movie';
+import Catalog from '../catalog/catalog';
 import Review from '../review/review';
 import Player  from '../player/player';
 import PrivateRoute from '../private-route/private-route';
-import CardList from '../card-list/card-list';
+import MovieList from '../movie-list/movie-list';
 import Error from '../error/error';
 
 function App(props: {
   title: string,
   genre: string,
   release: number,
-  movie: FilmCards,
+  movie: Movies,
 }): JSX.Element {
   return  (
     <BrowserRouter>
@@ -28,12 +27,12 @@ function App(props: {
         <PrivateRoute
           exact
           path="/myList"
-          render={() => <CardList movies={cardMovies} />}
+          render={() => <MovieList movies={movieList} />}
           authorizationStatus={AuthorizationStatus.NoAuth}
         />
-        <Route path={AppRoute.Movie} exact render={() => <Movie movies={cardMovies}/>}/>
-        <Route path={AppRoute.Review} exact render={() => <Review movie={cardMovies[3]} />}/>
-        <Route path={AppRoute.Player} exact render={() => <Player movie={cardMovies[1]} />}/>
+        <Route path={AppRoute.Movie} exact render={() => <Catalog movies={movieList}/>}/>
+        <Route path={AppRoute.Review} exact render={() => <Review movie={movieList[0]} />}/>
+        <Route path={AppRoute.Player} exact render={() => <Player movie={movieList[0]} />}/>
         <Route component={Error}/>
       </Switch>
     </BrowserRouter>

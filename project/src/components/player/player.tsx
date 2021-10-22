@@ -1,15 +1,12 @@
-import React from 'react';
-import { FilmCard } from '../../types/types';
+import { Movie } from '../../types/types';
 
 function Player(props: {
-  movie: FilmCard,
+  movie: Movie,
 }): JSX.Element {
-  const { movie } = props;
-  const { backgroundImage } = movie;
 
   return (
     <div className="player">
-      <video src="#" className="player__video" poster={backgroundImage}></video>
+      <video src="#" className="player__video" poster={props.movie.backgroundImage}></video>
 
       <button type="button" className="player__exit">Exit</button>
 

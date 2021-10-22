@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { cardMovies } from './mocks/card-movies';
+import { movieList} from './mocks/movie-list';
 import App from './components/app/app';
-
 
 const title = 'The Grand Budapest Hotel';
 const genre = 'Drama';
@@ -13,7 +12,7 @@ ReactDOM.render(
     <App title={title}
       genre={genre}
       release={release}
-      movie={cardMovies}
+      movie={movieList}
     />
   </React.StrictMode>,
   document.getElementById('root'));
