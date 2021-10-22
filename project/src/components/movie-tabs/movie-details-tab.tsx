@@ -1,41 +1,37 @@
-import React from 'react';
-import { FilmCard } from '../../types/types';
+import { Movie } from '../../types/types';
 
-function TabDetails(props: {
-  movie: FilmCard,
+function MovieDetailsTab(props: {
+  movie: Movie,
 }): JSX.Element {
-  const {movie} = props;
-  const {director, starring, runTime, genre, released} = movie;
-
   return (
     <div className="film-card__text film-card__row">
       <div className="film-card__text-col">
-        <p className="film-card__details-item">
+        <p className="film-card__de tails-item">
           <strong className="film-card__details-name">Director</strong>
-          <span className="film-card__details-value">{director}</span>
+          <span className="film-card__details-value">{props.movie.director}</span>
         </p>
         <p className="film-card__details-item">
           <strong className="film-card__details-name">Starring</strong>
-          <span className="film-card__details-value">{starring.join(', ')}</span>
+          <span className="film-card__details-value">{props.movie.starring.join(', ')}</span>
         </p>
       </div>
 
       <div className="film-card__text-col">
         <p className="film-card__details-item">
           <strong className="film-card__details-name">Run Time</strong>
-          <span className="film-card__details-value">{runTime}</span>
+          <span className="film-card__details-value">{props.movie.runTime}</span>
         </p>
         <p className="film-card__details-item">
           <strong className="film-card__details-name">Genre</strong>
-          <span className="film-card__details-value">{genre}</span>
+          <span className="film-card__details-value">{props.movie.genre}</span>
         </p>
         <p className="film-card__details-item">
           <strong className="film-card__details-name">Released</strong>
-          <span className="film-card__details-value">{released}</span>
+          <span className="film-card__details-value">{props.movie.released}</span>
         </p>
       </div>
     </div>
   );
 }
 
-export default TabDetails;
+export default MovieDetailsTab;

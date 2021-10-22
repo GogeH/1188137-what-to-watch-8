@@ -1,4 +1,4 @@
-export type FilmCard = {
+export type Movie = {
   id: string,
   title: string,
   genre: string,
@@ -26,5 +26,5 @@ export type Review = {
   rating: string,
 }
 
-export type FilmCards = FilmCard[];
+export type Movies = Movie[];
 export type Reviews = Review[];

@@ -1,29 +1,24 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
-import {  FilmCards } from '../../types/types';
+import {  Movies } from '../../types/types';
 import { AppRoute } from '../../types/const';
-import CardList from '../card-list/card-list';
+import MovieList from '../movie-list/movie-list';
 import Logo from '../logo/logo';
-import Tabs from '../tabs/tabs';
-import { cardMovies } from '../../mocks/card-movies';
+import MovieTabs  from '../movie-tabs/movie-tabs';
+import { movieList} from '../../mocks/movie-list';
 import { reviewsList } from '../../mocks/reviews-list';
 
-function Movie(props: {
-  movies: FilmCards,
+function Catalog(props: {
+  movies: Movies,
 }): JSX.Element {
-  const { movies } = props;
-  const { title,  genre, released, imgSrc, backgroundImage} = movies[0];
   const history = useHistory();
-
-  const headGenre = genre;
 
   return (
     <div>
       <section className="film-card film-card--full">
         <div className="film-card__hero">
           <div className="film-card__bg">
-            <img src={backgroundImage} alt="The Grand Budapest Hotel"/>
+            <img src={props.movies[0].backgroundImage} alt="The Grand Budapest Hotel"/>
           </div>
 
           <h1 className="visually-hidden">WTW</h1>
@@ -47,10 +42,10 @@ function Movie(props: {
 
           <div className="film-card__wrap">
             <div className="film-card__desc">
-              <h2 className="film-card__title">{title}</h2>
+              <h2 className="film-card__title">{props.movies[0].title}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">{genre}</span>
-                <span className="film-card__year">{released}</span>
+                <span className="film-card__genre">{props.movies[0].genre}</span>
+                <span className="film-card__year">{props.movies[0].released}</span>
               </p>
 
               <div className="film-card__buttons">
@@ -79,12 +74,12 @@ function Movie(props: {
         <div className="film-card__wrap film-card__translate-top">
           <div className="film-card__info">
             <div className="film-card__poster film-card__poster--big">
-              <img src={imgSrc} alt="The Grand Budapest Hotel poster" width="218"
+              <img src={props.movies[0].imgSrc} alt="The Grand Budapest Hotel poster" width="218"
                 height="327"
               />
             </div>
 
-            <Tabs movie={cardMovies[0]} reviews={reviewsList}/>
+            <MovieTabs movie={movieList[0]} reviews={reviewsList}/>
 
           </div>
         </div>
@@ -95,8 +90,8 @@ function Movie(props: {
           <h2 className="catalog__title">More like this</h2>
 
           <div className="catalog__films-list">
-            <CardList
-              movies = {movies.filter((item) => item.genre === headGenre).slice(2)}
+            <MovieList
+              movies = {props.movies.filter((item) => item.genre === props.movies[0].genre).slice(2)}
             />
           </div>
         </section>
@@ -119,4 +114,4 @@ function Movie(props: {
   );
 }
 
-export default Movie;
+export default Catalog;

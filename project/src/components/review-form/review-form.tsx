@@ -1,6 +1,4 @@
-import React from 'react';
 import { useState, ChangeEvent } from 'react';
-
 
 function ReviewForm(): JSX.Element {
   const [rating, setRating] = useState('');

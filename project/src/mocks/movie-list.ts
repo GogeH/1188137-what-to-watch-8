@@ -1,6 +1,6 @@
-import { FilmCards } from '../types/types';
+import { Movies } from '../types/types';
 
-export const cardMovies: FilmCards = [
+export const movieList: Movies = [
   {
     id: '1',
     title: 'The Grand Budapest Hotel',
@@ -11,7 +11,7 @@ export const cardMovies: FilmCards = [
     backgroundColor: '#fff',
     link: 'https://download.blender.org/durian/trailer/sintel_trailer-480p.mp4',
     previewLink: 'https://upload.wikimedia.rg/wikipedia/commons/transcoded/b/b3/Big_Buck_Bunny_Trailer_400p.ogv/Big_Buck_Bunny_Trailer_400p.ogv.360p.webm',
-    rating: 7.9,
+    rating: 5.9,
     grade: 'Very good',
     count: 110,
     description: 'In the 1930s, the Grand Budapest Hotel is a popular European ski resort, presided over by concierge Gustave H. (Ralph Fiennes). Zero, a junior lobby boy, becomes Gustave\'s friend and protege.\n' +

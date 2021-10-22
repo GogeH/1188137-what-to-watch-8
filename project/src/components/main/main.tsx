@@ -1,15 +1,14 @@
-import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { FilmCards } from '../../types/types';
+import { Movies } from '../../types/types';
 import { AppRoute } from '../../types/const';
 import Logo from '../logo/logo';
-import CardList from '../card-list/card-list';
+import MovieList from '../movie-list/movie-list';
 
 function Main(props: {
   title: string,
   genre: string,
   release: number,
-  movies: FilmCards,
+  movies: Movies,
 }): JSX.Element {
   const history = useHistory();
 
@@ -157,7 +156,7 @@ function Main(props: {
             </li>
           </ul>
 
-          <CardList movies={props.movies} />
+          <MovieList movies={props.movies} />
 
           <div className="catalog__more">
             <button className="catalog__button" type="button">Show more</button>
