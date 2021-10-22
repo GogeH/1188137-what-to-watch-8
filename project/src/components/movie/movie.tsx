@@ -16,7 +16,7 @@ function Movie(props: {
   const { title,  genre, released, imgSrc, backgroundImage} = movies[0];
   const history = useHistory();
 
-  const te = genre;
+  const headGenre = genre;
 
   return (
     <div>
@@ -96,7 +96,7 @@ function Movie(props: {
 
           <div className="catalog__films-list">
             <CardList
-              movies = {movies.filter((item) => item.genre === te).slice(2)}
+              movies = {movies.filter((item) => item.genre === headGenre).slice(2)}
             />
           </div>
         </section>
