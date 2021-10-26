@@ -1,16 +1,46 @@
 import { useHistory } from 'react-router-dom';
-import { Movies } from '../../types/types';
+import {connect, ConnectedProps} from 'react-redux';
+import {Dispatch} from '@reduxjs/toolkit';
+import { filterMovie } from '../../utils/get-filter-movie';
 import { AppRoute } from '../../types/const';
+import { State } from '../../types/state';
+import { Actions } from '../../types/action';
+import { selectedGenre} from '../../store/action';
+import { Genres} from '../../types/const';
+import { Promo } from '../../types/types';
+import GenresList from '../genre-list/genre-list';
 import Logo from '../logo/logo';
 import MovieList from '../movie-list/movie-list';
 
-function Main(props: {
-  title: string,
-  genre: string,
-  release: number,
-  movies: Movies,
-}): JSX.Element {
+function mapState({movie, genre}: State) {
+  return {
+    movie,
+    activeGenre: genre,
+  };
+}
+
+function mapDispatch(dispatch: Dispatch<Actions>) {
+  return {
+    onChangeGenre(genre: Genres) {
+      dispatch(selectedGenre(genre));
+    },
+  };
+}
+
+type PromoObj = {
+  promo: Promo,
+}
+
+const connector = connect(mapState, mapDispatch);
+
+type PropsFormRedux = ConnectedProps<typeof connector>;
+type ConnectedComponentProps = PropsFormRedux & PromoObj;
+
+function Main(props: ConnectedComponentProps): JSX.Element {
   const history = useHistory();
+
+  const genres = Object.values(Genres) as Genres[];
+  const showMovie = filterMovie(props.movie, props.activeGenre);
 
   return (
     <div>
@@ -90,10 +120,10 @@ function Main(props: {
             </div>
 
             <div className="film-card__desc">
-              <h2 className="film-card__title">{props.title}</h2>
+              <h2 className="film-card__title">{props.promo.name}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">{props.genre}</span>
-                <span className="film-card__year">{props.release}</span>
+                <span className="film-card__genre">{props.promo.genre}</span>
+                <span className="film-card__year">{props.promo.release}</span>
               </p>
 
               <div className="film-card__buttons">
@@ -123,40 +153,9 @@ function Main(props: {
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-          <ul className="catalog__genres-list">
-            <li className="catalog__genres-item catalog__genres-item--active">
-              <a href="/" className="catalog__genres-link">All genres</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/" className="catalog__genres-link">Comedies</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/" className="catalog__genres-link">Crime</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/" className="catalog__genres-link">Documentary</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/" className="catalog__genres-link">Dramas</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/" className="catalog__genres-link">Horror</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/" className="catalog__genres-link">Kids & Family</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/" className="catalog__genres-link">Romance</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/" className="catalog__genres-link">Sci-Fi</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/" className="catalog__genres-link">Thrillers</a>
-            </li>
-          </ul>
+          <GenresList genres={genres} activeGenre={props.activeGenre} onChangeGenre={props.onChangeGenre} />
 
-          <MovieList movies={props.movies} />
+          {<MovieList movies={showMovie} />}
 
           <div className="catalog__more">
             <button className="catalog__button" type="button">Show more</button>
@@ -181,4 +180,5 @@ function Main(props: {
   );
 }
 
-export default Main;
+export {Main};
+export default connector(Main);

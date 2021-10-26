@@ -4,7 +4,7 @@ import { Movie } from '../../types/types';
 import VideoPreview from '../video-player/video-player';
 
 function MovieItem(props: {
-  card: Movie,
+  movie: Movie,
   isActive: boolean,
   onMouseOver: (evt: MouseEvent) => void,
   onMouseLeave: (evt: MouseEvent) => void,
@@ -14,22 +14,22 @@ function MovieItem(props: {
       className="small-film-card catalog__films-card"
       onMouseOver={props.onMouseOver}
       onMouseLeave={props.onMouseLeave}
-      id={props.card.id}
+      id={props.movie.id}
     >
       <div className="small-film-card__image">
         <VideoPreview
-          poster={props.card.imgSrc}
-          src={props.card.link}
+          poster={props.movie.imgSrc}
+          src={props.movie.link}
           isPlaying={props.isActive}
         />
       </div>
       <h3 className="small-film-card__title">
         <Link
           className="small-film-card__link"
-          to={`/films/${props.card.id}`}
-          href="film-page.html"
+          to={`/films/${props.movie.id}`}
+          href="/"
         >
-          {props.card.title}
+          {props.movie.title}
         </Link>
       </h3>
     </article>

@@ -1,5 +1,5 @@
 import { Review } from '../../types/types';
-import { datetime, humanizedDateTime } from '../../utils/date';
+import { getDatetime, getHumanizedDateTime } from '../../utils/get-date-time';
 
 function MovieReviewsTabItem (props: {
   review: Review,
@@ -11,7 +11,7 @@ function MovieReviewsTabItem (props: {
 
         <footer className="review__details">
           <cite className="review__author">{props.review.name}</cite>
-          <time className="review__date" dateTime={datetime(props.review.date)}>{humanizedDateTime(props.review.date)}</time>
+          <time className="review__date" dateTime={getDatetime(props.review.date)}>{getHumanizedDateTime(props.review.date)}</time>
         </footer>
       </blockquote>
 

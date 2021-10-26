@@ -1,5 +1,5 @@
 import { Movie } from '../../types/types';
-import { getRatingMovie, getFormattedRating } from '../../utils/grade-movie';
+import { getRatingMovie, getFormattedRating } from '../../utils/get-grade-movie';
 
 function MovieOverviewTab(props: {
   movie: Movie,

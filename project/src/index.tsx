@@ -1,18 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { movieList} from './mocks/movie-list';
+import {createStore} from 'redux';
+import {Provider} from 'react-redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import {movieList} from './mocks/movie-list';
 import App from './components/app/app';
+import { reducer } from './store/reducer';
 
-const title = 'The Grand Budapest Hotel';
-const genre = 'Drama';
-const release = 2014;
+const store = createStore(
+  reducer,
+  composeWithDevTools(),
+);
+
+const promo = {
+  name: 'The Grand Budapest Hotel',
+  genre: 'Drama',
+  release: 2014,
+};
 
 ReactDOM.render(
   <React.StrictMode>
-    <App title={title}
-      genre={genre}
-      release={release}
-      movie={movieList}
-    />
+    <Provider store={store}>
+      <App
+        promo={promo}
+        movie={movieList}
+      />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root'));

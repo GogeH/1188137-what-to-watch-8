@@ -1,38 +1,36 @@
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../types/const';
-import { Movies } from '../../types/types';
-import { movieList} from '../../mocks/movie-list';
+import { Movie } from '../../types/types';
+import { Promo } from '../../types/types';
 import Main from '../main/main';
 import SignIn from '../sign-in/sign-in';
 import Catalog from '../catalog/catalog';
-import Review from '../review/review';
+import Reviews from '../reviews/reviews';
 import Player  from '../player/player';
 import PrivateRoute from '../private-route/private-route';
 import MovieList from '../movie-list/movie-list';
 import Error from '../error/error';
 
 function App(props: {
-  title: string,
-  genre: string,
-  release: number,
-  movie: Movies,
+  promo: Promo,
+  movie: Movie[],
 }): JSX.Element {
   return  (
     <BrowserRouter>
       <Switch>
         <Route path={AppRoute.Main} exact>
-          <Main title={props.title} genre={props.genre} release={props.release} movies={props.movie}/>;
+          <Main promo={props.promo}/>;
         </Route>
         <Route path="/login" exact component={SignIn}/>
         <PrivateRoute
           exact
           path="/myList"
-          render={() => <MovieList movies={movieList} />}
+          render={() => <MovieList movies={props.movie} />}
           authorizationStatus={AuthorizationStatus.NoAuth}
         />
-        <Route path={AppRoute.Movie} exact render={() => <Catalog movies={movieList}/>}/>
-        <Route path={AppRoute.Review} exact render={() => <Review movie={movieList[0]} />}/>
-        <Route path={AppRoute.Player} exact render={() => <Player movie={movieList[0]} />}/>
+        <Route path={AppRoute.Movie} exact render={() => <Catalog movies={props.movie} />}/>
+        <Route path={AppRoute.Review} exact render={() => <Reviews movie={props.movie[0]} />}/>
+        <Route path={AppRoute.Player} exact render={() => <Player movie={props.movie[0]} />}/>
         <Route component={Error}/>
       </Switch>
     </BrowserRouter>

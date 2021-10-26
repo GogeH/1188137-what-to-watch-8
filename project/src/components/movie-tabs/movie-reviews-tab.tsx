@@ -1,11 +1,11 @@
 import MovieReviewsTabItem from './movie-reviews-tab-item';
-import { Reviews } from '../../types/types';
+import { Review } from '../../types/types';
 
 function MovieReviewsTab(props: {
-  reviews: Reviews,
+  reviews: Review[],
 }): JSX.Element {
-  const firstHalfColumn: Reviews = props.reviews.slice(0, Math.ceil(props.reviews.length/2));
-  const secondHalfColumn: Reviews = props.reviews.slice(-Math.ceil(props.reviews.length/2));
+  const firstHalfColumn: Review[] = props.reviews.slice(0, Math.ceil(props.reviews.length/2));
+  const secondHalfColumn: Review[] = props.reviews.slice(-Math.ceil(props.reviews.length/2));
 
   return (
     <div className="film-card__reviews film-card__row">
