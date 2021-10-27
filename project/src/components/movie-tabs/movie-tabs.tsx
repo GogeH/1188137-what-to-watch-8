@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Movie, Reviews } from '../../types/types';
+import { Movie, Review } from '../../types/types';
 import MovieDetailsTab from './movie-details-tab';
 import MovieOverviewTab from './movie-overview-tab';
 import MovieReviewsTab from './movie-reviews-tab';
@@ -12,7 +12,7 @@ enum MovieTab {
 
 function MovieTabs(props: {
   movie: Movie,
-  reviews: Reviews,
+  reviews: Review[],
 }): JSX.Element {
   const [activeTab, setActiveTab] = useState<MovieTab>(MovieTab.OverviewTab);
 

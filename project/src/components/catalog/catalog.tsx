@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
-import {  Movies } from '../../types/types';
+import {  Movie } from '../../types/types';
 import { AppRoute } from '../../types/const';
 import MovieList from '../movie-list/movie-list';
 import Logo from '../logo/logo';
@@ -9,7 +9,7 @@ import { movieList} from '../../mocks/movie-list';
 import { reviewsList } from '../../mocks/reviews-list';
 
 function Catalog(props: {
-  movies: Movies,
+  movies: Movie[],
 }): JSX.Element {
   const history = useHistory();
 
@@ -91,7 +91,7 @@ function Catalog(props: {
 
           <div className="catalog__films-list">
             <MovieList
-              movies = {props.movies.filter((item) => item.genre === props.movies[0].genre).slice(2)}
+              movies = {props.movies.filter((item) => item.genre === props.movies[0].genre).slice(0, 4)}
             />
           </div>
         </section>

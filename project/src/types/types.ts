@@ -1,7 +1,9 @@
+import {Genres} from './const';
+
 export type Movie = {
   id: string,
   title: string,
-  genre: string,
+  genre: Genres,
   released: number,
   imgSrc: string,
   backgroundImage: string,
@@ -26,5 +28,10 @@ export type Review = {
   rating: string,
 }
 
-export type Movies = Movie[];
-export type Reviews = Review[];
+export type Promo = {
+  name: string,
+  genre: string,
+  release: number,
+}
+
+
