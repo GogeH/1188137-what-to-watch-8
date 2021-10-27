@@ -1,8 +1,8 @@
 import {State} from '../types/state';
 import { Actions, ActionType } from '../types/action';
 import { Genres } from '../types/const';
-import { movieList } from '../mocks/movie-list';
 import { Movie } from '../types/types';
+import { movieList } from '../mocks/movie-list';
 
 const initialState = {
   genre: Genres.AllGenres,
