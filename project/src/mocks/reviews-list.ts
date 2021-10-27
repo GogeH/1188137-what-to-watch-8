@@ -1,10 +1,10 @@
-import { Reviews } from '../types/types';
-import { getRandomInteger } from '../utils/random-integral';
+import { Review } from '../types/types';
+import { getRandomInteger } from '../utils/get-random-integral';
 
 const now = Date.now();
 const YEAR_AGO = now - 365 * 24 * 60 * 60 * 1000;
 
-export const reviewsList: Reviews = [
+export const reviewsList: Review[] = [
   {
     id:'1',
     name: 'Kate Muir',

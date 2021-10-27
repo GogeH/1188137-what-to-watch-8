@@ -31,8 +31,8 @@ function VideoPreview(props: {
       ref={videoRef}
       src={props.src}
       poster={props.poster}
-      width="280"
-      height="175"
+      width="327"
+      height="218"
     />
   );
 }

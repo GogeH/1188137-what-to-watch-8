@@ -6,7 +6,7 @@ function MovieDetailsTab(props: {
   return (
     <div className="film-card__text film-card__row">
       <div className="film-card__text-col">
-        <p className="film-card__de tails-item">
+        <p className="film-card__details-item">
           <strong className="film-card__details-name">Director</strong>
           <span className="film-card__details-value">{props.movie.director}</span>
         </p>

@@ -1,16 +1,74 @@
+import { useState, useEffect, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Movies } from '../../types/types';
+import {connect, ConnectedProps} from 'react-redux';
+import {Dispatch} from '@reduxjs/toolkit';
+import { getFilterMovie, getMovieCount } from '../../utils/get-filter-movie';
 import { AppRoute } from '../../types/const';
+import { State } from '../../types/state';
+import { Actions } from '../../types/action';
+import { selectedGenre } from '../../store/action';
+import { Genres} from '../../types/const';
+import { Promo } from '../../types/types';
+import GenresList from '../genre-list/genre-list';
 import Logo from '../logo/logo';
 import MovieList from '../movie-list/movie-list';
+import ShowMore from '../show-more/show-more';
 
-function Main(props: {
-  title: string,
-  genre: string,
-  release: number,
-  movies: Movies,
-}): JSX.Element {
+function mapStateToProps({movie, genre}: State) {
+  return {
+    activeGenre: genre,
+    movie: movie,
+  };
+}
+
+function mapDispatchToProps(dispatch: Dispatch<Actions>) {
+  return {
+    onChangeGenre(genre: Genres) {
+      dispatch(selectedGenre(genre));
+    },
+  };
+}
+
+type PromoObj = {
+  promo: Promo,
+}
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+type PropsFormRedux = ConnectedProps<typeof connector>;
+type ConnectedComponentProps = PropsFormRedux & PromoObj;
+
+function Main(props: ConnectedComponentProps): JSX.Element {
   const history = useHistory();
+  const genres = Object.values(Genres) as Genres[];
+
+  const [filteredMovie, setFilteredMovie] = useState(getFilterMovie(props.movie, props.activeGenre ));
+
+  useEffect(() => {
+    setFilteredMovie(() => getFilterMovie(props.movie, props.activeGenre ));
+  }, [props.activeGenre, props.movie]);
+
+  const [movieCount, setMovieCount] = useState(getMovieCount(filteredMovie.length));
+
+  useEffect(() => {
+    setMovieCount(getMovieCount(filteredMovie.length));
+  }, [filteredMovie, filteredMovie.length]);
+
+  const [loadMore, setLoadMore] = useState(movieCount < filteredMovie.length);
+
+  useEffect(() => {
+    setLoadMore(movieCount < filteredMovie.length);
+  }, [movieCount, filteredMovie.length]);
+
+  const loadMoreMovie = useCallback(() => {
+    setMovieCount((filmsCount) => getMovieCount(filteredMovie.length, filmsCount));
+  }, [filteredMovie.length]);
+
+  const changeGenreProps = props.onChangeGenre;
+
+  const changeGenre = useCallback((genre) => {
+    changeGenreProps(genre);
+  }, [changeGenreProps]);
 
   return (
     <div>
@@ -90,10 +148,10 @@ function Main(props: {
             </div>
 
             <div className="film-card__desc">
-              <h2 className="film-card__title">{props.title}</h2>
+              <h2 className="film-card__title">{props.promo.name}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">{props.genre}</span>
-                <span className="film-card__year">{props.release}</span>
+                <span className="film-card__genre">{props.promo.genre}</span>
+                <span className="film-card__year">{props.promo.release}</span>
               </p>
 
               <div className="film-card__buttons">
@@ -123,44 +181,11 @@ function Main(props: {
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-          <ul className="catalog__genres-list">
-            <li className="catalog__genres-item catalog__genres-item--active">
-              <a href="/" className="catalog__genres-link">All genres</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/" className="catalog__genres-link">Comedies</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/" className="catalog__genres-link">Crime</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/" className="catalog__genres-link">Documentary</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/" className="catalog__genres-link">Dramas</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/" className="catalog__genres-link">Horror</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/" className="catalog__genres-link">Kids & Family</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/" className="catalog__genres-link">Romance</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/" className="catalog__genres-link">Sci-Fi</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/" className="catalog__genres-link">Thrillers</a>
-            </li>
-          </ul>
+          <GenresList genres={genres} activeGenre={props.activeGenre} onChangeGenre={changeGenre} />
 
-          <MovieList movies={props.movies} />
-
-          <div className="catalog__more">
-            <button className="catalog__button" type="button">Show more</button>
-          </div>
+          <MovieList movies={filteredMovie.slice(0, movieCount)}
+            render={loadMore && (() => <ShowMore loadMore={loadMoreMovie}/>)}
+          />
         </section>
 
         <footer className="page-footer">
@@ -181,4 +206,5 @@ function Main(props: {
   );
 }
 
-export default Main;
+export { Main };
+export default connector(Main);
