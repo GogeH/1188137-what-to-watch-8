@@ -1,6 +1,6 @@
 import { Genres } from './const';
 
-export type GenreType = {
+export type ViewGenre = {
   genres: Genres[],
   activeGenre: Genres,
   onChangeGenre: (genre: Genres) => void,

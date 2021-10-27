@@ -1,7 +1,7 @@
 import { MouseEvent } from 'react';
-import { GenreType } from '../../types/genre-type';
+import { ViewGenre } from '../../types/view-genre';
 
-function GenresList({genres, activeGenre, onChangeGenre}: GenreType): JSX.Element {
+function GenresList({genres, activeGenre, onChangeGenre}: ViewGenre): JSX.Element {
   return (
     <ul className="catalog__genres-list">
       {genres.map((genre) => (

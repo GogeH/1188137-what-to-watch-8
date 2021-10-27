@@ -5,21 +5,21 @@ import { filterMovie } from '../../utils/get-filter-movie';
 import { AppRoute } from '../../types/const';
 import { State } from '../../types/state';
 import { Actions } from '../../types/action';
-import { selectedGenre} from '../../store/action';
+import { selectedGenre } from '../../store/action';
 import { Genres} from '../../types/const';
 import { Promo } from '../../types/types';
 import GenresList from '../genre-list/genre-list';
 import Logo from '../logo/logo';
 import MovieList from '../movie-list/movie-list';
 
-function mapState({movie, genre}: State) {
+function mapStateToProps({movie, genre}: State) {
   return {
-    movie,
     activeGenre: genre,
+    movie: movie,
   };
 }
 
-function mapDispatch(dispatch: Dispatch<Actions>) {
+function mapDispatchToProps(dispatch: Dispatch<Actions>) {
   return {
     onChangeGenre(genre: Genres) {
       dispatch(selectedGenre(genre));
@@ -31,7 +31,7 @@ type PromoObj = {
   promo: Promo,
 }
 
-const connector = connect(mapState, mapDispatch);
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFormRedux = ConnectedProps<typeof connector>;
 type ConnectedComponentProps = PropsFormRedux & PromoObj;
@@ -155,7 +155,7 @@ function Main(props: ConnectedComponentProps): JSX.Element {
 
           <GenresList genres={genres} activeGenre={props.activeGenre} onChangeGenre={props.onChangeGenre} />
 
-          {<MovieList movies={showMovie} />}
+          <MovieList movies={showMovie} />
 
           <div className="catalog__more">
             <button className="catalog__button" type="button">Show more</button>
@@ -180,5 +180,5 @@ function Main(props: ConnectedComponentProps): JSX.Element {
   );
 }
 
-export {Main};
+export { Main };
 export default connector(Main);
