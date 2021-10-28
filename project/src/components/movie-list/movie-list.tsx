@@ -4,6 +4,7 @@ import MovieItem from '../movie-item/movie-item';
 
 function MovieList(props: {
   movies: Movie[],
+  render?: (() => JSX.Element) | false,
 }): JSX.Element {
   const [activeMovie, setActiveMovie] = useState('');
 
@@ -16,16 +17,19 @@ function MovieList(props: {
   };
 
   return (
-    <div className="catalog__films-list">
-      {props.movies.map((movie) => (
-        <MovieItem movie={movie}
-          key={movie.id}
-          isActive={movie.id === activeMovie}
-          onMouseOver={onSmallFilmCardHover}
-          onMouseLeave={onSmallFilmCardLeave}
-        />
-      )).slice(0, 8)}
-    </div>
+    <>
+      <div className="catalog__films-list">
+        {props.movies.map((movie) => (
+          <MovieItem movie={movie}
+            key={movie.id}
+            isActive={movie.id === activeMovie}
+            handleMouseOver={onSmallFilmCardHover}
+            handleMouseLeave={onSmallFilmCardLeave}
+          />
+        ))}
+      </div>
+      {props.render && props.render()}
+    </>
   );
 }
 

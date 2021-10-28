@@ -1,5 +1,7 @@
-import { MouseEvent } from 'react';
 import { ViewGenre } from '../../types/view-genre';
+import { MouseEvent } from 'react';
+
+const GENRE_ITEM_ACTIVE = 'catalog__genres-item--active';
 
 function GenresList({genres, activeGenre, onChangeGenre}: ViewGenre): JSX.Element {
   return (
@@ -9,7 +11,7 @@ function GenresList({genres, activeGenre, onChangeGenre}: ViewGenre): JSX.Elemen
           className={['catalog__genres-item',
             genre === activeGenre
               ?
-              'catalog__genres-item--active'
+              GENRE_ITEM_ACTIVE
               :
               ''].join(' ')}
           key={genre}

@@ -1,19 +1,19 @@
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
-import { AppRoute, AuthorizationStatus } from '../../types/const';
+import { AppRoute, AuthorizationStatus } from '../../types/enum';
 import { Movie } from '../../types/types';
 import { Promo } from '../../types/types';
 import Main from '../main/main';
 import SignIn from '../sign-in/sign-in';
 import Catalog from '../catalog/catalog';
-import Reviews from '../reviews/reviews';
+import Error from '../error/error';
 import Player  from '../player/player';
 import PrivateRoute from '../private-route/private-route';
 import MovieList from '../movie-list/movie-list';
-import Error from '../error/error';
+import Reviews from '../reviews/reviews';
 
 function App(props: {
   promo: Promo,
-  movie: Movie[],
+  movies: Movie[],
 }): JSX.Element {
   return  (
     <BrowserRouter>
@@ -25,12 +25,12 @@ function App(props: {
         <PrivateRoute
           exact
           path="/myList"
-          render={() => <MovieList movies={props.movie} />}
+          render={() => <MovieList movies={props.movies} />}
           authorizationStatus={AuthorizationStatus.NoAuth}
         />
-        <Route path={AppRoute.Movie} exact render={() => <Catalog movies={props.movie} />}/>
-        <Route path={AppRoute.Review} exact render={() => <Reviews movie={props.movie[0]} />}/>
-        <Route path={AppRoute.Player} exact render={() => <Player movie={props.movie[0]} />}/>
+        <Route path={AppRoute.Movie} exact render={() => <Catalog movies={props.movies} />}/>
+        <Route path={AppRoute.Review} exact render={() => <Reviews movie={props.movies[0]} />}/>
+        <Route path={AppRoute.Player} exact render={() => <Player movie={props.movies[0]} />}/>
         <Route component={Error}/>
       </Switch>
     </BrowserRouter>

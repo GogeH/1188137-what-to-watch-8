@@ -1,4 +1,4 @@
-import {Genres} from './const';
+import {Genres} from './enum';
 
 export type Movie = {
   id: string,
@@ -33,5 +33,3 @@ export type Promo = {
   genre: string,
   release: number,
 }
-
-

@@ -1,4 +1,4 @@
-import { Genres } from './const';
+import { Genres } from './enum';
 
 export type ViewGenre = {
   genres: Genres[],

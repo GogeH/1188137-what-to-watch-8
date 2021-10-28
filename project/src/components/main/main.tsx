@@ -1,21 +1,22 @@
+import { useState, useEffect, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import {connect, ConnectedProps} from 'react-redux';
 import {Dispatch} from '@reduxjs/toolkit';
-import { filterMovie } from '../../utils/get-filter-movie';
-import { AppRoute } from '../../types/const';
+import { getFilterMovie, getMovieCount } from '../../utils/get-filter-movie';
+import { AppRoute, Genres } from '../../types/enum';
 import { State } from '../../types/state';
 import { Actions } from '../../types/action';
-import { selectedGenre } from '../../store/action';
-import { Genres} from '../../types/const';
 import { Promo } from '../../types/types';
+import { selectedGenre } from '../../store/action';
 import GenresList from '../genre-list/genre-list';
 import Logo from '../logo/logo';
+import ShowMore from '../show-more/show-more';
 import MovieList from '../movie-list/movie-list';
 
-function mapStateToProps({movie, genre}: State) {
+function mapStateToProps({movies, genre}: State) {
   return {
     activeGenre: genre,
-    movie: movie,
+    movies: movies,
   };
 }
 
@@ -27,20 +28,44 @@ function mapDispatchToProps(dispatch: Dispatch<Actions>) {
   };
 }
 
-type PromoObj = {
-  promo: Promo,
-}
-
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFormRedux = ConnectedProps<typeof connector>;
-type ConnectedComponentProps = PropsFormRedux & PromoObj;
+type ConnectedComponentProps = PropsFormRedux & {
+  promo: Promo,
+};
 
 function Main(props: ConnectedComponentProps): JSX.Element {
   const history = useHistory();
-
   const genres = Object.values(Genres) as Genres[];
-  const showMovie = filterMovie(props.movie, props.activeGenre);
+
+  const [filteredMovie, setFilteredMovie] = useState(getFilterMovie(props.movies, props.activeGenre ));
+
+  useEffect(() => {
+    setFilteredMovie(() => getFilterMovie(props.movies, props.activeGenre ));
+  }, [props.activeGenre, props.movies]);
+
+  const [movieCount, setMovieCount] = useState(getMovieCount(filteredMovie.length));
+
+  useEffect(() => {
+    setMovieCount(getMovieCount(filteredMovie.length));
+  }, [filteredMovie, filteredMovie.length]);
+
+  const [loadMore, setLoadMore] = useState(movieCount < filteredMovie.length);
+
+  useEffect(() => {
+    setLoadMore(movieCount < filteredMovie.length);
+  }, [movieCount, filteredMovie.length]);
+
+  const loadMoreMovie = useCallback(() => {
+    setMovieCount((filmsCount) => getMovieCount(filteredMovie.length, filmsCount));
+  }, [filteredMovie.length]);
+
+  const changeGenreProps = props.onChangeGenre;
+
+  const changeGenre = useCallback((genre) => {
+    changeGenreProps(genre);
+  }, [changeGenreProps]);
 
   return (
     <div>
@@ -153,13 +178,11 @@ function Main(props: ConnectedComponentProps): JSX.Element {
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-          <GenresList genres={genres} activeGenre={props.activeGenre} onChangeGenre={props.onChangeGenre} />
+          <GenresList genres={genres} activeGenre={props.activeGenre} onChangeGenre={changeGenre} />
 
-          <MovieList movies={showMovie} />
-
-          <div className="catalog__more">
-            <button className="catalog__button" type="button">Show more</button>
-          </div>
+          <MovieList movies={filteredMovie.slice(0, movieCount)}
+            render={loadMore && (() => <ShowMore loadMore={loadMoreMovie}/>)}
+          />
         </section>
 
         <footer className="page-footer">

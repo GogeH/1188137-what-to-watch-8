@@ -1,7 +1,13 @@
 import { Movie} from '../types/types';
-import { Genres} from '../types/const';
+import { Genres} from '../types/enum';
 
-export function filterMovie(movies: Movie[], activeGenre: Genres): Movie[] {
+const STEP_OPENING_MOVIE = 8;
+
+export function getMovieCount(listMovieLength: number, Count = 0, step = STEP_OPENING_MOVIE): number {
+  return Math.min(listMovieLength, Count + step);
+}
+
+export function getFilterMovie(movies: Movie[], activeGenre: Genres): Movie[] {
   if (activeGenre === Genres.AllGenres) {
     return movies;
   }

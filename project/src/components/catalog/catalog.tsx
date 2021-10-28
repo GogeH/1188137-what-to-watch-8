@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import {  Movie } from '../../types/types';
-import { AppRoute } from '../../types/const';
-import MovieList from '../movie-list/movie-list';
-import Logo from '../logo/logo';
-import MovieTabs  from '../movie-tabs/movie-tabs';
+import { AppRoute } from '../../types/enum';
 import { movieList} from '../../mocks/movie-list';
 import { reviewsList } from '../../mocks/reviews-list';
+import MovieList from '../movie-list/movie-list';
+import MovieTabs  from '../movie-tabs/movie-tabs';
+import Logo from '../logo/logo';
 
 function Catalog(props: {
   movies: Movie[],

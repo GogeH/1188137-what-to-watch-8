@@ -6,14 +6,14 @@ import VideoPreview from '../video-player/video-player';
 function MovieItem(props: {
   movie: Movie,
   isActive: boolean,
-  onMouseOver: (evt: MouseEvent) => void,
-  onMouseLeave: (evt: MouseEvent) => void,
+  handleMouseOver: (evt: MouseEvent) => void,
+  handleMouseLeave: (evt: MouseEvent) => void,
 }): JSX.Element {
   return (
     <article
       className="small-film-card catalog__films-card"
-      onMouseOver={props.onMouseOver}
-      onMouseLeave={props.onMouseLeave}
+      onMouseOver={props.handleMouseOver}
+      onMouseLeave={props.handleMouseLeave}
       id={props.movie.id}
     >
       <div className="small-film-card__image">

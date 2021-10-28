@@ -1,12 +1,12 @@
 import {State} from '../types/state';
 import { Actions, ActionType } from '../types/action';
-import { Genres } from '../types/const';
 import { Movie } from '../types/types';
+import { Genres } from '../types/enum';
 import { movieList } from '../mocks/movie-list';
 
 const initialState = {
+  movies: movieList,
   genre: Genres.AllGenres,
-  movie: movieList,
 };
 
 export function reducer(state: State = initialState, action: Actions): State {
@@ -14,7 +14,7 @@ export function reducer(state: State = initialState, action: Actions): State {
     case ActionType.SelectedGenre:
       return {...state, genre: action.payload as Genres};
     case ActionType.SelectedMovie:
-      return {...state, movie: action.payload as Movie[]};
+      return {...state, movies: action.payload as Movie[]};
     default:
       return {...initialState};
   }
