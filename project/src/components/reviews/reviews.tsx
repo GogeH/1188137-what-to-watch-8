@@ -1,6 +1,6 @@
 import React from 'react';
-import Logo from '../logo/logo';
 import ReviewForm from '../review-form/review-form';
+import Logo from '../logo/logo';
 import { Movie } from '../../types/types';
 
 function Review(props: {
