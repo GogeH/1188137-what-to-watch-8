@@ -33,5 +33,3 @@ export type Promo = {
   genre: string,
   release: number,
 }
-
-

@@ -444,4 +444,3 @@ export const movieList: Movie[] = [
     isFavorite: false,
   },
 ];
-
