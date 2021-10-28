@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Movie, Review } from '../../types/types';
-import MovieDetailsTab from './movie-details-tab';
 import MovieOverviewTab from './movie-overview-tab';
+import MovieDetailsTab from './movie-details-tab';
 import MovieReviewsTab from './movie-reviews-tab';
 
 enum MovieTab {
