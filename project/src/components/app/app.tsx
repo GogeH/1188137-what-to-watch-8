@@ -13,7 +13,7 @@ import Error from '../error/error';
 
 function App(props: {
   promo: Promo,
-  movie: Movie[],
+  movies: Movie[],
 }): JSX.Element {
   return  (
     <BrowserRouter>
@@ -25,12 +25,12 @@ function App(props: {
         <PrivateRoute
           exact
           path="/myList"
-          render={() => <MovieList movies={props.movie} />}
+          render={() => <MovieList movies={props.movies} />}
           authorizationStatus={AuthorizationStatus.NoAuth}
         />
-        <Route path={AppRoute.Movie} exact render={() => <Catalog movies={props.movie} />}/>
-        <Route path={AppRoute.Review} exact render={() => <Reviews movie={props.movie[0]} />}/>
-        <Route path={AppRoute.Player} exact render={() => <Player movie={props.movie[0]} />}/>
+        <Route path={AppRoute.Movie} exact render={() => <Catalog movies={props.movies} />}/>
+        <Route path={AppRoute.Review} exact render={() => <Reviews movie={props.movies[0]} />}/>
+        <Route path={AppRoute.Player} exact render={() => <Player movie={props.movies[0]} />}/>
         <Route component={Error}/>
       </Switch>
     </BrowserRouter>

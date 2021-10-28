@@ -6,18 +6,18 @@ import { getFilterMovie, getMovieCount } from '../../utils/get-filter-movie';
 import { AppRoute } from '../../types/const';
 import { State } from '../../types/state';
 import { Actions } from '../../types/action';
-import { selectedGenre } from '../../store/action';
 import { Genres} from '../../types/const';
 import { Promo } from '../../types/types';
+import { selectedGenre } from '../../store/action';
 import GenresList from '../genre-list/genre-list';
 import Logo from '../logo/logo';
 import MovieList from '../movie-list/movie-list';
 import ShowMore from '../show-more/show-more';
 
-function mapStateToProps({movie, genre}: State) {
+function mapStateToProps({movies, genre}: State) {
   return {
     activeGenre: genre,
-    movie: movie,
+    movies: movies,
   };
 }
 
@@ -29,24 +29,22 @@ function mapDispatchToProps(dispatch: Dispatch<Actions>) {
   };
 }
 
-type PromoObj = {
-  promo: Promo,
-}
-
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFormRedux = ConnectedProps<typeof connector>;
-type ConnectedComponentProps = PropsFormRedux & PromoObj;
+type ConnectedComponentProps = PropsFormRedux & {
+  promo: Promo,
+};
 
 function Main(props: ConnectedComponentProps): JSX.Element {
   const history = useHistory();
   const genres = Object.values(Genres) as Genres[];
 
-  const [filteredMovie, setFilteredMovie] = useState(getFilterMovie(props.movie, props.activeGenre ));
+  const [filteredMovie, setFilteredMovie] = useState(getFilterMovie(props.movies, props.activeGenre ));
 
   useEffect(() => {
-    setFilteredMovie(() => getFilterMovie(props.movie, props.activeGenre ));
-  }, [props.activeGenre, props.movie]);
+    setFilteredMovie(() => getFilterMovie(props.movies, props.activeGenre ));
+  }, [props.activeGenre, props.movies]);
 
   const [movieCount, setMovieCount] = useState(getMovieCount(filteredMovie.length));
 

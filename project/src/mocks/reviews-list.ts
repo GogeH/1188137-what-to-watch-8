@@ -1,5 +1,5 @@
 import { Review } from '../types/types';
-import { getRandomInteger } from '../utils/get-random-integral';
+import { getRandomInteger } from '../utils/get-random-integer';
 
 const now = Date.now();
 const YEAR_AGO = now - 365 * 24 * 60 * 60 * 1000;

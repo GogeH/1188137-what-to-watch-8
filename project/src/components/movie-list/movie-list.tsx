@@ -23,8 +23,8 @@ function MovieList(props: {
           <MovieItem movie={movie}
             key={movie.id}
             isActive={movie.id === activeMovie}
-            onMouseOver={onSmallFilmCardHover}
-            onMouseLeave={onSmallFilmCardLeave}
+            handleMouseOver={onSmallFilmCardHover}
+            handleMouseLeave={onSmallFilmCardLeave}
           />
         ))}
       </div>

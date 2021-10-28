@@ -5,8 +5,8 @@ import { Movie } from '../types/types';
 import { movieList } from '../mocks/movie-list';
 
 const initialState = {
+  movies: movieList,
   genre: Genres.AllGenres,
-  movie: movieList,
 };
 
 export function reducer(state: State = initialState, action: Actions): State {
@@ -14,7 +14,7 @@ export function reducer(state: State = initialState, action: Actions): State {
     case ActionType.SelectedGenre:
       return {...state, genre: action.payload as Genres};
     case ActionType.SelectedMovie:
-      return {...state, movie: action.payload as Movie[]};
+      return {...state, movies: action.payload as Movie[]};
     default:
       return {...initialState};
   }
