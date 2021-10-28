@@ -13,4 +13,3 @@ export function getFilterMovie(movies: Movie[], activeGenre: Genres): Movie[] {
   }
   return movies.filter((movie) => movie.genre === activeGenre);
 }
-

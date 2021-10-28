@@ -8,8 +8,8 @@ import Catalog from '../catalog/catalog';
 import Error from '../error/error';
 import Player  from '../player/player';
 import PrivateRoute from '../private-route/private-route';
-import Reviews from '../reviews/reviews';
 import MovieList from '../movie-list/movie-list';
+import Reviews from '../reviews/reviews';
 
 function App(props: {
   promo: Promo,
