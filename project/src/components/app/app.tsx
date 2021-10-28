@@ -1,15 +1,15 @@
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
-import { AppRoute, AuthorizationStatus } from '../../types/const';
+import { AppRoute, AuthorizationStatus } from '../../types/enum';
 import { Movie } from '../../types/types';
 import { Promo } from '../../types/types';
 import Main from '../main/main';
 import SignIn from '../sign-in/sign-in';
 import Catalog from '../catalog/catalog';
-import Reviews from '../reviews/reviews';
+import Error from '../error/error';
 import Player  from '../player/player';
 import PrivateRoute from '../private-route/private-route';
+import Reviews from '../reviews/reviews';
 import MovieList from '../movie-list/movie-list';
-import Error from '../error/error';
 
 function App(props: {
   promo: Promo,

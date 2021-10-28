@@ -6,7 +6,7 @@ function Error(): JSX.Element {
   return (
     <Fragment>
       <div className={styles.wrapper_header}>
-        <h1 className={styles.title}>Error 404!!!
+        <h1 className={styles.title}>Error 404!
           <br/>
           no found
         </h1>

@@ -4,7 +4,12 @@ function ShowMore(props: {
 
   return (
     <div className="catalog__more">
-      <button className="catalog__button" type="button" onClick={props.loadMore}>Show more</button>
+      <button className="catalog__button"
+        type="button"
+        onClick={props.loadMore}
+      >
+        Show more
+      </button>
     </div>
   );
 }

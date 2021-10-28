@@ -4,8 +4,8 @@ import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import {movieList} from './mocks/movie-list';
-import { reducer } from './store/reducer';
 import { promo } from './types/const';
+import { reducer } from './store/reducer';
 import App from './components/app/app';
 
 const store = createStore(

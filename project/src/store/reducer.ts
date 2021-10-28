@@ -1,7 +1,7 @@
 import {State} from '../types/state';
 import { Actions, ActionType } from '../types/action';
-import { Genres } from '../types/const';
 import { Movie } from '../types/types';
+import { Genres } from '../types/enum';
 import { movieList } from '../mocks/movie-list';
 
 const initialState = {

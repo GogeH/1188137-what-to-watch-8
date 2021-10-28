@@ -1,6 +1,6 @@
 import { ActionType } from '../types/action';
-import { Genres } from '../types/const';
 import { Movie } from '../types/types';
+import { Genres } from '../types/enum';
 
 type Action<T> = {
   type: string,

@@ -3,16 +3,15 @@ import { useHistory } from 'react-router-dom';
 import {connect, ConnectedProps} from 'react-redux';
 import {Dispatch} from '@reduxjs/toolkit';
 import { getFilterMovie, getMovieCount } from '../../utils/get-filter-movie';
-import { AppRoute } from '../../types/const';
+import { AppRoute, Genres } from '../../types/enum';
 import { State } from '../../types/state';
 import { Actions } from '../../types/action';
-import { Genres} from '../../types/const';
 import { Promo } from '../../types/types';
 import { selectedGenre } from '../../store/action';
 import GenresList from '../genre-list/genre-list';
 import Logo from '../logo/logo';
-import MovieList from '../movie-list/movie-list';
 import ShowMore from '../show-more/show-more';
+import MovieList from '../movie-list/movie-list';
 
 function mapStateToProps({movies, genre}: State) {
   return {

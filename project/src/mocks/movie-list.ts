@@ -1,5 +1,5 @@
 import { Movie } from '../types/types';
-import { Genres} from '../types/const';
+import { Genres} from '../types/enum';
 
 export const movieList: Movie[] = [
   {
