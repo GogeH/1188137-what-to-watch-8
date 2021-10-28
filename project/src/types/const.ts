@@ -26,7 +26,6 @@ export enum Genres {
   Thrillers = 'Thrillers',
 }
 
-
 export const promo = {
   name: 'The Grand Budapest Hotel',
   genre: 'Drama',
