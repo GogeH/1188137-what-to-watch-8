@@ -13,7 +13,6 @@ const store = createStore(
   composeWithDevTools(),
 );
 
-
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
