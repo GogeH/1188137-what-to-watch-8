@@ -1,7 +1,7 @@
-import { Movie } from '../../types/types';
+import { MovieFromServer } from '../../types/types';
 
 function Player(props: {
-  movie: Movie,
+  movie: MovieFromServer,
 }): JSX.Element {
 
   return (

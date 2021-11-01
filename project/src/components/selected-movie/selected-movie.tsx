@@ -1,15 +1,14 @@
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
-import {  Movie } from '../../types/types';
+import {  MovieFromServer } from '../../types/types';
 import { AppRoute } from '../../types/enum';
-import { movieList} from '../../mocks/movie-list';
 import { reviewsList } from '../../mocks/reviews-list';
 import MovieList from '../movie-list/movie-list';
 import MovieTabs  from '../movie-tabs/movie-tabs';
 import Logo from '../logo/logo';
 
 function SelectedMovie(props: {
-  movies: Movie[],
+  movies: MovieFromServer[],
 }): JSX.Element {
   const history = useHistory();
 
@@ -18,7 +17,7 @@ function SelectedMovie(props: {
       <section className="film-card film-card--full">
         <div className="film-card__hero">
           <div className="film-card__bg">
-            <img src={props.movies[0].backgroundImage} alt="The Grand Budapest Hotel"/>
+            <img src={props.movies[0].backgroundImage} alt={props.movies[0].name}/>
           </div>
 
           <h1 className="visually-hidden">WTW</h1>
@@ -42,7 +41,7 @@ function SelectedMovie(props: {
 
           <div className="film-card__wrap">
             <div className="film-card__desc">
-              <h2 className="film-card__title">{props.movies[0].title}</h2>
+              <h2 className="film-card__title">{props.movies[0].name}</h2>
               <p className="film-card__meta">
                 <span className="film-card__genre">{props.movies[0].genre}</span>
                 <span className="film-card__year">{props.movies[0].released}</span>
@@ -74,12 +73,12 @@ function SelectedMovie(props: {
         <div className="film-card__wrap film-card__translate-top">
           <div className="film-card__info">
             <div className="film-card__poster film-card__poster--big">
-              <img src={props.movies[0].imgSrc} alt="The Grand Budapest Hotel poster" width="218"
+              <img src={props.movies[0].previewImage} alt="The Grand Budapest Hotel poster" width="218"
                 height="327"
               />
             </div>
 
-            <MovieTabs movie={movieList[0]} reviews={reviewsList}/>
+            <MovieTabs movie={props.movies[0]} reviews={reviewsList}/>
 
           </div>
         </div>

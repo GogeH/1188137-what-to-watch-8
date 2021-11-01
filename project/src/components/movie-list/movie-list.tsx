@@ -1,9 +1,9 @@
 import { useState, MouseEvent } from 'react';
-import { Movie } from '../../types/types';
+import { MovieFromServer } from '../../types/types';
 import MovieItem from '../movie-item/movie-item';
 
 function MovieList(props: {
-  movies: Movie[],
+  movies: MovieFromServer[],
   render?: (() => JSX.Element) | false,
 }): JSX.Element {
   const [activeMovie, setActiveMovie] = useState('');
@@ -22,7 +22,7 @@ function MovieList(props: {
         {props.movies.map((movie) => (
           <MovieItem movie={movie}
             key={movie.id}
-            isActive={movie.id === activeMovie}
+            isActive={movie.id === Number(activeMovie)}
             handleMouseOver={onSmallFilmCardHover}
             handleMouseLeave={onSmallFilmCardLeave}
           />

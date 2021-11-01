@@ -1,25 +1,27 @@
 import { MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
-import { Movie } from '../../types/types';
+import { MovieFromServer } from '../../types/types';
 import VideoPreview from '../video-player/video-player';
 
 function MovieItem(props: {
-  movie: Movie,
+  movie: MovieFromServer,
   isActive: boolean,
   handleMouseOver: (evt: MouseEvent) => void,
   handleMouseLeave: (evt: MouseEvent) => void,
 }): JSX.Element {
+  const StringId = String(props.movie.id);
+
   return (
     <article
       className="small-film-card catalog__films-card"
       onMouseOver={props.handleMouseOver}
       onMouseLeave={props.handleMouseLeave}
-      id={props.movie.id}
+      id={StringId}
     >
       <div className="small-film-card__image">
         <VideoPreview
-          poster={props.movie.imgSrc}
-          src={props.movie.link}
+          poster={props.movie.previewImage}
+          src={props.movie.videoLink}
           isPlaying={props.isActive}
         />
       </div>
@@ -29,7 +31,7 @@ function MovieItem(props: {
           to={`/films/${props.movie.id}`}
           href="/"
         >
-          {props.movie.title}
+          {props.movie.name}
         </Link>
       </h3>
     </article>

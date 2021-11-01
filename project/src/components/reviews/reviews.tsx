@@ -1,10 +1,10 @@
 import React from 'react';
 import Logo from '../logo/logo';
 import ReviewForm from '../review-form/review-form';
-import { Movie } from '../../types/types';
+import { MovieFromServer } from '../../types/types';
 
 function Review(props: {
-  movie: Movie,
+  movie: MovieFromServer,
 }): JSX.Element {
   return (
     <section className="film-card film-card--full">
@@ -44,7 +44,7 @@ function Review(props: {
         </header>
 
         <div className="film-card__poster film-card__poster--small">
-          <img src={props.movie.imgSrc} alt="The Grand Budapest Hotel poster" width="218"
+          <img src={props.movie.previewImage} alt="The Grand Budapest Hotel poster" width="218"
             height="327"
           />
         </div>

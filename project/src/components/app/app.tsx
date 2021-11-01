@@ -9,9 +9,19 @@ import PrivateRoute from '../private-route/private-route';
 import MovieList from '../movie-list/movie-list';
 import Reviews from '../reviews/reviews';
 import { promo } from '../../types/const';
-import { movieList } from '../../mocks/movie-list';
+import { State } from '../../types/state';
+import { connect, ConnectedProps } from 'react-redux';
 
-function App(): JSX.Element {
+const mapStateToProps = ({ moviesFromServer, isDataLoaded }: State) => ({
+  moviesFromServer,
+});
+
+const connector = connect(mapStateToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+function App(props: PropsFromRedux): JSX.Element {
+
   return  (
     <BrowserRouter>
       <Switch>
@@ -22,16 +32,17 @@ function App(): JSX.Element {
         <PrivateRoute
           exact
           path="/myList"
-          render={() => <MovieList movies={movieList} />}
+          render={() => <MovieList movies={props.moviesFromServer} />}
           authorizationStatus={AuthorizationStatus.NoAuth}
         />
-        <Route path={AppRoute.Movie} exact render={() => <SelectedMovie movies={movieList} />}/>
-        <Route path={AppRoute.Review} exact render={() => <Reviews movie={movieList[0]} />}/>
-        <Route path={AppRoute.Player} exact render={() => <Player movie={movieList[0]} />}/>
+        <Route path={AppRoute.Movie} exact render={() => <SelectedMovie movies={props.moviesFromServer} />}/>
+        <Route path={AppRoute.Review} exact render={() => <Reviews movie={props.moviesFromServer[0]} />}/>
+        <Route path={AppRoute.Player} exact render={() => <Player movie={props.moviesFromServer[0]} />}/>
         <Route component={Error}/>
       </Switch>
     </BrowserRouter>
   );
 }
 
-export default App;
+export { App };
+export default connector(App);

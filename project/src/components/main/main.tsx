@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { connect, ConnectedProps } from 'react-redux';
 import { Dispatch } from '@reduxjs/toolkit';
@@ -7,27 +6,31 @@ import { AppRoute, Genres } from '../../types/enum';
 import { State } from '../../types/state';
 import { Actions } from '../../types/action';
 import { Promo } from '../../types/types';
-import { selectedGenre } from '../../store/action';
+import { selectGenre, setLoadedMoviesCount } from '../../store/action';
 import GenresList from '../genre-list/genres-list';
 import Logo from '../logo/logo';
 import MovieList from '../movie-list/movie-list';
+import Loading from '../loading/loading';
 
-const INITIAL_MOVIES_COUNT = 8;
 const INCREMENT_MOVIES_STEP = 8;
 
-function mapStateToProps({movies, genre, loadedMoviesCount}: State) {
+function mapStateToProps({moviesFromServer, genre, loadedMoviesCount, isDataLoaded}: State) {
   return {
     activeGenre: genre,
-    movies: getFilterMovie(movies, genre).slice(0, loadedMoviesCount),
-    totalMoviesCount: movies.length,
+    movies: getFilterMovie(moviesFromServer, genre).slice(0, loadedMoviesCount),
     loadedMoviesCount: loadedMoviesCount,
+    isDataLoaded,
+    totalMoviesCount: moviesFromServer.length,
   };
 }
 
 function mapDispatchToProps(dispatch: Dispatch<Actions>) {
   return {
     onGenreChange(genre: Genres) {
-      dispatch(selectedGenre(genre));
+      dispatch(selectGenre(genre));
+    },
+    setLoadedMoviesCount(count: number) {
+      dispatch(setLoadedMoviesCount(count));
     },
   };
 }
@@ -42,10 +45,9 @@ type ConnectedComponentProps = PropsFormRedux & {
 function Main(props: ConnectedComponentProps): JSX.Element {
   const history = useHistory();
   const genres = Object.values(Genres) as Genres[];
-  const [visibleMoviesCount, setVisibleMoviesCount] = useState(INITIAL_MOVIES_COUNT);
 
   const handleShowMoreClick = () => {
-    setVisibleMoviesCount(visibleMoviesCount + INCREMENT_MOVIES_STEP);
+    props.setLoadedMoviesCount(props.loadedMoviesCount + INCREMENT_MOVIES_STEP);
   };
 
   return (
@@ -161,9 +163,13 @@ function Main(props: ConnectedComponentProps): JSX.Element {
 
           <GenresList genres={genres} activeGenre={props.activeGenre} onGenreChange={props.onGenreChange} />
 
-          <MovieList movies={props.movies} />
+          {props.isDataLoaded
+            ?
+            <MovieList movies={props.movies} />
+            :
+            <Loading />}
 
-          {props.totalMoviesCount > visibleMoviesCount &&
+          {props.totalMoviesCount > props.loadedMoviesCount &&
           <div className="catalog__more">
             <button className="catalog__button"
               type="button"
