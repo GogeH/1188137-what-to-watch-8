@@ -4,4 +4,5 @@ import { Genres } from './enum';
 export type State = {
   movies: Movie[],
   genre: Genres,
+  loadedMoviesCount: number,
 };

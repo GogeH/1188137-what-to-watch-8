@@ -8,7 +8,7 @@ import MovieList from '../movie-list/movie-list';
 import MovieTabs  from '../movie-tabs/movie-tabs';
 import Logo from '../logo/logo';
 
-function Catalog(props: {
+function SelectedMovie(props: {
   movies: Movie[],
 }): JSX.Element {
   const history = useHistory();
@@ -114,4 +114,4 @@ function Catalog(props: {
   );
 }
 
-export default Catalog;
+export default SelectedMovie;

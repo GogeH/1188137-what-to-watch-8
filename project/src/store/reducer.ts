@@ -4,9 +4,12 @@ import { Movie } from '../types/types';
 import { Genres } from '../types/enum';
 import { movieList } from '../mocks/movie-list';
 
+const FIRST_LOADED_MOVIES = 8;
+
 const initialState = {
   movies: movieList,
   genre: Genres.AllGenres,
+  loadedMoviesCount: FIRST_LOADED_MOVIES,
 };
 
 export function reducer(state: State = initialState, action: Actions): State {

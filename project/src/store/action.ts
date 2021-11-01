@@ -1,5 +1,5 @@
 import { ActionType } from '../types/action';
-import { Movie } from '../types/types';
+import { Movie, MovieFromServer } from '../types/types';
 import { Genres } from '../types/enum';
 
 type Action<T> = {
@@ -21,7 +21,15 @@ function selectedMovie(movie: Movie[]): Action<Movie[]> {
   }) as const;
 }
 
+function loadMovies(movies: MovieFromServer[]): Action<MovieFromServer[]> {
+  return ({
+    type: ActionType.LoadMovies,
+    payload: movies,
+  });
+}
+
 export {
   selectedGenre,
-  selectedMovie
+  selectedMovie,
+  loadMovies
 };
