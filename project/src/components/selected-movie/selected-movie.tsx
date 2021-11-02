@@ -6,8 +6,8 @@ import { AppRoute } from '../../types/enum';
 import { reviewsList } from '../../mocks/reviews-list';
 import MovieList from '../movie-list/movie-list';
 import MovieTabs  from '../movie-tabs/movie-tabs';
-import Logo from '../logo/logo';
 import Error from '../error/error';
+import Logo from '../logo/logo';
 
 type MovieParam = {
   id: string;
