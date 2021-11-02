@@ -8,10 +8,7 @@ import MovieList from '../movie-list/movie-list';
 import MovieTabs  from '../movie-tabs/movie-tabs';
 import Error from '../error/error';
 import Logo from '../logo/logo';
-
-type MovieParam = {
-  id: string;
-}
+import { MovieParam } from '../../types/types';
 
 function SelectedMovie(props: {
   movies: MovieFromServer[],

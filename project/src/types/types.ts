@@ -38,3 +38,7 @@ export type AuthData = {
   login: string;
   password: string;
 };
+
+export type MovieParam = {
+  id: string;
+}

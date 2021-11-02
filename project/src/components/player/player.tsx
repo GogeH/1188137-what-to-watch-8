@@ -1,12 +1,22 @@
+import { MovieParam } from '../../types/types';
 import { MovieFromServer } from '../../types/types';
+import { useParams } from 'react-router';
+import Error from '../error/error';
 
 function Player(props: {
-  movie: MovieFromServer,
+  movies: MovieFromServer[],
 }): JSX.Element {
+  const { id } = useParams<MovieParam>();
+
+  const selectedMovie = props.movies.find((movie: MovieFromServer) => movie.id.toString() === id);
+
+  if (!selectedMovie) {
+    return <Error />;
+  }
 
   return (
     <div className="player">
-      <video src="#" className="player__video" poster={props.movie.backgroundImage}></video>
+      <video src="#" className="player__video" poster={selectedMovie.backgroundImage}></video>
 
       <button type="button" className="player__exit">Exit</button>
 

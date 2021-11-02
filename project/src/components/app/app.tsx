@@ -49,8 +49,8 @@ function App(props: PropsFromRedux): JSX.Element {
           render={() => <MovieList movies={props.moviesFromServer} />}
         />
         <Route path={AppRoute.Movie} exact render={() => <SelectedMovie movies={props.moviesFromServer} />}/>
-        <Route path={AppRoute.Review} exact render={() => <Reviews movie={props.moviesFromServer[0]} />}/>
-        <Route path={AppRoute.Player} exact render={() => <Player movie={props.moviesFromServer[0]} />}/>
+        <Route path={AppRoute.Review} exact render={() => <Reviews movies={props.moviesFromServer} />}/>
+        <Route path={AppRoute.Player} exact render={() => <Player movies={props.moviesFromServer} />}/>
         <Route component={Error}/>
       </Switch>
     </BrowserRouter>

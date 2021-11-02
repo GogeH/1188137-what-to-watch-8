@@ -2,15 +2,26 @@ import React from 'react';
 import Logo from '../logo/logo';
 import ReviewForm from '../review-form/review-form';
 import { MovieFromServer } from '../../types/types';
+import { MovieParam } from '../../types/types';
+import { useParams } from 'react-router';
+import Error from '../error/error';
+
 
 function Review(props: {
-  movie: MovieFromServer,
+  movies: MovieFromServer[],
 }): JSX.Element {
+  const { id } = useParams<MovieParam>();
+
+  const selectedMovie = props.movies.find((movie: MovieFromServer) => movie.id.toString() === id);
+
+  if (!selectedMovie) {
+    return <Error />;
+  }
   return (
     <section className="film-card film-card--full">
       <div className="film-card__header">
         <div className="film-card__bg">
-          <img src={props.movie.backgroundImage} alt={props.movie.name} />
+          <img src={selectedMovie.backgroundImage} alt={selectedMovie.name} />
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
@@ -44,7 +55,7 @@ function Review(props: {
         </header>
 
         <div className="film-card__poster film-card__poster--small">
-          <img src={props.movie.previewImage} alt="The Grand Budapest Hotel poster" width="218"
+          <img src={selectedMovie.previewImage} alt="The Grand Budapest Hotel poster" width="218"
             height="327"
           />
         </div>
