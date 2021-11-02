@@ -16,10 +16,11 @@ import Loading from '../loading/loading';
 const isCheckedAuth = (authorizationStatus: AuthorizationStatus): boolean =>
   authorizationStatus === AuthorizationStatus.Unknown;
 
-const mapStateToProps = ({ moviesFromServer, authorizationStatus, isAuthorization }: State) => ({
+const mapStateToProps = ({ moviesFromServer, authorizationStatus, isAuthorization, isMoviesLoaded }: State) => ({
   moviesFromServer,
   authorizationStatus,
   isAuthorization,
+  isMoviesLoaded,
 });
 
 const connector = connect(mapStateToProps);
@@ -28,6 +29,10 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 function App(props: PropsFromRedux): JSX.Element {
   if (isCheckedAuth(props.authorizationStatus) || !props.isAuthorization) {
+    return <Loading />;
+  }
+
+  if (!props.isMoviesLoaded) {
     return <Loading />;
   }
 
