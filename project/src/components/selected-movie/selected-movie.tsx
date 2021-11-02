@@ -17,9 +17,9 @@ function SelectedMovie(props: {
   movies: MovieFromServer[],
 }): JSX.Element {
   const history = useHistory();
-  const id = useParams<MovieParam>();
+  const { id } = useParams<MovieParam>();
 
-  const selectedMovie = props.movies.find((movie: MovieFromServer) => movie.id.toString() === Object.values(id).join(','));
+  const selectedMovie = props.movies.find((movie: MovieFromServer) => movie.id.toString() === id);
 
   if (!selectedMovie) {
     return <Error />;
