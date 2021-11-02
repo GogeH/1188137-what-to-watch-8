@@ -11,9 +11,15 @@ import Reviews from '../reviews/reviews';
 import { promo } from '../../types/const';
 import { State } from '../../types/state';
 import { connect, ConnectedProps } from 'react-redux';
+import Loading from '../loading/loading';
 
-const mapStateToProps = ({ moviesFromServer, isDataLoaded }: State) => ({
+const isCheckedAuth = (authorizationStatus: AuthorizationStatus): boolean =>
+  authorizationStatus === AuthorizationStatus.Unknown;
+
+const mapStateToProps = ({ moviesFromServer, authorizationStatus, isAuthorization }: State) => ({
   moviesFromServer,
+  authorizationStatus,
+  isAuthorization,
 });
 
 const connector = connect(mapStateToProps);
@@ -21,6 +27,9 @@ const connector = connect(mapStateToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 function App(props: PropsFromRedux): JSX.Element {
+  if (isCheckedAuth(props.authorizationStatus) || !props.isAuthorization) {
+    return <Loading />;
+  }
 
   return  (
     <BrowserRouter>
@@ -28,12 +37,11 @@ function App(props: PropsFromRedux): JSX.Element {
         <Route path={AppRoute.Main} exact>
           <Main promo={promo}/>
         </Route>
-        <Route path="/login" exact component={SignIn}/>
+        <Route path={AppRoute.SignIn} exact component={SignIn}/>
         <PrivateRoute
           exact
-          path="/myList"
+          path={AppRoute.MyList}
           render={() => <MovieList movies={props.moviesFromServer} />}
-          authorizationStatus={AuthorizationStatus.NoAuth}
         />
         <Route path={AppRoute.Movie} exact render={() => <SelectedMovie movies={props.moviesFromServer} />}/>
         <Route path={AppRoute.Review} exact render={() => <Reviews movie={props.moviesFromServer[0]} />}/>

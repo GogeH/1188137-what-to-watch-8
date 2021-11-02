@@ -11,16 +11,16 @@ import GenresList from '../genre-list/genres-list';
 import Logo from '../logo/logo';
 import MovieList from '../movie-list/movie-list';
 import Loading from '../loading/loading';
+import { INCREMENT_MOVIES_STEP } from '../../types/const';
 
-const INCREMENT_MOVIES_STEP = 8;
-
-function mapStateToProps({moviesFromServer, genre, loadedMoviesCount, isDataLoaded}: State) {
+function mapStateToProps({moviesFromServer, genre, loadedMoviesCount, isMoviesLoaded}: State) {
+  const moviesByGenre = getFilterMovie(moviesFromServer, genre);
   return {
     activeGenre: genre,
-    movies: getFilterMovie(moviesFromServer, genre).slice(0, loadedMoviesCount),
+    movies: moviesByGenre.slice(0, loadedMoviesCount),
     loadedMoviesCount: loadedMoviesCount,
-    isDataLoaded,
-    totalMoviesCount: moviesFromServer.length,
+    isMoviesLoaded,
+    totalMoviesCount: moviesByGenre.length,
   };
 }
 
@@ -144,7 +144,7 @@ function Main(props: ConnectedComponentProps): JSX.Element {
                   <span>Play</span>
                 </button>
                 <button className="btn btn--list film-card__button" type="button"
-                  onClick={() => history.push(AppRoute.Card)}
+                  onClick={() => history.push(AppRoute.MyList)}
                 >
                   <svg viewBox="0 0 19 20" width="19" height="20">
                     <use xlinkHref="#add"></use>
@@ -163,7 +163,7 @@ function Main(props: ConnectedComponentProps): JSX.Element {
 
           <GenresList genres={genres} activeGenre={props.activeGenre} onGenreChange={props.onGenreChange} />
 
-          {props.isDataLoaded
+          {props.isMoviesLoaded
             ?
             <MovieList movies={props.movies} />
             :

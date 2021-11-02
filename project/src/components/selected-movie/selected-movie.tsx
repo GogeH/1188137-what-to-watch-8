@@ -57,7 +57,7 @@ function SelectedMovie(props: {
                   <span>Play</span>
                 </button>
                 <button className="btn btn--list film-card__button" type="button"
-                  onClick={() => history.push(AppRoute.Card)}
+                  onClick={() => history.push(AppRoute.MyList)}
                 >
                   <svg viewBox="0 0 19 20" width="19" height="20">
                     <use xlinkHref="#add"></use>

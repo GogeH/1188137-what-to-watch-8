@@ -2,17 +2,16 @@ import { State } from '../types/state';
 import { Actions, ActionType } from '../types/action';
 import { MovieFromServer} from '../types/types';
 import { Genres } from '../types/enum';
-
+import { FIRST_LOADED_MOVIES } from '../types/const';
 import { AuthorizationStatus } from '../types/enum';
-
-const FIRST_LOADED_MOVIES = 8;
 
 const initialState = {
   genre: Genres.AllGenres,
   loadedMoviesCount: FIRST_LOADED_MOVIES,
   authorizationStatus: AuthorizationStatus.Unknown,
   moviesFromServer: [],
-  isDataLoaded: false,
+  isMoviesLoaded: false,
+  isAuthorization: false,
 };
 
 export function reducer(state: State = initialState, action: Actions): State {
@@ -20,9 +19,9 @@ export function reducer(state: State = initialState, action: Actions): State {
     case ActionType.SelectGenre:
       return {...state, genre: action.payload as Genres};
     case ActionType.LoadMovies:
-      return {...state, moviesFromServer: action.payload as MovieFromServer[]};
+      return {...state, moviesFromServer: action.payload as MovieFromServer[], isMoviesLoaded: true};
     case ActionType.RequireAuthorization:
-      return {...state, authorizationStatus: action.payload as AuthorizationStatus, isDataLoaded: true};
+      return {...state, authorizationStatus: action.payload as AuthorizationStatus, isAuthorization: true};
     case ActionType.RequireLogout:
       return {...state, authorizationStatus: AuthorizationStatus.NoAuth};
     case ActionType.SetLoadedMoviesCount:

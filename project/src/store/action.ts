@@ -4,7 +4,7 @@ import { Genres } from '../types/enum';
 import { AuthorizationStatus } from '../types/enum';
 
 type Action<T> = {
-  type: string,
+  type: ActionType,
   payload: T,
 }
 
@@ -34,7 +34,7 @@ function loadMovies(movies: MovieFromServer[]): Action<MovieFromServer[]> {
   }) as const;
 }
 
-function requireAuthorization(authStatus: AuthorizationStatus) {
+function requireAuthorization(authStatus: AuthorizationStatus): Action<AuthorizationStatus> {
   return ({
     type: ActionType.RequireAuthorization,
     payload: authStatus,

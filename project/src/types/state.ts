@@ -7,5 +7,6 @@ export type State = {
   loadedMoviesCount: number,
   authorizationStatus: AuthorizationStatus,
   moviesFromServer: MovieFromServer[],
-  isDataLoaded: boolean,
+  isMoviesLoaded: boolean,
+  isAuthorization: boolean,
 };
