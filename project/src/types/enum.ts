@@ -7,6 +7,13 @@ export enum AppRoute {
   MyList = '/myList',
 }
 
+
+export enum APIRoute {
+  Movies = '/films',
+  Login = '/login',
+  Logout = '/logout',
+}
+
 export enum AuthorizationStatus {
   Auth = 'AUTH',
   NoAuth = 'NO_AUTH',
@@ -26,8 +33,3 @@ export enum Genres {
   Thriller = 'Thriller',
 }
 
-export enum APIRoute {
-  Movies = '/films',
-  Login = '/login',
-  Logout = '/logout',
-}

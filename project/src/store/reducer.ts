@@ -11,8 +11,8 @@ const initialState = {
   authorizationStatus: AuthorizationStatus.Unknown,
   moviesFromServer: [],
   isMoviesLoaded: false,
-  isAuthorization: false,
 };
+
 
 export function reducer(state: State = initialState, action: Actions): State {
   switch (action.type) {
@@ -21,7 +21,7 @@ export function reducer(state: State = initialState, action: Actions): State {
     case ActionType.LoadMovies:
       return {...state, moviesFromServer: action.payload as MovieFromServer[], isMoviesLoaded: true};
     case ActionType.RequireAuthorization:
-      return {...state, authorizationStatus: action.payload as AuthorizationStatus, isAuthorization: true};
+      return {...state, authorizationStatus: action.payload as AuthorizationStatus};
     case ActionType.RequireLogout:
       return {...state, authorizationStatus: AuthorizationStatus.NoAuth};
     case ActionType.SetLoadedMoviesCount:

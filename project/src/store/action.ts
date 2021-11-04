@@ -2,6 +2,7 @@ import { ActionType } from '../types/action';
 import { MovieFromServer } from '../types/types';
 import { Genres } from '../types/enum';
 import { AuthorizationStatus } from '../types/enum';
+import { AppRoute } from '../types/enum';
 
 type Action<T> = {
   type: ActionType,
@@ -10,7 +11,7 @@ type Action<T> = {
 
 export type SetLoadedMoviesCountAction = {
   type: ActionType,
-  payload: number,
+    payload: number,
 }
 
 function setLoadedMoviesCount(count: number): SetLoadedMoviesCountAction {
@@ -47,10 +48,16 @@ function requireLogout() {
   }) as const;
 }
 
+const redirectToRoute = (url: AppRoute) => ({
+  type: ActionType.RedirectToRoute,
+  payload: url,
+} as const);
+
 export {
   setLoadedMoviesCount,
   selectGenre,
   loadMovies,
   requireAuthorization,
-  requireLogout
+  requireLogout,
+  redirectToRoute
 };

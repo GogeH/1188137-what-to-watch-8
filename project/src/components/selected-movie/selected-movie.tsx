@@ -1,19 +1,16 @@
 import { Link } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
 import { useParams } from 'react-router';
 import {  MovieFromServer } from '../../types/types';
-import { AppRoute } from '../../types/enum';
+import { MovieParam } from '../../types/types';
 import { reviewsList } from '../../mocks/reviews-list';
 import MovieList from '../movie-list/movie-list';
 import MovieTabs  from '../movie-tabs/movie-tabs';
 import Error from '../error/error';
 import Logo from '../logo/logo';
-import { MovieParam } from '../../types/types';
 
 function SelectedMovie(props: {
   movies: MovieFromServer[],
 }): JSX.Element {
-  const history = useHistory();
   const { id } = useParams<MovieParam>();
 
   const selectedMovie = props.movies.find((movie: MovieFromServer) => movie.id.toString() === id);
@@ -58,23 +55,19 @@ function SelectedMovie(props: {
               </p>
 
               <div className="film-card__buttons">
-                <button className="btn btn--play film-card__button" type="button"
-                  onClick={() => history.push(AppRoute.Player)}
-                >
+                <Link className="btn btn--play film-card__button" to={`/player/${selectedMovie.id}`}>
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"></use>
                   </svg>
                   <span>Play</span>
-                </button>
-                <button className="btn btn--list film-card__button" type="button"
-                  onClick={() => history.push(AppRoute.MyList)}
-                >
+                </Link>
+                <Link className="btn btn--list film-card__button" to={'/myList'}>
                   <svg viewBox="0 0 19 20" width="19" height="20">
                     <use xlinkHref="#add"></use>
                   </svg>
                   <span>My list</span>
-                </button>
-                <Link to={AppRoute.Review} className="btn film-card__button">Add review</Link>
+                </Link>
+                <Link to={`/films/${selectedMovie.id}/review`} className="btn film-card__button">Add review</Link>
               </div>
             </div>
           </div>

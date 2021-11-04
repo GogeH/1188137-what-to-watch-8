@@ -8,5 +8,4 @@ export type State = {
   authorizationStatus: AuthorizationStatus,
   moviesFromServer: MovieFromServer[],
   isMoviesLoaded: boolean,
-  isAuthorization: boolean,
 };

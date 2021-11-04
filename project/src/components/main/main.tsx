@@ -1,19 +1,20 @@
-import { useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { connect, ConnectedProps } from 'react-redux';
 import { Dispatch } from '@reduxjs/toolkit';
 import { getFilterMovie } from '../../utils/get-filter-movie';
-import { AppRoute, Genres } from '../../types/enum';
+import { AuthorizationStatus, Genres} from '../../types/enum';
 import { State } from '../../types/state';
 import { Actions } from '../../types/action';
-import { Promo } from '../../types/types';
 import { selectGenre, setLoadedMoviesCount } from '../../store/action';
 import GenresList from '../genre-list/genres-list';
 import Logo from '../logo/logo';
 import MovieList from '../movie-list/movie-list';
 import Loading from '../loading/loading';
 import { INCREMENT_MOVIES_STEP } from '../../types/const';
+import UserBlockLogged from '../user-block/user-block-logged';
+import UserBlockUnLogged from '../user-block/user-block-un-logged';
 
-function mapStateToProps({moviesFromServer, genre, loadedMoviesCount, isMoviesLoaded}: State) {
+function mapStateToProps({moviesFromServer, genre, loadedMoviesCount, isMoviesLoaded, authorizationStatus}: State) {
   const moviesByGenre = getFilterMovie(moviesFromServer, genre);
   return {
     activeGenre: genre,
@@ -21,6 +22,7 @@ function mapStateToProps({moviesFromServer, genre, loadedMoviesCount, isMoviesLo
     loadedMoviesCount: loadedMoviesCount,
     isMoviesLoaded,
     totalMoviesCount: moviesByGenre.length,
+    authorizationStatus,
   };
 }
 
@@ -38,12 +40,9 @@ function mapDispatchToProps(dispatch: Dispatch<Actions>) {
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFormRedux = ConnectedProps<typeof connector>;
-type ConnectedComponentProps = PropsFormRedux & {
-  promo: Promo,
-};
+type ConnectedComponentProps = PropsFormRedux;
 
 function Main(props: ConnectedComponentProps): JSX.Element {
-  const history = useHistory();
   const genres = Object.values(Genres) as Genres[];
 
   const handleShowMoreClick = () => {
@@ -100,7 +99,7 @@ function Main(props: ConnectedComponentProps): JSX.Element {
 
       <section className="film-card">
         <div className="film-card__bg">
-          <img src="img/bg-the-grand-budapest-hotel.jpg" alt="The Grand Budapest Hotel"/>
+          <img src={props.movies[0].backgroundImage} alt={props.movies[0].name}/>
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
@@ -109,48 +108,41 @@ function Main(props: ConnectedComponentProps): JSX.Element {
           <div className="logo">
             <Logo />
           </div>
-          <ul className="user-block">
-            <li className="user-block__item">
-              <div className="user-block__avatar">
-                <img src="img/avatar.jpg" alt="User avatar" width="63" height="63"/>
-              </div>
-            </li>
-            <li className="user-block__item">
-              <a href="/" className="user-block__link">Sign out</a>
-            </li>
-          </ul>
+
+          { props.authorizationStatus === AuthorizationStatus.Auth
+            ?
+            <UserBlockLogged />
+            :
+            <UserBlockUnLogged />}
+
         </header>
 
         <div className="film-card__wrap">
           <div className="film-card__info">
             <div className="film-card__poster">
-              <img src="img/the-grand-budapest-hotel-poster.jpg" alt="The Grand Budapest Hotel poster" width="218" height="327"/>
+              <img src={props.movies[0].posterImage} alt={props.movies[0].name} width="218" height="327"/>
             </div>
 
             <div className="film-card__desc">
-              <h2 className="film-card__title">{props.promo.name}</h2>
+              <h2 className="film-card__title">{props.movies[0].name}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">{props.promo.genre}</span>
-                <span className="film-card__year">{props.promo.release}</span>
+                <span className="film-card__genre">{props.movies[0].genre}</span>
+                <span className="film-card__year">{props.movies[0].released}</span>
               </p>
 
               <div className="film-card__buttons">
-                <button className="btn btn--play film-card__button" type="button"
-                  onClick={() => history.push(AppRoute.Player)}
-                >
+                <Link className="btn btn--play film-card__button" to={`/player/${props.movies[0].id}`}>
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"></use>
                   </svg>
                   <span>Play</span>
-                </button>
-                <button className="btn btn--list film-card__button" type="button"
-                  onClick={() => history.push(AppRoute.MyList)}
-                >
+                </Link>
+                <Link className="btn btn--list film-card__button" to={'/myList'}>
                   <svg viewBox="0 0 19 20" width="19" height="20">
                     <use xlinkHref="#add"></use>
                   </svg>
                   <span>My list</span>
-                </button>
+                </Link>
               </div>
             </div>
           </div>
