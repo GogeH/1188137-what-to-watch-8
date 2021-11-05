@@ -16,6 +16,7 @@ function ReviewForm(): JSX.Element {
     <form action="#" className="add-review__form" onSubmit={(evt) => evt.preventDefault()} >
       <div className="rating">
         <div className="rating__stars">
+
           <input className="rating__input" id="star-10" type="radio" name="rating" value="10" checked={rating === '10'} onChange={changeRating} />
           <label className="rating__label" htmlFor="star-10">Rating 10</label>
 
@@ -58,7 +59,7 @@ function ReviewForm(): JSX.Element {
         >
         </textarea>
         <div className="add-review__submit">
-          <button className="add-review__btn" type="submit">Post</button>
+          <button className="add-review__btn" type="submit" disabled={review.length > 100}>Post</button>
         </div>
 
       </div>

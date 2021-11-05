@@ -1,3 +1,5 @@
+import { State } from '../../types/state';
+import { connect, ConnectedProps } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router';
 import {  MovieFromServer } from '../../types/types';
@@ -7,13 +9,26 @@ import MovieList from '../movie-list/movie-list';
 import MovieTabs  from '../movie-tabs/movie-tabs';
 import Error from '../error/error';
 import Logo from '../logo/logo';
+import { AuthorizationStatus } from '../../types/enum';
+import UserBlockLogged from '../user-block/user-block-logged';
+import UserBlockUnLogged from '../user-block/user-block-un-logged';
 
-function SelectedMovie(props: {
-  movies: MovieFromServer[],
-}): JSX.Element {
+function mapStateToProps({moviesFromServer, authorizationStatus}: State) {
+  return {
+    moviesFromServer,
+    authorizationStatus,
+  };
+}
+
+const connector = connect(mapStateToProps);
+
+type PropsFormRedux = ConnectedProps<typeof connector>;
+type ConnectedComponentProps = PropsFormRedux;
+
+function SelectedMovie(props: ConnectedComponentProps): JSX.Element {
   const { id } = useParams<MovieParam>();
 
-  const selectedMovie = props.movies.find((movie: MovieFromServer) => movie.id.toString() === id);
+  const selectedMovie = props.moviesFromServer.find((movie: MovieFromServer) => movie.id.toString() === id);
 
   if (!selectedMovie) {
     return <Error />;
@@ -34,16 +49,12 @@ function SelectedMovie(props: {
               <Logo/>
             </div>
 
-            <ul className="user-block">
-              <li className="user-block__item">
-                <div className="user-block__avatar">
-                  <img src="img/avatar.jpg" alt="User avatar" width="63" height="63"/>
-                </div>
-              </li>
-              <li className="user-block__item">
-                <a href="#user-block" className="user-block__link">Sign out</a>
-              </li>
-            </ul>
+            {props.authorizationStatus === AuthorizationStatus.Auth
+              ?
+              <UserBlockLogged />
+              :
+              <UserBlockUnLogged />}
+
           </header>
 
           <div className="film-card__wrap">
@@ -67,16 +78,22 @@ function SelectedMovie(props: {
                   </svg>
                   <span>My list</span>
                 </Link>
-                <Link to={`/films/${selectedMovie.id}/review`} className="btn film-card__button">Add review</Link>
+
+                {props.authorizationStatus === AuthorizationStatus.Auth
+                  ?
+                  <Link to={`/films/${selectedMovie.id}/review`} className="btn film-card__button">Add review</Link>
+                  :
+                  ''}
+
               </div>
             </div>
           </div>
-        </div>
+        </div>s
 
         <div className="film-card__wrap film-card__translate-top">
           <div className="film-card__info">
             <div className="film-card__poster film-card__poster--big">
-              <img src={selectedMovie.previewImage} alt="The Grand Budapest Hotel poster" width="218"
+              <img src={selectedMovie.previewImage} alt={selectedMovie.name} width="218"
                 height="327"
               />
             </div>
@@ -93,7 +110,7 @@ function SelectedMovie(props: {
 
           <div className="catalog__films-list">
             <MovieList
-              movies = {props.movies.filter((item) => item.genre === selectedMovie.genre).slice(0, 4)}
+              movies = {props.moviesFromServer.filter((item) => item.genre === selectedMovie.genre && item.name !== selectedMovie.name).slice(0, 4)}
             />
           </div>
         </section>
@@ -116,4 +133,7 @@ function SelectedMovie(props: {
   );
 }
 
-export default SelectedMovie;
+export { SelectedMovie };
+export default connector(SelectedMovie);
+
+

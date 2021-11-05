@@ -1,14 +1,25 @@
+import { State } from '../../types/state';
+import { connect, ConnectedProps } from 'react-redux';
 import { MovieParam } from '../../types/types';
 import { MovieFromServer } from '../../types/types';
 import { useParams } from 'react-router';
 import Error from '../error/error';
 
-function Player(props: {
-  movies: MovieFromServer[],
-}): JSX.Element {
+function mapStateToProps({moviesFromServer}: State) {
+  return {
+    moviesFromServer,
+  };
+}
+
+const connector = connect(mapStateToProps);
+
+type PropsFormRedux = ConnectedProps<typeof connector>;
+type ConnectedComponentProps = PropsFormRedux;
+
+function Player(props: ConnectedComponentProps): JSX.Element {
   const { id } = useParams<MovieParam>();
 
-  const selectedMovie = props.movies.find((movie: MovieFromServer) => movie.id.toString() === id);
+  const selectedMovie = props.moviesFromServer.find((movie: MovieFromServer) => movie.id.toString() === id);
 
   if (!selectedMovie) {
     return <Error />;
@@ -50,5 +61,6 @@ function Player(props: {
   );
 }
 
+export { Player };
+export default connector(Player);
 
-export default Player;

@@ -17,6 +17,7 @@ import UserBlockUnLogged from '../user-block/user-block-un-logged';
 function mapStateToProps({moviesFromServer, genre, loadedMoviesCount, isMoviesLoaded, authorizationStatus}: State) {
   const moviesByGenre = getFilterMovie(moviesFromServer, genre);
   return {
+    moviesFromServer,
     activeGenre: genre,
     movies: moviesByGenre.slice(0, loadedMoviesCount),
     loadedMoviesCount: loadedMoviesCount,
@@ -44,7 +45,6 @@ type ConnectedComponentProps = PropsFormRedux;
 
 function Main(props: ConnectedComponentProps): JSX.Element {
   const genres = Object.values(Genres) as Genres[];
-
   const handleShowMoreClick = () => {
     props.setLoadedMoviesCount(props.loadedMoviesCount + INCREMENT_MOVIES_STEP);
   };
@@ -99,7 +99,7 @@ function Main(props: ConnectedComponentProps): JSX.Element {
 
       <section className="film-card">
         <div className="film-card__bg">
-          <img src={props.movies[0].backgroundImage} alt={props.movies[0].name}/>
+          <img src={props.moviesFromServer[0].backgroundImage} alt={props.moviesFromServer[0].name}/>
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
@@ -109,7 +109,7 @@ function Main(props: ConnectedComponentProps): JSX.Element {
             <Logo />
           </div>
 
-          { props.authorizationStatus === AuthorizationStatus.Auth
+          {props.authorizationStatus === AuthorizationStatus.Auth
             ?
             <UserBlockLogged />
             :
@@ -120,18 +120,18 @@ function Main(props: ConnectedComponentProps): JSX.Element {
         <div className="film-card__wrap">
           <div className="film-card__info">
             <div className="film-card__poster">
-              <img src={props.movies[0].posterImage} alt={props.movies[0].name} width="218" height="327"/>
+              <img src={props.moviesFromServer[0].posterImage} alt={props.moviesFromServer[0].name} width="218" height="327"/>
             </div>
 
             <div className="film-card__desc">
-              <h2 className="film-card__title">{props.movies[0].name}</h2>
+              <h2 className="film-card__title">{props.moviesFromServer[0].name}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">{props.movies[0].genre}</span>
-                <span className="film-card__year">{props.movies[0].released}</span>
+                <span className="film-card__genre">{props.moviesFromServer[0].genre}</span>
+                <span className="film-card__year">{props.moviesFromServer[0].released}</span>
               </p>
 
               <div className="film-card__buttons">
-                <Link className="btn btn--play film-card__button" to={`/player/${props.movies[0].id}`}>
+                <Link className="btn btn--play film-card__button" to={`/player/${props.moviesFromServer[0].id}`}>
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"></use>
                   </svg>

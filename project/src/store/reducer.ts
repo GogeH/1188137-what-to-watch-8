@@ -26,6 +26,9 @@ export function reducer(state: State = initialState, action: Actions): State {
       return {...state, authorizationStatus: AuthorizationStatus.NoAuth};
     case ActionType.SetLoadedMoviesCount:
       return {...state, loadedMoviesCount: action.payload as number};
+      // TO DO
+    case ActionType.RedirectToRoute:
+      return {...state};
     default:
       return {...initialState};
   }

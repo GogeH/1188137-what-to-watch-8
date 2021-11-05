@@ -28,12 +28,6 @@ export type Review = {
   rating: string,
 }
 
-export type Promo = {
-  name: string,
-  genre: string,
-  release: number,
-}
-
 export type AuthData = {
   login: string;
   password: string;

@@ -3,8 +3,9 @@ import { MovieFromServer } from '../types/types';
 import { Genres } from '../types/enum';
 import { AuthorizationStatus } from '../types/enum';
 import { AppRoute } from '../types/enum';
+import { Review } from '../types/const';
 
-type Action<T> = {
+export type Action<T> = {
   type: ActionType,
   payload: T,
 }
@@ -53,11 +54,19 @@ const redirectToRoute = (url: AppRoute) => ({
   payload: url,
 } as const);
 
+function setReviews(reviews: Review[]) {
+  return ({
+    type: ActionType.SetReviews,
+    payload: reviews,
+  } as const);
+}
+
 export {
   setLoadedMoviesCount,
   selectGenre,
   loadMovies,
   requireAuthorization,
   requireLogout,
-  redirectToRoute
+  redirectToRoute,
+  setReviews
 };
