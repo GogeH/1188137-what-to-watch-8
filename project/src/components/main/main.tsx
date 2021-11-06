@@ -1,29 +1,39 @@
-import { useState, useEffect, useCallback } from 'react';
-import { useHistory } from 'react-router-dom';
-import {connect, ConnectedProps} from 'react-redux';
-import {Dispatch} from '@reduxjs/toolkit';
-import { getFilterMovie, getMovieCount } from '../../utils/get-filter-movie';
-import { AppRoute, Genres } from '../../types/enum';
+import { Link } from 'react-router-dom';
+import { connect, ConnectedProps } from 'react-redux';
+import { Dispatch } from '@reduxjs/toolkit';
+import { getFilterMovie } from '../../utils/get-filter-movie';
+import { AuthorizationStatus, Genres} from '../../types/enum';
 import { State } from '../../types/state';
 import { Actions } from '../../types/action';
-import { Promo } from '../../types/types';
-import { selectedGenre } from '../../store/action';
-import GenresList from '../genre-list/genre-list';
+import { selectGenre, setLoadedMoviesCount } from '../../store/action';
+import GenresList from '../genre-list/genres-list';
 import Logo from '../logo/logo';
-import ShowMore from '../show-more/show-more';
 import MovieList from '../movie-list/movie-list';
+import Loading from '../loading/loading';
+import { INCREMENT_MOVIES_STEP } from '../../types/const';
+import UserBlockLogged from '../user-block/user-block-logged';
+import UserBlockUnLogged from '../user-block/user-block-un-logged';
 
-function mapStateToProps({movies, genre}: State) {
+function mapStateToProps({moviesFromServer, genre, loadedMoviesCount, isMoviesLoaded, authorizationStatus}: State) {
+  const moviesByGenre = getFilterMovie(moviesFromServer, genre);
   return {
+    moviesFromServer,
     activeGenre: genre,
-    movies: movies,
+    movies: moviesByGenre.slice(0, loadedMoviesCount),
+    loadedMoviesCount: loadedMoviesCount,
+    isMoviesLoaded,
+    totalMoviesCount: moviesByGenre.length,
+    authorizationStatus,
   };
 }
 
 function mapDispatchToProps(dispatch: Dispatch<Actions>) {
   return {
-    onChangeGenre(genre: Genres) {
-      dispatch(selectedGenre(genre));
+    onGenreChange(genre: Genres) {
+      dispatch(selectGenre(genre));
+    },
+    setLoadedMoviesCount(count: number) {
+      dispatch(setLoadedMoviesCount(count));
     },
   };
 }
@@ -31,41 +41,13 @@ function mapDispatchToProps(dispatch: Dispatch<Actions>) {
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFormRedux = ConnectedProps<typeof connector>;
-type ConnectedComponentProps = PropsFormRedux & {
-  promo: Promo,
-};
+type ConnectedComponentProps = PropsFormRedux;
 
 function Main(props: ConnectedComponentProps): JSX.Element {
-  const history = useHistory();
   const genres = Object.values(Genres) as Genres[];
-
-  const [filteredMovie, setFilteredMovie] = useState(getFilterMovie(props.movies, props.activeGenre ));
-
-  useEffect(() => {
-    setFilteredMovie(() => getFilterMovie(props.movies, props.activeGenre ));
-  }, [props.activeGenre, props.movies]);
-
-  const [movieCount, setMovieCount] = useState(getMovieCount(filteredMovie.length));
-
-  useEffect(() => {
-    setMovieCount(getMovieCount(filteredMovie.length));
-  }, [filteredMovie, filteredMovie.length]);
-
-  const [loadMore, setLoadMore] = useState(movieCount < filteredMovie.length);
-
-  useEffect(() => {
-    setLoadMore(movieCount < filteredMovie.length);
-  }, [movieCount, filteredMovie.length]);
-
-  const loadMoreMovie = useCallback(() => {
-    setMovieCount((filmsCount) => getMovieCount(filteredMovie.length, filmsCount));
-  }, [filteredMovie.length]);
-
-  const changeGenreProps = props.onChangeGenre;
-
-  const changeGenre = useCallback((genre) => {
-    changeGenreProps(genre);
-  }, [changeGenreProps]);
+  const handleShowMoreClick = () => {
+    props.setLoadedMoviesCount(props.loadedMoviesCount + INCREMENT_MOVIES_STEP);
+  };
 
   return (
     <div>
@@ -117,7 +99,7 @@ function Main(props: ConnectedComponentProps): JSX.Element {
 
       <section className="film-card">
         <div className="film-card__bg">
-          <img src="img/bg-the-grand-budapest-hotel.jpg" alt="The Grand Budapest Hotel"/>
+          <img src={props.moviesFromServer[0].backgroundImage} alt={props.moviesFromServer[0].name}/>
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
@@ -126,48 +108,41 @@ function Main(props: ConnectedComponentProps): JSX.Element {
           <div className="logo">
             <Logo />
           </div>
-          <ul className="user-block">
-            <li className="user-block__item">
-              <div className="user-block__avatar">
-                <img src="img/avatar.jpg" alt="User avatar" width="63" height="63"/>
-              </div>
-            </li>
-            <li className="user-block__item">
-              <a href="/" className="user-block__link">Sign out</a>
-            </li>
-          </ul>
+
+          {props.authorizationStatus === AuthorizationStatus.Auth
+            ?
+            <UserBlockLogged />
+            :
+            <UserBlockUnLogged />}
+
         </header>
 
         <div className="film-card__wrap">
           <div className="film-card__info">
             <div className="film-card__poster">
-              <img src="img/the-grand-budapest-hotel-poster.jpg" alt="The Grand Budapest Hotel poster" width="218" height="327"/>
+              <img src={props.moviesFromServer[0].posterImage} alt={props.moviesFromServer[0].name} width="218" height="327"/>
             </div>
 
             <div className="film-card__desc">
-              <h2 className="film-card__title">{props.promo.name}</h2>
+              <h2 className="film-card__title">{props.moviesFromServer[0].name}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">{props.promo.genre}</span>
-                <span className="film-card__year">{props.promo.release}</span>
+                <span className="film-card__genre">{props.moviesFromServer[0].genre}</span>
+                <span className="film-card__year">{props.moviesFromServer[0].released}</span>
               </p>
 
               <div className="film-card__buttons">
-                <button className="btn btn--play film-card__button" type="button"
-                  onClick={() => history.push(AppRoute.Player)}
-                >
+                <Link className="btn btn--play film-card__button" to={`/player/${props.moviesFromServer[0].id}`}>
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"></use>
                   </svg>
                   <span>Play</span>
-                </button>
-                <button className="btn btn--list film-card__button" type="button"
-                  onClick={() => history.push(AppRoute.Card)}
-                >
+                </Link>
+                <Link className="btn btn--list film-card__button" to={'/myList'}>
                   <svg viewBox="0 0 19 20" width="19" height="20">
                     <use xlinkHref="#add"></use>
                   </svg>
                   <span>My list</span>
-                </button>
+                </Link>
               </div>
             </div>
           </div>
@@ -178,11 +153,23 @@ function Main(props: ConnectedComponentProps): JSX.Element {
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-          <GenresList genres={genres} activeGenre={props.activeGenre} onChangeGenre={changeGenre} />
+          <GenresList genres={genres} activeGenre={props.activeGenre} onGenreChange={props.onGenreChange} />
 
-          <MovieList movies={filteredMovie.slice(0, movieCount)}
-            render={loadMore && (() => <ShowMore loadMore={loadMoreMovie}/>)}
-          />
+          {props.isMoviesLoaded
+            ?
+            <MovieList movies={props.movies} />
+            :
+            <Loading />}
+
+          {props.totalMoviesCount > props.loadedMoviesCount &&
+          <div className="catalog__more">
+            <button className="catalog__button"
+              type="button"
+              onClick={handleShowMoreClick}
+            >
+              Show more
+            </button>
+          </div>}
         </section>
 
         <footer className="page-footer">

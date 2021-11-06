@@ -1,27 +1,37 @@
 export enum AppRoute {
   Main = '/',
-    SignIn = '/login',
-    Movie = '/films/:id',
-    Review = '/films/:id/review',
-    Player = '/player/:id',
-    Card = '/myList',
+  SignIn = '/login',
+  Movie = '/films/:id',
+  Review = '/films/:id/review',
+  Player = '/player/:id',
+  MyList = '/myList',
+}
+
+
+export enum APIRoute {
+  Movies = '/films',
+  Login = '/login',
+  Logout = '/logout',
 }
 
 export enum AuthorizationStatus {
   Auth = 'AUTH',
-    NoAuth = 'NO_AUTH',
-    Unknown = 'UNKNOWN',
+  NoAuth = 'NO_AUTH',
+  Unknown = 'UNKNOWN',
 }
 
 export enum Genres {
   AllGenres = 'All genres',
-    Comedies = 'Comedies',
-    Crime = 'Crime',
-    Documentary = 'Documentary',
-    Dramas = 'Dramas',
-    Horror = 'Horror',
-    KidsFamily = 'Kids & Family',
-    Romance = 'Romance',
-    SciFi = 'Sci-Fi',
-    Thrillers = 'Thrillers',
+  Comedy = 'Comedies',
+  Crime = 'Crime',
+  Documentary = 'Documentary',
+  Drama = 'Dramas',
+  Horror = 'Horror',
+  KidsAndFamily = 'Kids & Family',
+  Adventure = 'Adventure',
+  Fantasy = 'Fantasy',
+  Action = 'Action',
+  SciFi = 'Sci-Fi',
+  Thriller = 'Thrillers',
 }
+

@@ -1,12 +1,33 @@
-import { Movie } from '../../types/types';
+import { State } from '../../types/state';
+import { connect, ConnectedProps } from 'react-redux';
+import { MovieParam } from '../../types/types';
+import { MovieFromServer } from '../../types/types';
+import { useParams } from 'react-router';
+import Error from '../error/error';
 
-function Player(props: {
-  movie: Movie,
-}): JSX.Element {
+function mapStateToProps({moviesFromServer}: State) {
+  return {
+    moviesFromServer,
+  };
+}
+
+const connector = connect(mapStateToProps);
+
+type PropsFormRedux = ConnectedProps<typeof connector>;
+type ConnectedComponentProps = PropsFormRedux;
+
+function Player(props: ConnectedComponentProps): JSX.Element {
+  const { id } = useParams<MovieParam>();
+
+  const selectedMovie = props.moviesFromServer.find((movie: MovieFromServer) => movie.id.toString() === id);
+
+  if (!selectedMovie) {
+    return <Error />;
+  }
 
   return (
     <div className="player">
-      <video src="#" className="player__video" poster={props.movie.backgroundImage}></video>
+      <video src="#" className="player__video" poster={selectedMovie.backgroundImage}></video>
 
       <button type="button" className="player__exit">Exit</button>
 
@@ -40,5 +61,6 @@ function Player(props: {
   );
 }
 
+export { Player };
+export default connector(Player);
 
-export default Player;

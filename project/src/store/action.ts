@@ -1,27 +1,72 @@
 import { ActionType } from '../types/action';
-import { Movie } from '../types/types';
+import { MovieFromServer } from '../types/types';
 import { Genres } from '../types/enum';
+import { AuthorizationStatus } from '../types/enum';
+import { AppRoute } from '../types/enum';
+import { Review } from '../types/const';
 
-type Action<T> = {
-  type: string,
+export type Action<T> = {
+  type: ActionType,
   payload: T,
 }
 
-function selectedGenre(genre: Genres): Action<Genres> {
+export type SetLoadedMoviesCountAction = {
+  type: ActionType,
+    payload: number,
+}
+
+function setLoadedMoviesCount(count: number): SetLoadedMoviesCountAction {
   return ({
-    type: ActionType.SelectedGenre,
+    type: ActionType.SetLoadedMoviesCount,
+    payload: count,
+  }) as const;
+}
+
+function selectGenre(genre: Genres): Action<Genres> {
+  return ({
+    type: ActionType.SelectGenre,
     payload: genre,
   }) as const;
 }
 
-function selectedMovie(movie: Movie[]): Action<Movie[]> {
+function loadMovies(movies: MovieFromServer[]): Action<MovieFromServer[]> {
   return ({
-    type: ActionType.SelectedMovie,
-    payload: movie,
+    type: ActionType.LoadMovies,
+    payload: movies,
   }) as const;
 }
 
+function requireAuthorization(authStatus: AuthorizationStatus): Action<AuthorizationStatus> {
+  return ({
+    type: ActionType.RequireAuthorization,
+    payload: authStatus,
+  }) as const;
+}
+
+function requireLogout() {
+  return ({
+    type: ActionType.RequireLogout,
+  }) as const;
+}
+
+const redirectToRoute = (url: AppRoute) => ({
+  type: ActionType.RedirectToRoute,
+  payload: url,
+} as const);
+
+function setReviews(reviews: Review[]) {
+  return ({
+    type: ActionType.SetReviews,
+    payload: reviews,
+  } as const);
+}
+
 export {
-  selectedGenre,
-  selectedMovie
+  setLoadedMoviesCount,
+  selectGenre,
+  loadMovies,
+  requireAuthorization,
+  requireLogout,
+  redirectToRoute,
+  setReviews
 };

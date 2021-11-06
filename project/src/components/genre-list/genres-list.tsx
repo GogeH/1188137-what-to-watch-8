@@ -3,7 +3,7 @@ import { MouseEvent } from 'react';
 
 const GENRE_ITEM_ACTIVE = 'catalog__genres-item--active';
 
-function GenresList({genres, activeGenre, onChangeGenre}: ViewGenre): JSX.Element {
+function GenresList({genres, activeGenre, onGenreChange}: ViewGenre): JSX.Element {
   return (
     <ul className="catalog__genres-list">
       {genres.map((genre) => (
@@ -19,7 +19,7 @@ function GenresList({genres, activeGenre, onChangeGenre}: ViewGenre): JSX.Elemen
           <a href="/" className="catalog__genres-link"
             onClick={(event: MouseEvent<HTMLAnchorElement>) => {
               event.preventDefault();
-              onChangeGenre(genre);}}
+              onGenreChange(genre);}}
           >
             {genre}
           </a>

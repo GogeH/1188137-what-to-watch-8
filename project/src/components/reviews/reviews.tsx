@@ -1,16 +1,41 @@
 import React from 'react';
+import { State } from '../../types/state';
+import { Link } from 'react-router-dom';
+import { connect, ConnectedProps } from 'react-redux';
 import Logo from '../logo/logo';
 import ReviewForm from '../review-form/review-form';
-import { Movie } from '../../types/types';
+import { MovieFromServer } from '../../types/types';
+import { MovieParam } from '../../types/types';
+import { useParams } from 'react-router';
+import Error from '../error/error';
+import { AuthorizationStatus } from '../../types/enum';
+import UserBlockLogged from '../user-block/user-block-logged';
+import UserBlockUnLogged from '../user-block/user-block-un-logged';
 
-function Review(props: {
-  movie: Movie,
-}): JSX.Element {
+function mapStateToProps({moviesFromServer, authorizationStatus}: State) {
+  return {
+    moviesFromServer,
+    authorizationStatus,
+  };
+}
+
+const connector = connect(mapStateToProps);
+
+type PropsFormRedux = ConnectedProps<typeof connector>;
+type ConnectedComponentProps = PropsFormRedux;
+
+function Review(props: ConnectedComponentProps): JSX.Element {
+  const { id } = useParams<MovieParam>();
+  const selectedMovie = props.moviesFromServer.find((movie: MovieFromServer) => movie.id.toString() === id);
+
+  if (!selectedMovie) {
+    return <Error />;
+  }
   return (
     <section className="film-card film-card--full">
       <div className="film-card__header">
         <div className="film-card__bg">
-          <img src={props.movie.backgroundImage} alt="The Grand Budapest Hotel"/>
+          <img src={selectedMovie.backgroundImage} alt={selectedMovie.name} />
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
@@ -23,7 +48,7 @@ function Review(props: {
           <nav className="breadcrumbs">
             <ul className="breadcrumbs__list">
               <li className="breadcrumbs__item">
-                <a href="film-page.html" className="breadcrumbs__link">The Grand Budapest Hotel</a>
+                <Link to={`/films/${selectedMovie.id}`} className="breadcrumbs__link">{selectedMovie.name}</Link>
               </li>
               <li className="breadcrumbs__item">
                 <a href="/" className="breadcrumbs__link">Add review</a>
@@ -31,20 +56,16 @@ function Review(props: {
             </ul>
           </nav>
 
-          <ul className="user-block">
-            <li className="user-block__item">
-              <div className="user-block__avatar">
-                <img src="img/avatar.jpg" alt="User avatar" width="63" height="63"/>
-              </div>
-            </li>
-            <li className="user-block__item">
-              <a href="/" className="user-block__link">Sign out</a>
-            </li>
-          </ul>
+          {props.authorizationStatus === AuthorizationStatus.Auth
+            ?
+            <UserBlockLogged />
+            :
+            <UserBlockUnLogged />}
+
         </header>
 
         <div className="film-card__poster film-card__poster--small">
-          <img src={props.movie.imgSrc} alt="The Grand Budapest Hotel poster" width="218"
+          <img src={selectedMovie.previewImage} alt={selectedMovie.name} width="218"
             height="327"
           />
         </div>
@@ -58,4 +79,5 @@ function Review(props: {
   );
 }
 
-export default Review;
+export { Review };
+export default connector(Review);

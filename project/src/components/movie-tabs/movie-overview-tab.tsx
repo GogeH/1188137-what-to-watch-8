@@ -1,8 +1,8 @@
 import { getRatingMovie, getFormattedRating } from '../../utils/get-grade-movie';
-import { Movie } from '../../types/types';
+import { MovieFromServer } from '../../types/types';
 
 function MovieOverviewTab(props: {
-  movie: Movie,
+  movie: MovieFromServer,
 }): JSX.Element {
   return (
     <>
@@ -10,7 +10,7 @@ function MovieOverviewTab(props: {
         <div className="film-rating__score">{getFormattedRating(props.movie.rating)}</div>
         <p className="film-rating__meta">
           <span className="film-rating__level">{getRatingMovie(Number(Math.round(props.movie.rating)))}</span>
-          <span className="film-rating__count">{props.movie.count} ratings</span>
+          <span className="film-rating__count">{props.movie.rating} ratings</span>
         </p>
       </div>
 
