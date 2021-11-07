@@ -1,8 +1,8 @@
-import { State } from '../../types/state';
+import { State } from '../../store/reducer';
 import { connect, ConnectedProps } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router';
-import {  MovieFromServer } from '../../types/types';
+import { MovieFromServer } from '../../types/types';
 import { MovieParam } from '../../types/types';
 import { reviewsList } from '../../mocks/reviews-list';
 import MovieList from '../movie-list/movie-list';

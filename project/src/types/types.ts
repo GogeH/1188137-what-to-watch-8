@@ -20,6 +20,22 @@ export type MovieFromServer = {
   'isFavorite': boolean,
 };
 
+export type AuthInfo = {
+  avatarUrl: string,
+  email: string,
+  id: number,
+  name: string,
+  token: string,
+};
+
+export type ServerAuthInfo = {
+  'avatar_url': string,
+  email: string,
+  id: number,
+  name: string,
+  token: string,
+};
+
 export type Review = {
   id: string,
   name: string,

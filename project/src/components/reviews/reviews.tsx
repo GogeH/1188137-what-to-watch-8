@@ -1,5 +1,5 @@
 import React from 'react';
-import { State } from '../../types/state';
+import { State } from '../../store/reducer';
 import { Link } from 'react-router-dom';
 import { connect, ConnectedProps } from 'react-redux';
 import Logo from '../logo/logo';

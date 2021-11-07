@@ -1,5 +1,5 @@
 import { ActionType } from '../types/action';
-import { MovieFromServer } from '../types/types';
+import { AuthInfo, MovieFromServer } from '../types/types';
 import { Genres } from '../types/enum';
 import { AuthorizationStatus } from '../types/enum';
 import { AppRoute } from '../types/enum';
@@ -49,12 +49,19 @@ function requireLogout() {
   }) as const;
 }
 
+function requireAuthInfo(authInfo: AuthInfo): Action<AuthInfo> {
+  return ({
+    type: ActionType.RequireAuthInfo,
+    payload: authInfo,
+  }) as const;
+}
+
 const redirectToRoute = (url: AppRoute) => ({
   type: ActionType.RedirectToRoute,
   payload: url,
 } as const);
 
-function setReviews(reviews: Review[]) {
+function setReviews(reviews: Review[]): Action<Review[]> {
   return ({
     type: ActionType.SetReviews,
     payload: reviews,
@@ -67,6 +74,7 @@ export {
   loadMovies,
   requireAuthorization,
   requireLogout,
+  requireAuthInfo,
   redirectToRoute,
   setReviews
 };

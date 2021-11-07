@@ -1,4 +1,4 @@
-import { State } from '../../types/state';
+import { State } from '../../store/reducer';
 import { connect, ConnectedProps } from 'react-redux';
 import { MovieParam } from '../../types/types';
 import { MovieFromServer } from '../../types/types';

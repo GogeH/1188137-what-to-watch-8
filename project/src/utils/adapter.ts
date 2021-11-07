@@ -1,4 +1,4 @@
-import { MovieFromServer } from '../types/types';
+import { AuthInfo, MovieFromServer, ServerAuthInfo } from '../types/types';
 
 export function adapterMoviesToFrontEnd(data: {[key: string]: any}): MovieFromServer {
   const adaptedMovie = Object.assign({}, data, {
@@ -25,3 +25,11 @@ export function adapterMoviesToFrontEnd(data: {[key: string]: any}): MovieFromSe
 
   return adaptedMovie as MovieFromServer;
 }
+
+export const adapterAuthInfoToFrontEnd = (data: ServerAuthInfo): AuthInfo => ({
+  avatarUrl: data['avatar_url'],
+  email: data.email,
+  id: data.id,
+  name: data.name,
+  token: data.token,
+});

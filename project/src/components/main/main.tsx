@@ -3,7 +3,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import { Dispatch } from '@reduxjs/toolkit';
 import { getFilterMovie } from '../../utils/get-filter-movie';
 import { AuthorizationStatus, Genres} from '../../types/enum';
-import { State } from '../../types/state';
+import { State } from '../../store/reducer';
 import { Actions } from '../../types/action';
 import { selectGenre, setLoadedMoviesCount } from '../../store/action';
 import GenresList from '../genre-list/genres-list';

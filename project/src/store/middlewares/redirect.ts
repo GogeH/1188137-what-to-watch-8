@@ -1,7 +1,7 @@
 import { Middleware } from 'redux';
 import browserHistory from '../../browser-history';
 import { ActionType } from '../../types/action';
-import { State } from '../../types/state';
+import { State } from '../reducer';
 
 export const redirect: Middleware<unknown, State> = (_store) => (dispatch) => (action) => {
   if (action.type === ActionType.RedirectToRoute) {

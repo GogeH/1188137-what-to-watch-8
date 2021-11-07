@@ -1,4 +1,4 @@
-import {Router as BrowserRouter, Route, Switch} from 'react-router-dom';
+import { Router, Route, Switch } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../types/enum';
 import Main from '../main/main';
 import SignIn from '../sign-in/sign-in';
@@ -8,7 +8,7 @@ import Player  from '../player/player';
 import PrivateRoute from '../private-route/private-route';
 import MovieList from '../movie-list/movie-list';
 import Reviews from '../reviews/reviews';
-import { State } from '../../types/state';
+import { State } from '../../store/reducer';
 import { connect, ConnectedProps } from 'react-redux';
 import Loading from '../loading/loading';
 import browserHistory from '../../browser-history';
@@ -32,7 +32,7 @@ function App(props: PropsFromRedux): JSX.Element {
   }
 
   return  (
-    <BrowserRouter history={browserHistory}>
+    <Router history={browserHistory}>
       <Switch>
         <Route path={AppRoute.Main} exact>
           <Main />
@@ -48,7 +48,7 @@ function App(props: PropsFromRedux): JSX.Element {
         <Route path={AppRoute.Player} exact component={Player} />
         <Route component={Error}/>
       </Switch>
-    </BrowserRouter>
+    </Router>
   );
 }
 

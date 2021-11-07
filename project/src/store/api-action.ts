@@ -1,9 +1,9 @@
 import {ThunkActionResult} from '../types/action';
-import { Action, loadMovies, redirectToRoute, requireAuthorization, requireLogout} from './action';
+import { loadMovies, redirectToRoute, requireAuthInfo, requireAuthorization, requireLogout } from './action';
 import {dropToken, saveToken, Token} from '../services/token';
-import {APIRoute, AppRoute, AuthorizationStatus} from '../types/enum';
-import {AuthData, MovieFromServer} from '../types/types';
-import {adapterMoviesToFrontEnd} from '../utils/adapter-movies-to-front-end';
+import { APIRoute, AppRoute, AuthorizationStatus } from '../types/enum';
+import { AuthData, MovieFromServer} from '../types/types';
+import { adapterAuthInfoToFrontEnd, adapterMoviesToFrontEnd } from '../utils/adapter';
 
 export const fetchMoviesAction = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
@@ -14,9 +14,13 @@ export const fetchMoviesAction = (): ThunkActionResult =>
 
 export const checkAuthAction = (): ThunkActionResult =>
   async (dispatch, _getState, api) => {
-    const { payload } = await api.get(APIRoute.Login) as Action<AuthorizationStatus>;
-    // TO DO
-    dispatch(requireAuthorization(payload === undefined ? AuthorizationStatus.Auth : AuthorizationStatus.NoAuth));
+    const { data } = await api.get(APIRoute.Login);
+    if(!data) {
+      dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+    } else {
+      dispatch(requireAuthorization(AuthorizationStatus.Auth));
+      dispatch(requireAuthInfo(adapterAuthInfoToFrontEnd(data)));
+    }
   };
 
 export const loginAction = ({login: email, password}: AuthData): ThunkActionResult =>
@@ -26,7 +30,6 @@ export const loginAction = ({login: email, password}: AuthData): ThunkActionResu
     dispatch(requireAuthorization(AuthorizationStatus.Auth));
     dispatch(redirectToRoute(AppRoute.Main));
   };
-
 
 export const logoutAction = (): ThunkActionResult =>
   async (dispatch, _getState, api) => {

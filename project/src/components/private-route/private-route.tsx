@@ -2,7 +2,7 @@ import { RouteProps } from 'react-router-dom';
 import { Route, Redirect } from 'react-router-dom';
 import { connect, ConnectedProps } from 'react-redux';
 import { AppRoute, AuthorizationStatus } from '../../types/enum';
-import { State } from '../../types/state';
+import { State } from '../../store/reducer';
 
 const mapStateToProps = ({authorizationStatus}: State) => ({
   authorizationStatus,
