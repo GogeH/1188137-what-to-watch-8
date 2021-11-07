@@ -12,7 +12,7 @@ export type Action<T> = {
 
 export type SetLoadedMoviesCountAction = {
   type: ActionType,
-    payload: number,
+  payload: number,
 }
 
 function setLoadedMoviesCount(count: number): SetLoadedMoviesCountAction {
