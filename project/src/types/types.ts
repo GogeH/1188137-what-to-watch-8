@@ -1,23 +1,23 @@
 import {Genres} from './enum';
 
 export type MovieFromServer = {
-  'id': number,
-  'name': string,
-  'posterImage': string,
-  'previewImage': string,
-  'backgroundImage': string,
-  'backgroundColor': string,
-  'videoLink': string,
-  'previewVideoLink': string,
-  'description': string,
-  'rating': number,
-  'scoresCount': number,
-  'director': string,
-  'starring': string[],
-  'runTime': number,
-  'genre': Genres,
-  'released': number,
-  'isFavorite': boolean,
+  id: number,
+  name: string,
+  posterImage: string,
+  previewImage: string,
+  backgroundImage: string,
+  backgroundColor: string,
+  videoLink: string,
+  previewVideoLink: string,
+  description: string,
+  rating: number,
+  scoresCount: number,
+  director: string,
+  starring: string[],
+  runTime: number,
+  genre: Genres,
+  released: number,
+  isFavorite: boolean,
 };
 
 export type AuthInfo = {
@@ -36,12 +36,15 @@ export type ServerAuthInfo = {
   token: string,
 };
 
-export type Review = {
-  id: string,
-  name: string,
-  date: Date,
+export type CommentsFromServer = {
+  id: number,
+  user: {
+    id: number,
+    name: string,
+  },
+  rating: number,
   comment: string,
-  rating: string,
+  date: Date,
 }
 
 export type AuthData = {
@@ -52,3 +55,8 @@ export type AuthData = {
 export type MovieParam = {
   id: string;
 }
+
+export type CommentToServer = {
+  rating: number,
+  comment: string,
+};

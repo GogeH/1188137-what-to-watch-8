@@ -1,9 +1,19 @@
-import {ThunkActionResult} from '../types/action';
-import { loadMovies, redirectToRoute, requireAuthInfo, requireAuthorization, requireLogout } from './action';
-import {dropToken, saveToken, Token} from '../services/token';
+import { ThunkActionResult } from '../types/action';
+import { toast } from 'react-toastify';
+import {
+  loadComments,
+  loadMovies, loadPromo, loadSelectedMovie, loadSimilarMovies,
+  redirectToRoute,
+  requireAuthInfo,
+  requireAuthorization,
+  requireLogout
+} from './action';
+import { dropToken, saveToken, Token } from '../services/token';
 import { APIRoute, AppRoute, AuthorizationStatus } from '../types/enum';
-import { AuthData, MovieFromServer} from '../types/types';
-import { adapterAuthInfoToFrontEnd, adapterMoviesToFrontEnd } from '../utils/adapter';
+import { AuthData, CommentsFromServer, CommentToServer, MovieFromServer } from '../types/types';
+import { adapterAuthInfoToFrontEnd, adapterMoviesToFrontEnd } from '../utils/adapters';
+
+const AUTH_FAIL_MESSAGE = 'Не забудьте авторизоваться!';
 
 export const fetchMoviesAction = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
@@ -12,11 +22,48 @@ export const fetchMoviesAction = (): ThunkActionResult =>
     dispatch(loadMovies(adaptedMoviesData));
   };
 
+export const fetchCommentsAction = (id: number): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    const {data} = await api.get<CommentsFromServer[]>(`${APIRoute.Comments}/${id}`);
+    dispatch(loadComments(data));
+  };
+
+export const fetchPromoAction = (): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    const {data} = await api.get<MovieFromServer>(APIRoute.Promo);
+    const adaptedMoviesData = adapterMoviesToFrontEnd(data);
+    dispatch(loadPromo(adaptedMoviesData));
+  };
+
+export const fetchSimilarMoviesAction = (id: number): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    const {data} = await api.get<MovieFromServer[]>(APIRoute.SimilarMovies.replace('{id}', id.toString()));
+    const adaptedMoviesData = data.map((movie) => adapterMoviesToFrontEnd(movie));
+    dispatch(loadSimilarMovies(adaptedMoviesData));
+  };
+
+export const fetchSelectedMovieAction = (id: number): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    const {data} = await api.get<MovieFromServer>(`${APIRoute.Movies}/${id}`);
+    const adaptedMoviesData =  adapterMoviesToFrontEnd(data);
+    dispatch(loadSelectedMovie(adaptedMoviesData));
+  };
+
+export const sendReview = (data: { ratingValue: number, commentValue: string, movieId: number }): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    const url = `${APIRoute.Comments}/${data.movieId}`;
+    await api.post<CommentToServer>(url, {
+      rating: data.ratingValue,
+      comment: data.commentValue,
+    });
+  };
+
 export const checkAuthAction = (): ThunkActionResult =>
   async (dispatch, _getState, api) => {
     const { data } = await api.get(APIRoute.Login);
     if(!data) {
       dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+      toast.info(AUTH_FAIL_MESSAGE);
     } else {
       dispatch(requireAuthorization(AuthorizationStatus.Auth));
       dispatch(requireAuthInfo(adapterAuthInfoToFrontEnd(data)));

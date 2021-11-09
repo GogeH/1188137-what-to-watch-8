@@ -9,9 +9,15 @@ import { reducer } from './store/reducer';
 import App from './components/app/app';
 import { AuthorizationStatus } from './types/enum';
 import { ThunkAppDispatch } from './types/action';
-import { checkAuthAction, fetchMoviesAction } from './store/api-action';
+import {
+  checkAuthAction,
+  fetchMoviesAction,
+  fetchPromoAction
+} from './store/api-action';
 import { requireAuthorization } from './store/action';
 import { redirect } from './store/middlewares/redirect';
+import {ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const api = createAPI(
   () => store.dispatch(requireAuthorization(AuthorizationStatus.NoAuth)),
@@ -27,10 +33,12 @@ const store = createStore(
 
 (store.dispatch as ThunkAppDispatch)(checkAuthAction());
 (store.dispatch as ThunkAppDispatch)(fetchMoviesAction());
+(store.dispatch as ThunkAppDispatch)(fetchPromoAction());
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
+      <ToastContainer />
       <App />
     </Provider>
   </React.StrictMode>,

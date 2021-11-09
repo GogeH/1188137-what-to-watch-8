@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { useParams } from 'react-router';
 import { MovieFromServer } from '../../types/types';
 import { MovieParam } from '../../types/types';
-import { reviewsList } from '../../mocks/reviews-list';
 import MovieList from '../movie-list/movie-list';
 import MovieTabs  from '../movie-tabs/movie-tabs';
 import Error from '../error/error';
@@ -12,23 +11,60 @@ import Logo from '../logo/logo';
 import { AuthorizationStatus } from '../../types/enum';
 import UserBlockLogged from '../user-block/user-block-logged';
 import UserBlockUnLogged from '../user-block/user-block-un-logged';
+import { ThunkAppDispatch } from '../../types/action';
+import { fetchCommentsAction, fetchSelectedMovieAction, fetchSimilarMoviesAction } from '../../store/api-action';
+import { useEffect } from 'react';
+import { setSelectedMovieId } from '../../store/action';
 
-function mapStateToProps({moviesFromServer, authorizationStatus}: State) {
+function mapStateToProps({moviesFromServer, authorizationStatus, loadComments, loadSimilarMovies}: State) {
   return {
     moviesFromServer,
     authorizationStatus,
+    loadComments,
+    loadSimilarMovies,
   };
 }
 
-const connector = connect(mapStateToProps);
+function mapDispatchToProps(dispatch: ThunkAppDispatch) {
+  return {
+    fetchSelectedMovie(id: number) {
+      dispatch(fetchSelectedMovieAction(id));
+    },
+    fetchSimilarMovies(id: number) {
+      dispatch(fetchSimilarMoviesAction(id));
+    },
+    saveSelectedMovieId(id: number) {
+      dispatch(setSelectedMovieId(id));
+    },
+    fetchComments(id: number) {
+      dispatch(fetchCommentsAction(id));
+    },
+  };
+}
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFormRedux = ConnectedProps<typeof connector>;
 type ConnectedComponentProps = PropsFormRedux;
 
 function SelectedMovie(props: ConnectedComponentProps): JSX.Element {
   const { id } = useParams<MovieParam>();
+  const idIsNumber = Number(id);
 
   const selectedMovie = props.moviesFromServer.find((movie: MovieFromServer) => movie.id.toString() === id);
+
+  useEffect(() => {
+    props.saveSelectedMovieId(idIsNumber);
+    props.fetchSelectedMovie(idIsNumber);
+  }, [props.fetchSelectedMovie, idIsNumber]);
+
+  useEffect(() => {
+    props.fetchComments(idIsNumber);
+  }, [props.fetchSelectedMovie, idIsNumber]);
+
+  useEffect(() => {
+    props.fetchSimilarMovies(idIsNumber);
+  }, [idIsNumber]);
 
   if (!selectedMovie) {
     return <Error />;
@@ -98,7 +134,7 @@ function SelectedMovie(props: ConnectedComponentProps): JSX.Element {
               />
             </div>
 
-            <MovieTabs movie={selectedMovie} reviews={reviewsList}/>
+            <MovieTabs movie={selectedMovie} reviews={props.loadComments}/>
 
           </div>
         </div>
@@ -110,7 +146,7 @@ function SelectedMovie(props: ConnectedComponentProps): JSX.Element {
 
           <div className="catalog__films-list">
             <MovieList
-              movies = {props.moviesFromServer.filter((item) => item.genre === selectedMovie.genre && item.name !== selectedMovie.name).slice(0, 4)}
+              movies = {props.loadSimilarMovies.slice(0, 4)}
             />
           </div>
         </section>

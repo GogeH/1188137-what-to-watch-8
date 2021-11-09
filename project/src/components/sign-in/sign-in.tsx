@@ -20,7 +20,7 @@ function SignIn(props: PropsFromRedux): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
 
-  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
+  const onSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
     if (loginRef.current !== null && passwordRef.current !== null) {
@@ -44,7 +44,7 @@ function SignIn(props: PropsFromRedux): JSX.Element {
         <form
           action="#"
           className="sign-in__form"
-          onSubmit={handleSubmit}
+          onSubmit={onSubmit}
         >
           <div className="sign-in__message">
             <p>We can’t recognize this email <br/> and password combination. Please try again.</p>

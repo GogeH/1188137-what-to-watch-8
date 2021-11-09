@@ -1,10 +1,9 @@
 import { Link } from 'react-router-dom';
 import { connect, ConnectedProps } from 'react-redux';
-import { Dispatch } from '@reduxjs/toolkit';
 import { getFilterMovie } from '../../utils/get-filter-movie';
 import { AuthorizationStatus, Genres} from '../../types/enum';
 import { State } from '../../store/reducer';
-import { Actions } from '../../types/action';
+import { ThunkAppDispatch } from '../../types/action';
 import { selectGenre, setLoadedMoviesCount } from '../../store/action';
 import GenresList from '../genre-list/genres-list';
 import Logo from '../logo/logo';
@@ -14,7 +13,7 @@ import { INCREMENT_MOVIES_STEP } from '../../types/const';
 import UserBlockLogged from '../user-block/user-block-logged';
 import UserBlockUnLogged from '../user-block/user-block-un-logged';
 
-function mapStateToProps({moviesFromServer, genre, loadedMoviesCount, isMoviesLoaded, authorizationStatus}: State) {
+function mapStateToProps({moviesFromServer, genre, loadedMoviesCount, isMoviesLoaded, authorizationStatus, loadPromo}: State) {
   const moviesByGenre = getFilterMovie(moviesFromServer, genre);
   return {
     moviesFromServer,
@@ -24,10 +23,11 @@ function mapStateToProps({moviesFromServer, genre, loadedMoviesCount, isMoviesLo
     isMoviesLoaded,
     totalMoviesCount: moviesByGenre.length,
     authorizationStatus,
+    loadPromo,
   };
 }
 
-function mapDispatchToProps(dispatch: Dispatch<Actions>) {
+function mapDispatchToProps(dispatch: ThunkAppDispatch) {
   return {
     onGenreChange(genre: Genres) {
       dispatch(selectGenre(genre));
@@ -99,7 +99,7 @@ function Main(props: ConnectedComponentProps): JSX.Element {
 
       <section className="film-card">
         <div className="film-card__bg">
-          <img src={props.moviesFromServer[0].backgroundImage} alt={props.moviesFromServer[0].name}/>
+          <img src={props.loadPromo.backgroundImage} alt={props.loadPromo.name}/>
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
@@ -120,18 +120,18 @@ function Main(props: ConnectedComponentProps): JSX.Element {
         <div className="film-card__wrap">
           <div className="film-card__info">
             <div className="film-card__poster">
-              <img src={props.moviesFromServer[0].posterImage} alt={props.moviesFromServer[0].name} width="218" height="327"/>
+              <img src={props.loadPromo.posterImage} alt={props.loadPromo.name} width="218" height="327"/>
             </div>
 
             <div className="film-card__desc">
-              <h2 className="film-card__title">{props.moviesFromServer[0].name}</h2>
+              <h2 className="film-card__title">{props.loadPromo.name}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">{props.moviesFromServer[0].genre}</span>
-                <span className="film-card__year">{props.moviesFromServer[0].released}</span>
+                <span className="film-card__genre">{props.loadPromo.genre}</span>
+                <span className="film-card__year">{props.loadPromo.released}</span>
               </p>
 
               <div className="film-card__buttons">
-                <Link className="btn btn--play film-card__button" to={`/player/${props.moviesFromServer[0].id}`}>
+                <Link className="btn btn--play film-card__button" to={`/player/${props.loadPromo.id}`}>
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"></use>
                   </svg>

@@ -1,9 +1,9 @@
 import { ActionType } from '../types/action';
-import { AuthInfo, MovieFromServer } from '../types/types';
+import { AuthInfo, CommentsFromServer, MovieFromServer } from '../types/types';
 import { Genres } from '../types/enum';
 import { AuthorizationStatus } from '../types/enum';
 import { AppRoute } from '../types/enum';
-import { Review } from '../types/const';
+import { CommentToServer } from '../types/types';
 
 export type Action<T> = {
   type: ActionType,
@@ -61,11 +61,46 @@ const redirectToRoute = (url: AppRoute) => ({
   payload: url,
 } as const);
 
-function setReviews(reviews: Review[]): Action<Review[]> {
+function setReviews(reviews: CommentToServer[]): Action<CommentToServer[]> {
   return ({
     type: ActionType.SetReviews,
     payload: reviews,
   } as const);
+}
+
+function loadComments(comments: CommentsFromServer[]): Action<CommentsFromServer[]> {
+  return ({
+    type: ActionType.LoadComments,
+    payload: comments,
+  }) as const;
+}
+
+function loadPromo(movie: MovieFromServer): Action<MovieFromServer> {
+  return ({
+    type: ActionType.LoadPromo,
+    payload: movie,
+  }) as const;
+}
+
+function loadSimilarMovies(movies: MovieFromServer[]): Action<MovieFromServer[]> {
+  return ({
+    type: ActionType.LoadSimilarMovies,
+    payload: movies,
+  }) as const;
+}
+
+function loadSelectedMovie(movie: MovieFromServer): Action<MovieFromServer> {
+  return ({
+    type: ActionType.LoadSelectedMovie,
+    payload: movie,
+  }) as const;
+}
+
+function setSelectedMovieId(id: number) {
+  return ({
+    type: ActionType.SetSelectedMovieId,
+    payload: id,
+  }) as const;
 }
 
 export {
@@ -76,5 +111,10 @@ export {
   requireLogout,
   requireAuthInfo,
   redirectToRoute,
-  setReviews
+  setReviews,
+  loadComments,
+  loadPromo,
+  loadSimilarMovies,
+  loadSelectedMovie,
+  setSelectedMovieId
 };

@@ -11,6 +11,8 @@ import Error from '../error/error';
 import { AuthorizationStatus } from '../../types/enum';
 import UserBlockLogged from '../user-block/user-block-logged';
 import UserBlockUnLogged from '../user-block/user-block-un-logged';
+// import { SignIn } from '../sign-in/sign-in';
+
 
 function mapStateToProps({moviesFromServer, authorizationStatus}: State) {
   return {
@@ -31,6 +33,11 @@ function Review(props: ConnectedComponentProps): JSX.Element {
   if (!selectedMovie) {
     return <Error />;
   }
+
+  if (props.authorizationStatus !== AuthorizationStatus.Auth) {
+    // return <SignIn />;
+  }
+
   return (
     <section className="film-card film-card--full">
       <div className="film-card__header">

@@ -1,70 +1,148 @@
-import { useState, ChangeEvent } from 'react';
+import { useState, ChangeEvent, Fragment, useEffect } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
+import { ThunkAppDispatch } from '../../types/action';
+import { fetchSelectedMovieAction, sendReview } from '../../store/api-action';
+import { State } from '../../store/reducer';
+import { toast } from 'react-toastify';
+import { useParams } from 'react-router';
+import { MovieParam } from '../../types/types';
+import { redirectToRoute, setSelectedMovieId } from '../../store/action';
+import { AppRoute } from '../../types/enum';
+// import { AuthorizationStatus } from '../../types/enum';
+// import { SignIn } from '../sign-in/sign-in';
 
-function ReviewForm(): JSX.Element {
-  const [rating, setRating] = useState('');
-  const [review, setReview] = useState('');
+const SUBMITTING_FEEDBACK_MESSAGE = 'Спасибо за ваш отзыв о фильме!';
+const ERROR_PUSH_REVIEW_MESSAGE = 'Что-то пошло не так, попробуйте написать отзыв немного позже!';
 
-  function changeRating(evt: ChangeEvent<HTMLInputElement>) {
-    setRating(evt.currentTarget.value);
-  }
+const MIN_COMMENT_LENGTH = 50;
+const MAX_COMMENT_LENGTH = 400;
+const RATING_STARS_COUNT = 10;
+const DEFAULT_RATING_VALUE = 0;
 
-  function messageChange(evt: ChangeEvent<HTMLTextAreaElement>) {
-    setReview(evt.target.value);
-  }
+function mapStateToProps({loadSelectedMovie,authorizationStatus}: State) {
+  return {
+    loadSelectedMovie,
+    authorizationStatus,
+  };
+}
+
+const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
+  async onSubmit(data: { ratingValue: number, commentValue: string, movieId: number }) {
+    try {
+      await dispatch(sendReview(data));
+      dispatch(redirectToRoute(AppRoute.Main));
+      toast.info(SUBMITTING_FEEDBACK_MESSAGE);
+    } catch (error) {
+      console.error(error);
+      toast.error(ERROR_PUSH_REVIEW_MESSAGE);
+    }
+  },
+  fetchSelectedMovie(id: number) {
+    dispatch(fetchSelectedMovieAction(id));
+  },
+  saveSelectedMovieId(id: number) {
+    dispatch(setSelectedMovieId(id));
+  },
+});
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+function ReviewForm(props: PropsFromRedux): JSX.Element {
+  const [ratingValue, setRatingValue] = useState<number>(DEFAULT_RATING_VALUE);
+  const [commentValue, setCommentValue] = useState<string>('');
+  const { id } = useParams<MovieParam>();
+  const idIsNumber = Number(id);
+
+  useEffect(() => {
+    props.saveSelectedMovieId(idIsNumber);
+    props.fetchSelectedMovie(idIsNumber);
+  }, [props.fetchSelectedMovie, idIsNumber]);
+  const onChangeRating = (event: ChangeEvent<HTMLInputElement>) => {
+    setRatingValue(Number(event.currentTarget.value));
+  };
+
+  const onMessageChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    setCommentValue(event.target.value);
+  };
+
+  const onFormSubmit = (event: ChangeEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    props.onSubmit({ ratingValue, commentValue, movieId: Number(props.loadSelectedMovie.id) });
+  };
+
+  const isValidCommentValue = () => (
+    commentValue.length >= MIN_COMMENT_LENGTH && commentValue.length <= MAX_COMMENT_LENGTH
+  );
+
+  const isValidRatingValue = () => ratingValue !== DEFAULT_RATING_VALUE;
+
+  const isDisabledSubmitForm = () => (
+    !isValidCommentValue() || !isValidRatingValue()
+  );
+
+
+  const renderRating = () => (
+    new Array(RATING_STARS_COUNT).fill(null).reverse().map((currentValue, index) => {
+      const number = 10 - index;
+
+      return (
+        <Fragment key={number}>
+          <input
+            className="rating__input"
+            id={`star-${number}`}
+            type="radio"
+            name="rating"
+            value={number}
+            checked={number === ratingValue}
+            onChange={onChangeRating}
+          />
+          <label
+            className="rating__label"
+            htmlFor={`star-${number}`}
+          >Rating {number}
+          </label>
+        </Fragment>
+      );
+    })
+  );
+
+  const renderCommentField = () => (
+    <textarea className="add-review__textarea"
+      name="review-text"
+      id="review-text"
+      placeholder="Review text"
+      onChange={onMessageChange}
+      value={commentValue}
+    >
+    </textarea>
+  );
+
+  const renderBtnSubmit = () => (
+    <div className="add-review__submit">
+      <button className="add-review__btn" type="submit" disabled={isDisabledSubmitForm()}>Post</button>
+    </div>
+  );
+
+  // if (props.authorizationStatus !== AuthorizationStatus.Auth) {
+  //   return <SignIn />;
+  // }
 
   return (
-    <form action="#" className="add-review__form" onSubmit={(evt) => evt.preventDefault()} >
+    <form action="#" className="add-review__form" onSubmit={onFormSubmit} >
       <div className="rating">
         <div className="rating__stars">
-          <input className="rating__input" id="star-10" type="radio" name="rating" value="10" checked={rating === '10'} onChange={changeRating} />
-          <label className="rating__label" htmlFor="star-10">Rating 10</label>
-
-          <input className="rating__input" id="star-9" type="radio" name="rating" value="9" checked={rating === '9'} onChange={changeRating} />
-          <label className="rating__label" htmlFor="star-9">Rating 9</label>
-
-          <input className="rating__input" id="star-8" type="radio" name="rating" value="8" checked={rating === '8'} onChange={changeRating} />
-          <label className="rating__label" htmlFor="star-8">Rating 8</label>
-
-          <input className="rating__input" id="star-7" type="radio" name="rating" value="7" checked={rating === '7'} onChange={changeRating} />
-          <label className="rating__label" htmlFor="star-7">Rating 7</label>
-
-          <input className="rating__input" id="star-6" type="radio" name="rating" value="6" checked={rating === '6'} onChange={changeRating} />
-          <label className="rating__label" htmlFor="star-6">Rating 6</label>
-
-          <input className="rating__input" id="star-5" type="radio" name="rating" value="5" checked={rating === '5'} onChange={changeRating} />
-          <label className="rating__label" htmlFor="cdstar-5">Rating 5</label>
-
-          <input className="rating__input" id="star-4" type="radio" name="rating" value="4" checked={rating === '4'} onChange={changeRating} />
-          <label className="rating__label" htmlFor="star-4">Rating 4</label>
-
-          <input className="rating__input" id="star-3" type="radio" name="rating" value="3" checked={rating === '3'} onChange={changeRating} />
-          <label className="rating__label" htmlFor="star-3">Rating 3</label>
-
-          <input className="rating__input" id="star-2" type="radio" name="rating" value="2" checked={rating === '2'} onChange={changeRating} />
-          <label className="rating__label" htmlFor="star-2">Rating 2</label>
-
-          <input className="rating__input" id="star-1" type="radio" name="rating" value="1" checked={rating === '1'} onChange={changeRating} />
-          <label className="rating__label" htmlFor="star-1">Rating 1</label>
+          {renderRating()}
         </div>
       </div>
-
       <div className="add-review__text">
-        <textarea className="add-review__textarea"
-          name="review-text"
-          id="review-text"
-          placeholder="Review text"
-          onChange={messageChange}
-          value={review}
-        >
-        </textarea>
-        <div className="add-review__submit">
-          <button className="add-review__btn" type="submit" disabled={review.length >= 50}>Post</button>
-        </div>
-
+        {renderCommentField()}
+        {renderBtnSubmit()}
       </div>
     </form>
-
   );
 }
 
-export default ReviewForm;
+export { ReviewForm };
+export default connector(ReviewForm);
