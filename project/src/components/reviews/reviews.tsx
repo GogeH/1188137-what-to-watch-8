@@ -1,5 +1,5 @@
 import React from 'react';
-import { State } from '../../store/reducer';
+import { State } from '../../types/state';
 import { Link } from 'react-router-dom';
 import { connect, ConnectedProps } from 'react-redux';
 import Logo from '../logo/logo';
@@ -14,10 +14,10 @@ import UserBlockUnLogged from '../user-block/user-block-un-logged';
 // import { SignIn } from '../sign-in/sign-in';
 
 
-function mapStateToProps({moviesFromServer, authorizationStatus}: State) {
+function mapStateToProps({USER_AUTH, MOVIES_DATA}: State) {
   return {
-    moviesFromServer,
-    authorizationStatus,
+    moviesFromServer: MOVIES_DATA.moviesFromServer,
+    authorizationStatus: USER_AUTH.authorizationStatus,
   };
 }
 
@@ -58,7 +58,7 @@ function Review(props: ConnectedComponentProps): JSX.Element {
                 <Link to={`/films/${selectedMovie.id}`} className="breadcrumbs__link">{selectedMovie.name}</Link>
               </li>
               <li className="breadcrumbs__item">
-                <a href="/" className="breadcrumbs__link">Add review</a>
+                <Link to={`/films/${selectedMovie.id}/review`} className="breadcrumbs__link">Add review</Link>
               </li>
             </ul>
           </nav>

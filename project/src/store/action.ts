@@ -56,7 +56,8 @@ function requireAuthInfo(authInfo: AuthInfo): Action<AuthInfo> {
   }) as const;
 }
 
-const redirectToRoute = (url: AppRoute) => ({
+// TO DO
+const redirectToRoute = (url: AppRoute | string) => ({
   type: ActionType.RedirectToRoute,
   payload: url,
 } as const);

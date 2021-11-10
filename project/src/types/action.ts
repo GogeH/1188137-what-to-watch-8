@@ -1,4 +1,4 @@
-import { State } from '../store/reducer';
+import { State } from './state';
 import { AxiosInstance } from 'axios';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import {

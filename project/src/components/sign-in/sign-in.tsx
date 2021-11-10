@@ -3,7 +3,6 @@ import { connect, ConnectedProps } from 'react-redux';
 import { ThunkAppDispatch } from '../../types/action';
 import { AuthData } from '../../types/types';
 import { loginAction } from '../../store/api-action';
-import { Link } from 'react-router-dom';
 import Logo from '../logo/logo';
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
@@ -14,9 +13,10 @@ const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
 
 const connector = connect(null, mapDispatchToProps);
 
-type PropsFromRedux = ConnectedProps<typeof connector>;
+type PropsFormRedux = ConnectedProps<typeof connector>;
+type ConnectedComponentProps = PropsFormRedux;
 
-function SignIn(props: PropsFromRedux): JSX.Element {
+function SignIn(props: ConnectedComponentProps): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
 
@@ -80,13 +80,8 @@ function SignIn(props: PropsFromRedux): JSX.Element {
       </div>
 
       <footer className="page-footer">
-        <div className="logo">
-          <Link className="logo__link logo__link--light" to="/">
-            <span className="logo__letter logo__letter--1">W</span>
-            <span className="logo__letter logo__letter--2">T</span>
-            <span className="logo__letter logo__letter--3">W</span>
-          </Link>
-        </div>
+
+        <Logo isCenter />
 
         <div className="copyright">
           <p>© 2019 What to watch Ltd.</p>

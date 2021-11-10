@@ -2,28 +2,25 @@ import { Link } from 'react-router-dom';
 import { connect, ConnectedProps } from 'react-redux';
 import { getFilterMovie } from '../../utils/get-filter-movie';
 import { AuthorizationStatus, Genres} from '../../types/enum';
-import { State } from '../../store/reducer';
+import { State } from '../../types/state';
 import { ThunkAppDispatch } from '../../types/action';
 import { selectGenre, setLoadedMoviesCount } from '../../store/action';
 import GenresList from '../genre-list/genres-list';
 import Logo from '../logo/logo';
 import MovieList from '../movie-list/movie-list';
-import Loading from '../loading/loading';
 import { INCREMENT_MOVIES_STEP } from '../../types/const';
 import UserBlockLogged from '../user-block/user-block-logged';
 import UserBlockUnLogged from '../user-block/user-block-un-logged';
 
-function mapStateToProps({moviesFromServer, genre, loadedMoviesCount, isMoviesLoaded, authorizationStatus, loadPromo}: State) {
-  const moviesByGenre = getFilterMovie(moviesFromServer, genre);
+function mapStateToProps({MOVIES_DATA, PROCESS_MOVIES, USER_AUTH}: State) {
+  const moviesByGenre = getFilterMovie(MOVIES_DATA.moviesFromServer, PROCESS_MOVIES.genre);
   return {
-    moviesFromServer,
-    activeGenre: genre,
-    movies: moviesByGenre.slice(0, loadedMoviesCount),
-    loadedMoviesCount: loadedMoviesCount,
-    isMoviesLoaded,
+    moviesFromServer: MOVIES_DATA.moviesFromServer,
+    activeGenre: PROCESS_MOVIES.genre,
+    loadedMoviesCount: PROCESS_MOVIES.loadedMoviesCount,
     totalMoviesCount: moviesByGenre.length,
-    authorizationStatus,
-    loadPromo,
+    authorizationStatus: USER_AUTH.authorizationStatus,
+    loadPromo: MOVIES_DATA.loadPromo,
   };
 }
 
@@ -155,11 +152,7 @@ function Main(props: ConnectedComponentProps): JSX.Element {
 
           <GenresList genres={genres} activeGenre={props.activeGenre} onGenreChange={props.onGenreChange} />
 
-          {props.isMoviesLoaded
-            ?
-            <MovieList movies={props.movies} />
-            :
-            <Loading />}
+          <MovieList />
 
           {props.totalMoviesCount > props.loadedMoviesCount &&
           <div className="catalog__more">
@@ -173,13 +166,8 @@ function Main(props: ConnectedComponentProps): JSX.Element {
         </section>
 
         <footer className="page-footer">
-          <div className="logo">
-            <a href="/" className="logo__link logo__link--light">
-              <span className="logo__letter logo__letter--1">W</span>
-              <span className="logo__letter logo__letter--2">T</span>
-              <span className="logo__letter logo__letter--3">W</span>
-            </a>
-          </div>
+
+          <Logo isCenter />
 
           <div className="copyright">
             <p>© 2019 What to watch Ltd.</p>

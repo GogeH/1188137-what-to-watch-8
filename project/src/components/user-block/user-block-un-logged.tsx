@@ -7,6 +7,7 @@ function UserBlockUnLogged(): JSX.Element {
       <Link to={AppRoute.SignIn} className="user-block__link">Sign in</Link>
     </div>
   );
+
 }
 
 export default UserBlockUnLogged;

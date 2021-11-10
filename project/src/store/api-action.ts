@@ -1,8 +1,12 @@
 import { ThunkActionResult } from '../types/action';
 import { toast } from 'react-toastify';
+import { generatePath } from 'react-router-dom';
 import {
   loadComments,
-  loadMovies, loadPromo, loadSelectedMovie, loadSimilarMovies,
+  loadMovies,
+  loadPromo,
+  loadSelectedMovie,
+  loadSimilarMovies,
   redirectToRoute,
   requireAuthInfo,
   requireAuthorization,
@@ -37,7 +41,7 @@ export const fetchPromoAction = (): ThunkActionResult =>
 
 export const fetchSimilarMoviesAction = (id: number): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
-    const {data} = await api.get<MovieFromServer[]>(APIRoute.SimilarMovies.replace('{id}', id.toString()));
+    const {data} = await api.get<MovieFromServer[]>(generatePath(APIRoute.SimilarMovies.replace(':id', id.toString())));
     const adaptedMoviesData = data.map((movie) => adapterMoviesToFrontEnd(movie));
     dispatch(loadSimilarMovies(adaptedMoviesData));
   };

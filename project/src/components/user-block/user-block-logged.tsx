@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect, ConnectedProps, useDispatch } from 'react-redux';
 import { logoutAction } from '../../store/api-action';
-import { State } from '../../store/reducer';
+import { State } from '../../types/state';
 
-const mapStateToProps = ({ authInfo }: State) => ({
-  authInfo,
+const mapStateToProps = ({USER_AUTH}: State) => ({
+  authInfo: USER_AUTH.authInfo,
 });
 
 const connector = connect(mapStateToProps);

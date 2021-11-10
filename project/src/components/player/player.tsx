@@ -1,13 +1,13 @@
-import { State } from '../../store/reducer';
+import { State } from '../../types/state';
 import { connect, ConnectedProps } from 'react-redux';
 import { MovieParam } from '../../types/types';
 import { MovieFromServer } from '../../types/types';
 import { useParams } from 'react-router';
 import Error from '../error/error';
 
-function mapStateToProps({moviesFromServer}: State) {
+function mapStateToProps({MOVIES_DATA}: State) {
   return {
-    moviesFromServer,
+    moviesFromServer: MOVIES_DATA.moviesFromServer,
   };
 }
 

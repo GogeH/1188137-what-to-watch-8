@@ -1,8 +1,9 @@
 import { useState, ChangeEvent, Fragment, useEffect } from 'react';
+import { generatePath } from 'react-router-dom';
 import { connect, ConnectedProps } from 'react-redux';
 import { ThunkAppDispatch } from '../../types/action';
 import { fetchSelectedMovieAction, sendReview } from '../../store/api-action';
-import { State } from '../../store/reducer';
+import { State } from '../../types/state';
 import { toast } from 'react-toastify';
 import { useParams } from 'react-router';
 import { MovieParam } from '../../types/types';
@@ -19,29 +20,25 @@ const MAX_COMMENT_LENGTH = 400;
 const RATING_STARS_COUNT = 10;
 const DEFAULT_RATING_VALUE = 0;
 
-function mapStateToProps({loadSelectedMovie,authorizationStatus}: State) {
+function mapStateToProps({USER_AUTH, PROCESS_MOVIES}: State) {
   return {
-    loadSelectedMovie,
-    authorizationStatus,
+    loadSelectedMovie: PROCESS_MOVIES.loadSelectedMovie,
+    authorizationStatus: USER_AUTH.authorizationStatus,
   };
 }
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
   async onSubmit(data: { ratingValue: number, commentValue: string, movieId: number }) {
-    try {
-      await dispatch(sendReview(data));
-      dispatch(redirectToRoute(AppRoute.Main));
-      toast.info(SUBMITTING_FEEDBACK_MESSAGE);
-    } catch (error) {
-      console.error(error);
-      toast.error(ERROR_PUSH_REVIEW_MESSAGE);
-    }
+    await dispatch(sendReview(data));
   },
   fetchSelectedMovie(id: number) {
     dispatch(fetchSelectedMovieAction(id));
   },
   saveSelectedMovieId(id: number) {
     dispatch(setSelectedMovieId(id));
+  },
+  redirectToMoviePage(movieId: number) {
+    dispatch(redirectToRoute(generatePath(AppRoute.Movie, { id: movieId })));
   },
 });
 
@@ -52,8 +49,10 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 function ReviewForm(props: PropsFromRedux): JSX.Element {
   const [ratingValue, setRatingValue] = useState<number>(DEFAULT_RATING_VALUE);
   const [commentValue, setCommentValue] = useState<string>('');
+  const [formIsSending, setFormIsSending] = useState<boolean>(false);
   const { id } = useParams<MovieParam>();
   const idIsNumber = Number(id);
+  const movieId = Number(props.loadSelectedMovie.id);
 
   useEffect(() => {
     props.saveSelectedMovieId(idIsNumber);
@@ -67,11 +66,6 @@ function ReviewForm(props: PropsFromRedux): JSX.Element {
     setCommentValue(event.target.value);
   };
 
-  const onFormSubmit = (event: ChangeEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    props.onSubmit({ ratingValue, commentValue, movieId: Number(props.loadSelectedMovie.id) });
-  };
-
   const isValidCommentValue = () => (
     commentValue.length >= MIN_COMMENT_LENGTH && commentValue.length <= MAX_COMMENT_LENGTH
   );
@@ -79,13 +73,31 @@ function ReviewForm(props: PropsFromRedux): JSX.Element {
   const isValidRatingValue = () => ratingValue !== DEFAULT_RATING_VALUE;
 
   const isDisabledSubmitForm = () => (
-    !isValidCommentValue() || !isValidRatingValue()
+    !isValidCommentValue() || !isValidRatingValue() || formIsSending
   );
 
+  const onFormSubmit = async (event: ChangeEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (isDisabledSubmitForm()) {
+      return;
+    }
+
+    try {
+      setFormIsSending(true);
+      await props.onSubmit({ ratingValue, commentValue, movieId });
+      props.redirectToMoviePage(movieId);
+      toast.info(SUBMITTING_FEEDBACK_MESSAGE);
+    } catch (error) {
+      console.error(error);
+      toast.error(ERROR_PUSH_REVIEW_MESSAGE);
+      setFormIsSending(false);
+    }
+  };
 
   const renderRating = () => (
-    new Array(RATING_STARS_COUNT).fill(null).reverse().map((currentValue, index) => {
-      const number = 10 - index;
+    new Array(RATING_STARS_COUNT).fill(null).map((currentValue, index) => {
+      const number = index + 1;
 
       return (
         <Fragment key={number}>
@@ -105,7 +117,7 @@ function ReviewForm(props: PropsFromRedux): JSX.Element {
           </label>
         </Fragment>
       );
-    })
+    }).reverse()
   );
 
   const renderCommentField = () => (
@@ -115,6 +127,7 @@ function ReviewForm(props: PropsFromRedux): JSX.Element {
       placeholder="Review text"
       onChange={onMessageChange}
       value={commentValue}
+      disabled={formIsSending}
     >
     </textarea>
   );

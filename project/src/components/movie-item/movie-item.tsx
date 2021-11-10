@@ -1,7 +1,7 @@
-import { MouseEvent } from 'react';
+import { MouseEvent, memo } from 'react';
 import { Link } from 'react-router-dom';
 import { MovieFromServer } from '../../types/types';
-import VideoPreview from '../video-player/video-player';
+import VideoPreview from '../video-preview/video-preview';
 
 function MovieItem(props: {
   movie: MovieFromServer,
@@ -38,4 +38,4 @@ function MovieItem(props: {
   );
 }
 
-export default MovieItem;
+export default memo(MovieItem);

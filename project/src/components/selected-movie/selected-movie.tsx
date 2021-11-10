@@ -1,10 +1,9 @@
-import { State } from '../../store/reducer';
+import { State } from '../../types/state';
 import { connect, ConnectedProps } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router';
 import { MovieFromServer } from '../../types/types';
 import { MovieParam } from '../../types/types';
-import MovieList from '../movie-list/movie-list';
 import MovieTabs  from '../movie-tabs/movie-tabs';
 import Error from '../error/error';
 import Logo from '../logo/logo';
@@ -13,15 +12,16 @@ import UserBlockLogged from '../user-block/user-block-logged';
 import UserBlockUnLogged from '../user-block/user-block-un-logged';
 import { ThunkAppDispatch } from '../../types/action';
 import { fetchCommentsAction, fetchSelectedMovieAction, fetchSimilarMoviesAction } from '../../store/api-action';
-import { useEffect } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 import { setSelectedMovieId } from '../../store/action';
+import MovieItem from '../movie-item/movie-item';
 
-function mapStateToProps({moviesFromServer, authorizationStatus, loadComments, loadSimilarMovies}: State) {
+function mapStateToProps({MOVIES_DATA, USER_AUTH, COMMENTS_DATA}: State) {
   return {
-    moviesFromServer,
-    authorizationStatus,
-    loadComments,
-    loadSimilarMovies,
+    moviesFromServer: MOVIES_DATA.moviesFromServer,
+    authorizationStatus: USER_AUTH.authorizationStatus,
+    loadComments: COMMENTS_DATA.loadComments,
+    loadSimilarMovies: MOVIES_DATA.loadSimilarMovies,
   };
 }
 
@@ -50,6 +50,15 @@ type ConnectedComponentProps = PropsFormRedux;
 function SelectedMovie(props: ConnectedComponentProps): JSX.Element {
   const { id } = useParams<MovieParam>();
   const idIsNumber = Number(id);
+  const [activeMovie, setActiveMovie] = useState('');
+
+  const onSmallMovieCardHover = (evt: MouseEvent) => {
+    setActiveMovie(evt.currentTarget.id);
+  };
+
+  const onSmallMovieCardLeave = () => {
+    setActiveMovie('');
+  };
 
   const selectedMovie = props.moviesFromServer.find((movie: MovieFromServer) => movie.id.toString() === id);
 
@@ -64,7 +73,7 @@ function SelectedMovie(props: ConnectedComponentProps): JSX.Element {
 
   useEffect(() => {
     props.fetchSimilarMovies(idIsNumber);
-  }, [idIsNumber]);
+  }, [props.fetchSelectedMovie, idIsNumber]);
 
   if (!selectedMovie) {
     return <Error />;
@@ -145,20 +154,21 @@ function SelectedMovie(props: ConnectedComponentProps): JSX.Element {
           <h2 className="catalog__title">More like this</h2>
 
           <div className="catalog__films-list">
-            <MovieList
-              movies = {props.loadSimilarMovies.slice(0, 4)}
-            />
+            {props.loadSimilarMovies.map((movie) => (
+              <MovieItem movie={movie}
+                key={movie.id}
+                isActive={movie.id === Number(activeMovie)}
+                handleMouseOver={onSmallMovieCardHover}
+                handleMouseLeave={onSmallMovieCardLeave}
+              />
+            )).slice(0, 4)}
           </div>
+
         </section>
 
         <footer className="page-footer">
-          <div className="logo">
-            <Link className="logo__link logo__link--light" to="/">
-              <span className="logo__letter logo__letter--1">W</span>
-              <span className="logo__letter logo__letter--2">T</span>
-              <span className="logo__letter logo__letter--3">W</span>
-            </Link>
-          </div>
+
+          <Logo isCenter />
 
           <div className="copyright">
             <p>© 2019 What to watch Ltd.</p>
