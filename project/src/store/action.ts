@@ -1,18 +1,18 @@
 import { ActionType } from '../types/action';
-import { MovieFromServer } from '../types/types';
+import { AuthInfo, Comment, Movie } from '../types/types';
 import { Genres } from '../types/enum';
 import { AuthorizationStatus } from '../types/enum';
 import { AppRoute } from '../types/enum';
-import { Review } from '../types/const';
+import { PostedComment } from '../types/types';
 
 export type Action<T> = {
   type: ActionType,
-  payload: T,
+  payload?: T,
 }
 
 export type SetLoadedMoviesCountAction = {
   type: ActionType,
-    payload: number,
+  payload: number,
 }
 
 function setLoadedMoviesCount(count: number): SetLoadedMoviesCountAction {
@@ -22,16 +22,16 @@ function setLoadedMoviesCount(count: number): SetLoadedMoviesCountAction {
   }) as const;
 }
 
-function selectGenre(genre: Genres): Action<Genres> {
+function setGenre(genre: Genres): Action<Genres> {
   return ({
-    type: ActionType.SelectGenre,
+    type: ActionType.SetGenre,
     payload: genre,
   }) as const;
 }
 
-function loadMovies(movies: MovieFromServer[]): Action<MovieFromServer[]> {
+function loadedMovies(movies: Movie[]): Action<Movie[]> {
   return ({
-    type: ActionType.LoadMovies,
+    type: ActionType.Movies,
     payload: movies,
   }) as const;
 }
@@ -43,30 +43,78 @@ function requireAuthorization(authStatus: AuthorizationStatus): Action<Authoriza
   }) as const;
 }
 
-function requireLogout() {
+function requireLogout(): Action<undefined> {
   return ({
     type: ActionType.RequireLogout,
   }) as const;
 }
 
-const redirectToRoute = (url: AppRoute) => ({
+function requireAuthInfo(authInfo: AuthInfo): Action<AuthInfo> {
+  return ({
+    type: ActionType.RequireAuthInfo,
+    payload: authInfo,
+  }) as const;
+}
+
+const redirectToRoute = (url: AppRoute | string) => ({
   type: ActionType.RedirectToRoute,
   payload: url,
 } as const);
 
-function setReviews(reviews: Review[]) {
+function setReviews(reviews: PostedComment[]): Action<PostedComment[]> {
   return ({
     type: ActionType.SetReviews,
     payload: reviews,
   } as const);
 }
 
+function commentsMovie(comments: Comment[]): Action<Comment[]> {
+  return ({
+    type: ActionType.Comments,
+    payload: comments,
+  }) as const;
+}
+
+function promo(movie: Movie): Action<Movie> {
+  return ({
+    type: ActionType.Promo,
+    payload: movie,
+  }) as const;
+}
+
+function similarMovies(movies: Movie[]): Action<Movie[]> {
+  return ({
+    type: ActionType.SimilarMovies,
+    payload: movies,
+  }) as const;
+}
+
+function setSelectedMovie(movie: Movie): Action<Movie> {
+  return ({
+    type: ActionType.SetSelectedMovie,
+    payload: movie,
+  }) as const;
+}
+
+function setSelectedMovieId(id: number): Action<number> {
+  return ({
+    type: ActionType.SetSelectedMovieId,
+    payload: id,
+  }) as const;
+}
+
 export {
   setLoadedMoviesCount,
-  selectGenre,
-  loadMovies,
+  setGenre,
+  loadedMovies,
   requireAuthorization,
   requireLogout,
+  requireAuthInfo,
   redirectToRoute,
-  setReviews
+  setReviews,
+  commentsMovie,
+  promo,
+  similarMovies,
+  setSelectedMovie,
+  setSelectedMovieId
 };

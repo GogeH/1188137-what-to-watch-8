@@ -1,8 +1,9 @@
-import { MovieFromServer } from '../../types/types';
+import { Movie } from '../../types/types';
 
 function MovieDetailsTab(props: {
-  movie: MovieFromServer,
+  movie: Movie,
 }): JSX.Element {
+
   return (
     <div className="film-card__text film-card__row">
       <div className="film-card__text-col">

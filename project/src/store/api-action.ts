@@ -1,22 +1,77 @@
-import {ThunkActionResult} from '../types/action';
-import { Action, loadMovies, redirectToRoute, requireAuthorization, requireLogout} from './action';
-import {dropToken, saveToken, Token} from '../services/token';
-import {APIRoute, AppRoute, AuthorizationStatus} from '../types/enum';
-import {AuthData, MovieFromServer} from '../types/types';
-import {adapterMoviesToFrontEnd} from '../utils/adapter-movies-to-front-end';
+import { ThunkActionResult } from '../types/action';
+import { toast } from 'react-toastify';
+import { generatePath } from 'react-router-dom';
+import {
+  commentsMovie,
+  loadedMovies,
+  promo,
+  setSelectedMovie,
+  similarMovies,
+  redirectToRoute,
+  requireAuthInfo,
+  requireAuthorization,
+  requireLogout
+} from './action';
+import { dropToken, saveToken, Token } from '../services/token';
+import { APIRoute, AppRoute, AuthorizationStatus } from '../types/enum';
+import { AuthData, Comment, PostedComment, Movie } from '../types/types';
+import { adapterAuthInfoToFrontEnd, adapterMoviesToFrontEnd } from '../utils/adapters';
+
+const AUTH_FAIL_MESSAGE = 'Не забудьте авторизоваться!';
 
 export const fetchMoviesAction = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
-    const {data} = await api.get<MovieFromServer[]>(APIRoute.Movies);
+    const {data} = await api.get<Movie[]>(APIRoute.Movies);
     const adaptedMoviesData = data.map((movie) => adapterMoviesToFrontEnd(movie));
-    dispatch(loadMovies(adaptedMoviesData));
+    dispatch(loadedMovies(adaptedMoviesData));
+  };
+
+export const fetchCommentsAction = (id: number): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    const {data} = await api.get<Comment[]>(`${APIRoute.Comments}/${id}`);
+    dispatch(commentsMovie(data));
+  };
+
+export const fetchPromoAction = (): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    const {data} = await api.get<Movie>(APIRoute.Promo);
+    const adaptedMoviesData = adapterMoviesToFrontEnd(data);
+    dispatch(promo(adaptedMoviesData));
+  };
+
+export const fetchSimilarMoviesAction = (id: number): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    const {data} = await api.get<Movie[]>(generatePath(APIRoute.SimilarMovies.replace(':id', id.toString())));
+    const adaptedMoviesData = data.map((movie) => adapterMoviesToFrontEnd(movie));
+    dispatch(similarMovies(adaptedMoviesData));
+  };
+
+export const fetchSelectedMovieAction = (id: number): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    const {data} = await api.get<Movie>(`${APIRoute.Movies}/${id}`);
+    const adaptedMoviesData =  adapterMoviesToFrontEnd(data);
+    dispatch(setSelectedMovie(adaptedMoviesData));
+  };
+
+export const sendReview = (data: { ratingValue: number, commentValue: string, movieId: number }): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    const url = `${APIRoute.Comments}/${data.movieId}`;
+    await api.post<PostedComment>(url, {
+      rating: data.ratingValue,
+      comment: data.commentValue,
+    });
   };
 
 export const checkAuthAction = (): ThunkActionResult =>
   async (dispatch, _getState, api) => {
-    const { payload } = await api.get(APIRoute.Login) as Action<AuthorizationStatus>;
-    // TO DO
-    dispatch(requireAuthorization(payload === undefined ? AuthorizationStatus.Auth : AuthorizationStatus.NoAuth));
+    const { data } = await api.get(APIRoute.Login);
+    if(!data) {
+      dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+      toast.info(AUTH_FAIL_MESSAGE);
+    } else {
+      dispatch(requireAuthorization(AuthorizationStatus.Auth));
+      dispatch(requireAuthInfo(adapterAuthInfoToFrontEnd(data)));
+    }
   };
 
 export const loginAction = ({login: email, password}: AuthData): ThunkActionResult =>
@@ -26,7 +81,6 @@ export const loginAction = ({login: email, password}: AuthData): ThunkActionResu
     dispatch(requireAuthorization(AuthorizationStatus.Auth));
     dispatch(redirectToRoute(AppRoute.Main));
   };
-
 
 export const logoutAction = (): ThunkActionResult =>
   async (dispatch, _getState, api) => {

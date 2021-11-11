@@ -1,8 +1,17 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { connect, ConnectedProps, useDispatch } from 'react-redux';
 import { logoutAction } from '../../store/api-action';
+import { State } from '../../types/state';
 
-function UserBlockLogged(): JSX.Element {
+const mapStateToProps = ({USER_AUTH}: State) => ({
+  authInfo: USER_AUTH.authInfo,
+});
+
+const connector = connect(mapStateToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+function UserBlockLogged(props: PropsFromRedux): JSX.Element {
   const dispatch = useDispatch();
   const handlerButtonClickLogout = (evt: React.MouseEvent) => {
     evt.preventDefault();
@@ -13,14 +22,16 @@ function UserBlockLogged(): JSX.Element {
     <ul className="user-block">
       <li className="user-block__item">
         <div className="user-block__avatar">
-          <img src="img/avatar.jpg" alt="User avatar" width="63" height="63" />
+          <img src={props.authInfo.avatarUrl} alt={props.authInfo.name} width="63" height="63" />
         </div>
       </li>
       <li className="user-block__item">
-        <a className="user-block__link" href='/' onClick={handlerButtonClickLogout}>Sign out</a>
+        <a className="user-block__link" href='/' onClick={handlerButtonClickLogout}>{props.authInfo.email}<br/>{props.authInfo.name}</a>
       </li>
     </ul>
   );
 }
 
-export default UserBlockLogged;
+export { UserBlockLogged };
+export default connector(UserBlockLogged);
+

@@ -1,8 +1,8 @@
 import { getRatingMovie, getFormattedRating } from '../../utils/get-grade-movie';
-import { MovieFromServer } from '../../types/types';
+import { Movie } from '../../types/types';
 
 function MovieOverviewTab(props: {
-  movie: MovieFromServer,
+  movie: Movie,
 }): JSX.Element {
   return (
     <>

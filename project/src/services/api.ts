@@ -1,7 +1,8 @@
 import axios, { AxiosInstance, AxiosResponse, AxiosError, AxiosRequestConfig } from 'axios';
 import { getToken } from './token';
 
-const BACKEND_URL = 'https://8.react.pages.academy/wtw';
+export const BACKEND_URL = 'https://8.react.pages.academy/wtw';
+
 const REQUEST_TIMEOUT = 5000;
 
 enum HttpCode {

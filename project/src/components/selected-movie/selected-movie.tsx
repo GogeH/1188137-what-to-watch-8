@@ -2,33 +2,79 @@ import { State } from '../../types/state';
 import { connect, ConnectedProps } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router';
-import {  MovieFromServer } from '../../types/types';
+import { Movie } from '../../types/types';
 import { MovieParam } from '../../types/types';
-import { reviewsList } from '../../mocks/reviews-list';
-import MovieList from '../movie-list/movie-list';
 import MovieTabs  from '../movie-tabs/movie-tabs';
 import Error from '../error/error';
 import Logo from '../logo/logo';
 import { AuthorizationStatus } from '../../types/enum';
 import UserBlockLogged from '../user-block/user-block-logged';
 import UserBlockUnLogged from '../user-block/user-block-un-logged';
+import { ThunkAppDispatch } from '../../types/action';
+import { fetchCommentsAction, fetchSelectedMovieAction, fetchSimilarMoviesAction } from '../../store/api-action';
+import { MouseEvent, useEffect, useState } from 'react';
+import { setSelectedMovieId } from '../../store/action';
+import MovieItem from '../movie-item/movie-item';
 
-function mapStateToProps({moviesFromServer, authorizationStatus}: State) {
+function mapStateToProps({MOVIES_DATA, USER_AUTH, COMMENTS_DATA}: State) {
   return {
-    moviesFromServer,
-    authorizationStatus,
+    movies: MOVIES_DATA.movies,
+    authorizationStatus: USER_AUTH.authorizationStatus,
+    comments: COMMENTS_DATA.comments,
+    similarMovies: MOVIES_DATA.similarMovies,
   };
 }
 
-const connector = connect(mapStateToProps);
+function mapDispatchToProps(dispatch: ThunkAppDispatch) {
+  return {
+    fetchSelectedMovie(id: number) {
+      dispatch(fetchSelectedMovieAction(id));
+    },
+    fetchSimilarMovies(id: number) {
+      dispatch(fetchSimilarMoviesAction(id));
+    },
+    saveSelectedMovieId(id: number) {
+      dispatch(setSelectedMovieId(id));
+    },
+    fetchComments(id: number) {
+      dispatch(fetchCommentsAction(id));
+    },
+  };
+}
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFormRedux = ConnectedProps<typeof connector>;
 type ConnectedComponentProps = PropsFormRedux;
 
 function SelectedMovie(props: ConnectedComponentProps): JSX.Element {
+  const { saveSelectedMovieId, fetchSelectedMovie, fetchSimilarMovies, fetchComments } = props;
   const { id } = useParams<MovieParam>();
+  const idIsNumber = Number(id);
+  const [activeMovie, setActiveMovie] = useState('');
 
-  const selectedMovie = props.moviesFromServer.find((movie: MovieFromServer) => movie.id.toString() === id);
+  const onSmallMovieCardHover = (evt: MouseEvent) => {
+    setActiveMovie(evt.currentTarget.id);
+  };
+
+  const onSmallMovieCardLeave = () => {
+    setActiveMovie('');
+  };
+
+  const selectedMovie = props.movies.find((movie: Movie) => movie.id.toString() === id);
+
+  useEffect(() => {
+    saveSelectedMovieId(idIsNumber);
+    fetchSelectedMovie(idIsNumber);
+  });
+
+  useEffect(() => {
+    fetchComments(idIsNumber);
+  },[fetchComments, idIsNumber]);
+
+  useEffect(() => {
+    fetchSimilarMovies(idIsNumber);
+  },[fetchSimilarMovies, idIsNumber]);
 
   if (!selectedMovie) {
     return <Error />;
@@ -98,7 +144,7 @@ function SelectedMovie(props: ConnectedComponentProps): JSX.Element {
               />
             </div>
 
-            <MovieTabs movie={selectedMovie} reviews={reviewsList}/>
+            <MovieTabs movie={selectedMovie} reviews={props.comments}/>
 
           </div>
         </div>
@@ -109,20 +155,21 @@ function SelectedMovie(props: ConnectedComponentProps): JSX.Element {
           <h2 className="catalog__title">More like this</h2>
 
           <div className="catalog__films-list">
-            <MovieList
-              movies = {props.moviesFromServer.filter((item) => item.genre === selectedMovie.genre && item.name !== selectedMovie.name).slice(0, 4)}
-            />
+            {props.similarMovies.map((movie) => (
+              <MovieItem movie={movie}
+                key={movie.id}
+                isActive={movie.id === Number(activeMovie)}
+                handleMouseOver={onSmallMovieCardHover}
+                handleMouseLeave={onSmallMovieCardLeave}
+              />
+            )).slice(0, 4)}
           </div>
+
         </section>
 
         <footer className="page-footer">
-          <div className="logo">
-            <Link className="logo__link logo__link--light" to="/">
-              <span className="logo__letter logo__letter--1">W</span>
-              <span className="logo__letter logo__letter--2">T</span>
-              <span className="logo__letter logo__letter--3">W</span>
-            </Link>
-          </div>
+
+          <Logo isCenter />
 
           <div className="copyright">
             <p>© 2019 What to watch Ltd.</p>

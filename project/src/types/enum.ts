@@ -7,11 +7,13 @@ export enum AppRoute {
   MyList = '/myList',
 }
 
-
 export enum APIRoute {
   Movies = '/films',
   Login = '/login',
   Logout = '/logout',
+  Comments = '/comments',
+  Promo = '/promo',
+  SimilarMovies = '/films/:id/similar',
 }
 
 export enum AuthorizationStatus {
@@ -31,7 +33,6 @@ export enum Genres {
   Adventure = 'Adventure',
   Fantasy = 'Fantasy',
   Action = 'Action',
-  SciFi = 'Sci-Fi',
   Thriller = 'Thrillers',
 }
 
