@@ -1,8 +1,8 @@
-import { CommentsFromServer } from '../../types/types';
+import { Comment } from '../../types/types';
 import { getDatetime, getHumanizedDateTime } from '../../utils/get-date-time';
 
 function MovieReviewsTabItem (props: {
-  review: CommentsFromServer,
+  review: Comment,
 }): JSX.Element {
   const review = props.review;
   return (

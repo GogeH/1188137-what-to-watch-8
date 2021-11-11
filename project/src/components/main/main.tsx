@@ -4,7 +4,7 @@ import { getFilterMovie } from '../../utils/get-filter-movie';
 import { AuthorizationStatus, Genres} from '../../types/enum';
 import { State } from '../../types/state';
 import { ThunkAppDispatch } from '../../types/action';
-import { selectGenre, setLoadedMoviesCount } from '../../store/action';
+import { setGenre, setLoadedMoviesCount } from '../../store/action';
 import GenresList from '../genre-list/genres-list';
 import Logo from '../logo/logo';
 import MovieList from '../movie-list/movie-list';
@@ -13,21 +13,21 @@ import UserBlockLogged from '../user-block/user-block-logged';
 import UserBlockUnLogged from '../user-block/user-block-un-logged';
 
 function mapStateToProps({MOVIES_DATA, PROCESS_MOVIES, USER_AUTH}: State) {
-  const moviesByGenre = getFilterMovie(MOVIES_DATA.moviesFromServer, PROCESS_MOVIES.genre);
+  const moviesByGenre = getFilterMovie(MOVIES_DATA.movies, PROCESS_MOVIES.genre);
   return {
-    moviesFromServer: MOVIES_DATA.moviesFromServer,
+    movies: MOVIES_DATA.movies,
     activeGenre: PROCESS_MOVIES.genre,
     loadedMoviesCount: PROCESS_MOVIES.loadedMoviesCount,
     totalMoviesCount: moviesByGenre.length,
     authorizationStatus: USER_AUTH.authorizationStatus,
-    loadPromo: MOVIES_DATA.loadPromo,
+    promo: MOVIES_DATA.promo,
   };
 }
 
 function mapDispatchToProps(dispatch: ThunkAppDispatch) {
   return {
     onGenreChange(genre: Genres) {
-      dispatch(selectGenre(genre));
+      dispatch(setGenre(genre));
     },
     setLoadedMoviesCount(count: number) {
       dispatch(setLoadedMoviesCount(count));
@@ -96,7 +96,7 @@ function Main(props: ConnectedComponentProps): JSX.Element {
 
       <section className="film-card">
         <div className="film-card__bg">
-          <img src={props.loadPromo.backgroundImage} alt={props.loadPromo.name}/>
+          <img src={props.promo?.backgroundImage} alt={props.promo?.name}/>
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
@@ -117,18 +117,18 @@ function Main(props: ConnectedComponentProps): JSX.Element {
         <div className="film-card__wrap">
           <div className="film-card__info">
             <div className="film-card__poster">
-              <img src={props.loadPromo.posterImage} alt={props.loadPromo.name} width="218" height="327"/>
+              <img src={props.promo?.posterImage} alt={props.promo?.name} width="218" height="327"/>
             </div>
 
             <div className="film-card__desc">
-              <h2 className="film-card__title">{props.loadPromo.name}</h2>
+              <h2 className="film-card__title">{props.promo?.name}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">{props.loadPromo.genre}</span>
-                <span className="film-card__year">{props.loadPromo.released}</span>
+                <span className="film-card__genre">{props.promo?.genre}</span>
+                <span className="film-card__year">{props.promo?.released}</span>
               </p>
 
               <div className="film-card__buttons">
-                <Link className="btn btn--play film-card__button" to={`/player/${props.loadPromo.id}`}>
+                <Link className="btn btn--play film-card__button" to={`/player/${props.promo?.id}`}>
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"></use>
                   </svg>

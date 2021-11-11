@@ -1,7 +1,7 @@
-import { MovieFromServer } from '../types/types';
+import { Movie } from '../types/types';
 import { Genres} from '../types/enum';
 
-export function getFilterMovie(movies: MovieFromServer[], activeGenre: Genres): MovieFromServer[] {
+export function getFilterMovie(movies: Movie[], activeGenre: Genres): Movie[] {
   if (activeGenre === Genres.AllGenres) {
     return movies;
   }

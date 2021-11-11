@@ -1,5 +1,5 @@
 import { useState, ChangeEvent, Fragment, useEffect } from 'react';
-import { generatePath } from 'react-router-dom';
+import { generatePath, Redirect } from 'react-router-dom';
 import { connect, ConnectedProps } from 'react-redux';
 import { ThunkAppDispatch } from '../../types/action';
 import { fetchSelectedMovieAction, sendReview } from '../../store/api-action';
@@ -9,8 +9,7 @@ import { useParams } from 'react-router';
 import { MovieParam } from '../../types/types';
 import { redirectToRoute, setSelectedMovieId } from '../../store/action';
 import { AppRoute } from '../../types/enum';
-// import { AuthorizationStatus } from '../../types/enum';
-// import { SignIn } from '../sign-in/sign-in';
+import { AuthorizationStatus } from '../../types/enum';
 
 const SUBMITTING_FEEDBACK_MESSAGE = 'Спасибо за ваш отзыв о фильме!';
 const ERROR_PUSH_REVIEW_MESSAGE = 'Что-то пошло не так, попробуйте написать отзыв немного позже!';
@@ -22,7 +21,7 @@ const DEFAULT_RATING_VALUE = 0;
 
 function mapStateToProps({USER_AUTH, PROCESS_MOVIES}: State) {
   return {
-    loadSelectedMovie: PROCESS_MOVIES.loadSelectedMovie,
+    setSelectedMovie: PROCESS_MOVIES.setSelectedMovie,
     authorizationStatus: USER_AUTH.authorizationStatus,
   };
 }
@@ -47,17 +46,23 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 function ReviewForm(props: PropsFromRedux): JSX.Element {
+  const { saveSelectedMovieId, fetchSelectedMovie} = props;
   const [ratingValue, setRatingValue] = useState<number>(DEFAULT_RATING_VALUE);
   const [commentValue, setCommentValue] = useState<string>('');
   const [formIsSending, setFormIsSending] = useState<boolean>(false);
   const { id } = useParams<MovieParam>();
   const idIsNumber = Number(id);
-  const movieId = Number(props.loadSelectedMovie.id);
+  const movieId = Number(props.setSelectedMovie?.id);
 
   useEffect(() => {
-    props.saveSelectedMovieId(idIsNumber);
-    props.fetchSelectedMovie(idIsNumber);
-  }, [props.fetchSelectedMovie, idIsNumber]);
+    saveSelectedMovieId(idIsNumber);
+    fetchSelectedMovie(idIsNumber);
+  });
+
+  if (props.authorizationStatus !== AuthorizationStatus.Auth) {
+    return <Redirect to={AppRoute.SignIn}/>;
+  }
+
   const onChangeRating = (event: ChangeEvent<HTMLInputElement>) => {
     setRatingValue(Number(event.currentTarget.value));
   };
@@ -89,7 +94,6 @@ function ReviewForm(props: PropsFromRedux): JSX.Element {
       props.redirectToMoviePage(movieId);
       toast.info(SUBMITTING_FEEDBACK_MESSAGE);
     } catch (error) {
-      console.error(error);
       toast.error(ERROR_PUSH_REVIEW_MESSAGE);
       setFormIsSending(false);
     }
@@ -120,28 +124,6 @@ function ReviewForm(props: PropsFromRedux): JSX.Element {
     }).reverse()
   );
 
-  const renderCommentField = () => (
-    <textarea className="add-review__textarea"
-      name="review-text"
-      id="review-text"
-      placeholder="Review text"
-      onChange={onMessageChange}
-      value={commentValue}
-      disabled={formIsSending}
-    >
-    </textarea>
-  );
-
-  const renderBtnSubmit = () => (
-    <div className="add-review__submit">
-      <button className="add-review__btn" type="submit" disabled={isDisabledSubmitForm()}>Post</button>
-    </div>
-  );
-
-  // if (props.authorizationStatus !== AuthorizationStatus.Auth) {
-  //   return <SignIn />;
-  // }
-
   return (
     <form action="#" className="add-review__form" onSubmit={onFormSubmit} >
       <div className="rating">
@@ -150,8 +132,18 @@ function ReviewForm(props: PropsFromRedux): JSX.Element {
         </div>
       </div>
       <div className="add-review__text">
-        {renderCommentField()}
-        {renderBtnSubmit()}
+        <textarea className="add-review__textarea"
+          name="review-text"
+          id="review-text"
+          placeholder="Review text"
+          onChange={onMessageChange}
+          value={commentValue}
+          disabled={formIsSending}
+        >
+        </textarea>
+        <div className="add-review__submit">
+          <button className="add-review__btn" type="submit" disabled={isDisabledSubmitForm()}>Post</button>
+        </div>
       </div>
     </form>
   );

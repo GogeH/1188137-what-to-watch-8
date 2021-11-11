@@ -1,9 +1,9 @@
 import { State } from '../../../types/state';
 import { NameSpace } from '../../root-reducer';
 import { Genres } from '../../../types/enum';
-import { MovieFromServer } from '../../../types/types';
+import { Movie } from '../../../types/types';
 
 export const getGenre = (state: State): Genres => state[NameSpace.moviesProcess].genre;
 export const getLoadedMoviesCount = (state: State): number => state[NameSpace.moviesProcess].loadedMoviesCount;
-export const getLoadSelectedMovie = (state: State): MovieFromServer => state[NameSpace.moviesProcess].loadSelectedMovie;
-export const getSetSelectedMovieId = (state: State): number => state[NameSpace.moviesProcess].setSelectedMovieId;
+export const getSelectedMovie = (state: State): Movie | undefined => state[NameSpace.moviesProcess].setSelectedMovie;
+export const getSelectedMovieId = (state: State): number => state[NameSpace.moviesProcess].setSelectedMovieId;

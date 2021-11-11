@@ -1,6 +1,6 @@
-import { AuthInfo, MovieFromServer, ServerAuthInfo } from '../types/types';
+import { AuthInfo, Movie, ServerAuthInfo } from '../types/types';
 
-export function adapterMoviesToFrontEnd(data: {[key: string]: any}): MovieFromServer {
+export function adapterMoviesToFrontEnd(data: {[key: string]: any}): Movie {
   const adaptedMovie = Object.assign({}, data, {
     posterImage: data['poster_image'],
     previewImage: data['preview_image'],
@@ -23,7 +23,7 @@ export function adapterMoviesToFrontEnd(data: {[key: string]: any}): MovieFromSe
   delete adaptedMovie['video_link'];
   delete adaptedMovie['preview_video_link'];
 
-  return adaptedMovie as MovieFromServer;
+  return adaptedMovie as Movie;
 }
 
 export const adapterAuthInfoToFrontEnd = (data: ServerAuthInfo): AuthInfo => ({

@@ -1,18 +1,18 @@
 import { AuthorizationStatus, Genres } from './enum';
-import { AuthInfo, CommentsFromServer, MovieFromServer } from './types';
+import { AuthInfo, Comment, Movie } from './types';
 import { RootState } from '../store/root-reducer';
 
 export type MoviesData = {
-  moviesFromServer: MovieFromServer[],
-  loadPromo: MovieFromServer,
-  loadSimilarMovies: MovieFromServer[],
+  movies: Movie[],
+  promo?: Movie,
+  similarMovies: Movie[],
   isMoviesLoaded: boolean,
 };
 
 export type ProcessMovies = {
   genre: Genres,
   loadedMoviesCount: number,
-  loadSelectedMovie: MovieFromServer,
+  setSelectedMovie?: Movie,
   setSelectedMovieId: number,
 };
 
@@ -22,7 +22,7 @@ export type UserAuth = {
 };
 
 export type CommentsData = {
-  loadComments: CommentsFromServer[],
+  comments: Comment[],
 };
 
 export type State = RootState;

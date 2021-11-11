@@ -1,13 +1,13 @@
 import { ActionType } from '../types/action';
-import { AuthInfo, CommentsFromServer, MovieFromServer } from '../types/types';
+import { AuthInfo, Comment, Movie } from '../types/types';
 import { Genres } from '../types/enum';
 import { AuthorizationStatus } from '../types/enum';
 import { AppRoute } from '../types/enum';
-import { CommentToServer } from '../types/types';
+import { PostedComment } from '../types/types';
 
 export type Action<T> = {
   type: ActionType,
-  payload: T,
+  payload?: T,
 }
 
 export type SetLoadedMoviesCountAction = {
@@ -22,16 +22,16 @@ function setLoadedMoviesCount(count: number): SetLoadedMoviesCountAction {
   }) as const;
 }
 
-function selectGenre(genre: Genres): Action<Genres> {
+function setGenre(genre: Genres): Action<Genres> {
   return ({
-    type: ActionType.SelectGenre,
+    type: ActionType.SetGenre,
     payload: genre,
   }) as const;
 }
 
-function loadMovies(movies: MovieFromServer[]): Action<MovieFromServer[]> {
+function loadedMovies(movies: Movie[]): Action<Movie[]> {
   return ({
-    type: ActionType.LoadMovies,
+    type: ActionType.Movies,
     payload: movies,
   }) as const;
 }
@@ -43,7 +43,7 @@ function requireAuthorization(authStatus: AuthorizationStatus): Action<Authoriza
   }) as const;
 }
 
-function requireLogout() {
+function requireLogout(): Action<undefined> {
   return ({
     type: ActionType.RequireLogout,
   }) as const;
@@ -56,48 +56,47 @@ function requireAuthInfo(authInfo: AuthInfo): Action<AuthInfo> {
   }) as const;
 }
 
-// TO DO
 const redirectToRoute = (url: AppRoute | string) => ({
   type: ActionType.RedirectToRoute,
   payload: url,
 } as const);
 
-function setReviews(reviews: CommentToServer[]): Action<CommentToServer[]> {
+function setReviews(reviews: PostedComment[]): Action<PostedComment[]> {
   return ({
     type: ActionType.SetReviews,
     payload: reviews,
   } as const);
 }
 
-function loadComments(comments: CommentsFromServer[]): Action<CommentsFromServer[]> {
+function commentsMovie(comments: Comment[]): Action<Comment[]> {
   return ({
-    type: ActionType.LoadComments,
+    type: ActionType.Comments,
     payload: comments,
   }) as const;
 }
 
-function loadPromo(movie: MovieFromServer): Action<MovieFromServer> {
+function promo(movie: Movie): Action<Movie> {
   return ({
-    type: ActionType.LoadPromo,
+    type: ActionType.Promo,
     payload: movie,
   }) as const;
 }
 
-function loadSimilarMovies(movies: MovieFromServer[]): Action<MovieFromServer[]> {
+function similarMovies(movies: Movie[]): Action<Movie[]> {
   return ({
-    type: ActionType.LoadSimilarMovies,
+    type: ActionType.SimilarMovies,
     payload: movies,
   }) as const;
 }
 
-function loadSelectedMovie(movie: MovieFromServer): Action<MovieFromServer> {
+function setSelectedMovie(movie: Movie): Action<Movie> {
   return ({
-    type: ActionType.LoadSelectedMovie,
+    type: ActionType.SetSelectedMovie,
     payload: movie,
   }) as const;
 }
 
-function setSelectedMovieId(id: number) {
+function setSelectedMovieId(id: number): Action<number> {
   return ({
     type: ActionType.SetSelectedMovieId,
     payload: id,
@@ -106,16 +105,16 @@ function setSelectedMovieId(id: number) {
 
 export {
   setLoadedMoviesCount,
-  selectGenre,
-  loadMovies,
+  setGenre,
+  loadedMovies,
   requireAuthorization,
   requireLogout,
   requireAuthInfo,
   redirectToRoute,
   setReviews,
-  loadComments,
-  loadPromo,
-  loadSimilarMovies,
-  loadSelectedMovie,
+  commentsMovie,
+  promo,
+  similarMovies,
+  setSelectedMovie,
   setSelectedMovieId
 };

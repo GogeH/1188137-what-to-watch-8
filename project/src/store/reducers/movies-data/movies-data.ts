@@ -1,23 +1,22 @@
-import { EMPTY_FILM } from '../../../types/const';
 import { MoviesData } from '../../../types/state';
 import { Actions, ActionType } from '../../../types/action';
-import { MovieFromServer } from '../../../types/types';
+import { Movie } from '../../../types/types';
 
 const initialState: MoviesData = {
-  moviesFromServer: [],
-  loadPromo: EMPTY_FILM,
-  loadSimilarMovies: [],
+  movies: [],
+  promo: undefined,
+  similarMovies: [],
   isMoviesLoaded: false,
 };
 
 const moviesData = (state = initialState, action: Actions): MoviesData => {
   switch (action.type) {
-    case ActionType.LoadMovies:
-      return {...state, moviesFromServer: action.payload as MovieFromServer[], isMoviesLoaded: true};
-    case ActionType.LoadPromo:
-      return {...state, loadPromo: action.payload as MovieFromServer};
-    case ActionType.LoadSimilarMovies:
-      return {...state, loadSimilarMovies: action.payload as MovieFromServer[]};
+    case ActionType.Movies:
+      return {...state, movies: action.payload as Movie[], isMoviesLoaded: true};
+    case ActionType.Promo:
+      return {...state, promo: action.payload as Movie};
+    case ActionType.SimilarMovies:
+      return {...state, similarMovies: action.payload as Movie[]};
 
 
     default:

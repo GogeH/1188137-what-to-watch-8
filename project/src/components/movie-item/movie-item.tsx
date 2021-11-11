@@ -1,10 +1,10 @@
 import { MouseEvent, memo } from 'react';
 import { Link } from 'react-router-dom';
-import { MovieFromServer } from '../../types/types';
+import { Movie } from '../../types/types';
 import VideoPreview from '../video-preview/video-preview';
 
 function MovieItem(props: {
-  movie: MovieFromServer,
+  movie: Movie,
   isActive: boolean,
   handleMouseOver: (evt: MouseEvent) => void,
   handleMouseLeave: (evt: MouseEvent) => void,

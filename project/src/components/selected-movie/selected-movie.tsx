@@ -2,7 +2,7 @@ import { State } from '../../types/state';
 import { connect, ConnectedProps } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router';
-import { MovieFromServer } from '../../types/types';
+import { Movie } from '../../types/types';
 import { MovieParam } from '../../types/types';
 import MovieTabs  from '../movie-tabs/movie-tabs';
 import Error from '../error/error';
@@ -18,10 +18,10 @@ import MovieItem from '../movie-item/movie-item';
 
 function mapStateToProps({MOVIES_DATA, USER_AUTH, COMMENTS_DATA}: State) {
   return {
-    moviesFromServer: MOVIES_DATA.moviesFromServer,
+    movies: MOVIES_DATA.movies,
     authorizationStatus: USER_AUTH.authorizationStatus,
-    loadComments: COMMENTS_DATA.loadComments,
-    loadSimilarMovies: MOVIES_DATA.loadSimilarMovies,
+    comments: COMMENTS_DATA.comments,
+    similarMovies: MOVIES_DATA.similarMovies,
   };
 }
 
@@ -48,6 +48,7 @@ type PropsFormRedux = ConnectedProps<typeof connector>;
 type ConnectedComponentProps = PropsFormRedux;
 
 function SelectedMovie(props: ConnectedComponentProps): JSX.Element {
+  const { saveSelectedMovieId, fetchSelectedMovie, fetchSimilarMovies, fetchComments } = props;
   const { id } = useParams<MovieParam>();
   const idIsNumber = Number(id);
   const [activeMovie, setActiveMovie] = useState('');
@@ -60,20 +61,20 @@ function SelectedMovie(props: ConnectedComponentProps): JSX.Element {
     setActiveMovie('');
   };
 
-  const selectedMovie = props.moviesFromServer.find((movie: MovieFromServer) => movie.id.toString() === id);
+  const selectedMovie = props.movies.find((movie: Movie) => movie.id.toString() === id);
 
   useEffect(() => {
-    props.saveSelectedMovieId(idIsNumber);
-    props.fetchSelectedMovie(idIsNumber);
-  }, [props.fetchSelectedMovie, idIsNumber]);
+    saveSelectedMovieId(idIsNumber);
+    fetchSelectedMovie(idIsNumber);
+  });
 
   useEffect(() => {
-    props.fetchComments(idIsNumber);
-  }, [props.fetchSelectedMovie, idIsNumber]);
+    fetchComments(idIsNumber);
+  },[fetchComments, idIsNumber]);
 
   useEffect(() => {
-    props.fetchSimilarMovies(idIsNumber);
-  }, [props.fetchSelectedMovie, idIsNumber]);
+    fetchSimilarMovies(idIsNumber);
+  },[fetchSimilarMovies, idIsNumber]);
 
   if (!selectedMovie) {
     return <Error />;
@@ -143,7 +144,7 @@ function SelectedMovie(props: ConnectedComponentProps): JSX.Element {
               />
             </div>
 
-            <MovieTabs movie={selectedMovie} reviews={props.loadComments}/>
+            <MovieTabs movie={selectedMovie} reviews={props.comments}/>
 
           </div>
         </div>
@@ -154,7 +155,7 @@ function SelectedMovie(props: ConnectedComponentProps): JSX.Element {
           <h2 className="catalog__title">More like this</h2>
 
           <div className="catalog__films-list">
-            {props.loadSimilarMovies.map((movie) => (
+            {props.similarMovies.map((movie) => (
               <MovieItem movie={movie}
                 key={movie.id}
                 isActive={movie.id === Number(activeMovie)}

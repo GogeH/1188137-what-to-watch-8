@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { MovieFromServer, CommentsFromServer } from '../../types/types';
+import { Movie, Comment } from '../../types/types';
 import MovieDetailsTab from './movie-details-tab';
 import MovieOverviewTab from './movie-overview-tab';
 import MovieReviewsTab from './movie-reviews-tab';
@@ -11,8 +11,8 @@ enum MovieTab {
 }
 
 function MovieTabs(props: {
-  movie: MovieFromServer,
-  reviews: CommentsFromServer[],
+  movie: Movie,
+  reviews: Comment[],
 }): JSX.Element {
   const [activeTab, setActiveTab] = useState<MovieTab>(MovieTab.OverviewTab);
 

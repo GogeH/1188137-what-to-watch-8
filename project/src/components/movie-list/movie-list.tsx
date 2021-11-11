@@ -6,9 +6,9 @@ import { getFilterMovie } from '../../utils/get-filter-movie';
 import Loading from '../loading/loading';
 
 function mapStateToProps({MOVIES_DATA, PROCESS_MOVIES}: State) {
-  const moviesByGenre = getFilterMovie(MOVIES_DATA.moviesFromServer, PROCESS_MOVIES.genre);
+  const moviesByGenre = getFilterMovie(MOVIES_DATA.movies, PROCESS_MOVIES.genre);
   return {
-    moviesFromServer: moviesByGenre.slice(0, PROCESS_MOVIES.loadedMoviesCount),
+    movies: moviesByGenre.slice(0, PROCESS_MOVIES.loadedMoviesCount),
     isMoviesLoaded: MOVIES_DATA.isMoviesLoaded,
     loadedMoviesCount: PROCESS_MOVIES.loadedMoviesCount,
   };
@@ -36,7 +36,7 @@ function MovieList(props: ConnectedComponentProps): JSX.Element {
 
   return (
     <div className="catalog__films-list">
-      {props.moviesFromServer.slice(0, props.loadedMoviesCount).map((movie) => (
+      {props.movies.slice(0, props.loadedMoviesCount).map((movie) => (
         <MovieItem movie={movie}
           key={movie.id}
           isActive={movie.id === Number(activeMovie)}

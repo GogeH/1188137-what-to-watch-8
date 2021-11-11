@@ -1,6 +1,6 @@
 import {Genres} from './enum';
 
-export type MovieFromServer = {
+export type Movie = {
   id: number,
   name: string,
   posterImage: string,
@@ -36,7 +36,7 @@ export type ServerAuthInfo = {
   token: string,
 };
 
-export type CommentsFromServer = {
+export type Comment = {
   id: number,
   user: {
     id: number,
@@ -56,7 +56,7 @@ export type MovieParam = {
   id: string;
 }
 
-export type CommentToServer = {
+export type PostedComment = {
   rating: number,
   comment: string,
 };
