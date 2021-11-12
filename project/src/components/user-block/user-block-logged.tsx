@@ -1,7 +1,9 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { connect, ConnectedProps, useDispatch } from 'react-redux';
 import { logoutAction } from '../../store/api-action';
 import { State } from '../../types/state';
+import { AppRoute } from '../../types/enum';
 
 const mapStateToProps = ({USER_AUTH}: State) => ({
   authInfo: USER_AUTH.authInfo,
@@ -9,9 +11,10 @@ const mapStateToProps = ({USER_AUTH}: State) => ({
 
 const connector = connect(mapStateToProps);
 
-type PropsFromRedux = ConnectedProps<typeof connector>;
+type PropsFormRedux = ConnectedProps<typeof connector>;
+type ConnectedComponentProps = PropsFormRedux;
 
-function UserBlockLogged(props: PropsFromRedux): JSX.Element {
+function UserBlockLogged(props: ConnectedComponentProps): JSX.Element {
   const dispatch = useDispatch();
   const handlerButtonClickLogout = (evt: React.MouseEvent) => {
     evt.preventDefault();
@@ -21,12 +24,14 @@ function UserBlockLogged(props: PropsFromRedux): JSX.Element {
   return (
     <ul className="user-block">
       <li className="user-block__item">
-        <div className="user-block__avatar">
-          <img src={props.authInfo.avatarUrl} alt={props.authInfo.name} width="63" height="63" />
-        </div>
+        <Link to={AppRoute.MyList}>
+          <div className="user-block__avatar">
+            <img src={props.authInfo.avatarUrl} alt={props.authInfo.name} width="63" height="63" />
+          </div>
+        </Link>
       </li>
       <li className="user-block__item">
-        <a className="user-block__link" href='/' onClick={handlerButtonClickLogout}>{props.authInfo.email}<br/>{props.authInfo.name}</a>
+        <a className="user-block__link" href='/' onClick={handlerButtonClickLogout}>{props.authInfo.email}</a>
       </li>
     </ul>
   );

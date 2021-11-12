@@ -14,6 +14,8 @@ export type ProcessMovies = {
   loadedMoviesCount: number,
   setSelectedMovie?: Movie,
   setSelectedMovieId: number,
+  favoriteListMovies?: Movie[],
+  favoriteMovie: boolean,
 };
 
 export type UserAuth = {

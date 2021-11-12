@@ -103,6 +103,20 @@ function setSelectedMovieId(id: number): Action<number> {
   }) as const;
 }
 
+function favoriteListMovies(movies: Movie[] | null): Action<Movie[] | null> {
+  return ({
+    type: ActionType.FavoriteListMovies,
+    payload: movies,
+  }) as const;
+}
+
+function favoriteMovie(status: number): Action<number> {
+  return ({
+    type: ActionType.FavoriteMovie,
+    payload: status,
+  }) as const;
+}
+
 export {
   setLoadedMoviesCount,
   setGenre,
@@ -116,5 +130,7 @@ export {
   promo,
   similarMovies,
   setSelectedMovie,
-  setSelectedMovieId
+  setSelectedMovieId,
+  favoriteListMovies,
+  favoriteMovie
 };
