@@ -4,6 +4,7 @@ import { ThunkAppDispatch } from '../../types/action';
 import { AuthData } from '../../types/types';
 import { loginAction } from '../../store/api-action';
 import Logo from '../logo/logo';
+import Footer from '../footer/footer';
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
   onSubmit(authData: AuthData) {
@@ -79,14 +80,8 @@ function SignIn(props: ConnectedComponentProps): JSX.Element {
         </form>
       </div>
 
-      <footer className="page-footer">
+      <Footer />
 
-        <Logo isCenter />
-
-        <div className="copyright">
-          <p>© 2019 What to watch Ltd.</p>
-        </div>
-      </footer>
     </div>
   );
 }

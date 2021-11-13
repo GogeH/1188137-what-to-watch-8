@@ -15,6 +15,7 @@ import { fetchCommentsAction, fetchSelectedMovieAction, fetchSimilarMoviesAction
 import { MouseEvent, useEffect, useState } from 'react';
 import { setSelectedMovieId } from '../../store/action';
 import MovieItem from '../movie-item/movie-item';
+import Footer from '../footer/footer';
 
 function mapStateToProps({MOVIES_DATA, USER_AUTH, COMMENTS_DATA}: State) {
   return {
@@ -118,12 +119,12 @@ function SelectedMovie(props: ConnectedComponentProps): JSX.Element {
                   </svg>
                   <span>Play</span>
                 </Link>
-                <Link className="btn btn--list film-card__button" to={'/myList'}>
+                <button className="btn btn--list film-card__button">
                   <svg viewBox="0 0 19 20" width="19" height="20">
                     <use xlinkHref="#add"></use>
                   </svg>
                   <span>My list</span>
-                </Link>
+                </button>
 
                 {props.authorizationStatus === AuthorizationStatus.Auth
                   ?
@@ -167,14 +168,8 @@ function SelectedMovie(props: ConnectedComponentProps): JSX.Element {
 
         </section>
 
-        <footer className="page-footer">
+        <Footer />
 
-          <Logo isCenter />
-
-          <div className="copyright">
-            <p>© 2019 What to watch Ltd.</p>
-          </div>
-        </footer>
       </div>
     </div>
   );

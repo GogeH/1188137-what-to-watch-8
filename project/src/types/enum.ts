@@ -14,6 +14,8 @@ export enum APIRoute {
   Comments = '/comments',
   Promo = '/promo',
   SimilarMovies = '/films/:id/similar',
+  FavoriteMovies = '/favorite',
+  FavoriteMovie = '/favorite/:id/:status',
 }
 
 export enum AuthorizationStatus {

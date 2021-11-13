@@ -11,6 +11,8 @@ import MovieList from '../movie-list/movie-list';
 import { INCREMENT_MOVIES_STEP } from '../../types/const';
 import UserBlockLogged from '../user-block/user-block-logged';
 import UserBlockUnLogged from '../user-block/user-block-un-logged';
+import Footer from '../footer/footer';
+import React from 'react';
 
 function mapStateToProps({MOVIES_DATA, PROCESS_MOVIES, USER_AUTH}: State) {
   const moviesByGenre = getFilterMovie(MOVIES_DATA.movies, PROCESS_MOVIES.genre);
@@ -134,12 +136,12 @@ function Main(props: ConnectedComponentProps): JSX.Element {
                   </svg>
                   <span>Play</span>
                 </Link>
-                <Link className="btn btn--list film-card__button" to={'/myList'}>
+                <button className="btn btn--list film-card__button">
                   <svg viewBox="0 0 19 20" width="19" height="20">
-                    <use xlinkHref="#add"></use>
+                    <use xlinkHref="#add"/>
                   </svg>
                   <span>My list</span>
-                </Link>
+                </button>
               </div>
             </div>
           </div>
@@ -165,14 +167,8 @@ function Main(props: ConnectedComponentProps): JSX.Element {
           </div>}
         </section>
 
-        <footer className="page-footer">
+        <Footer />
 
-          <Logo isCenter />
-
-          <div className="copyright">
-            <p>© 2019 What to watch Ltd.</p>
-          </div>
-        </footer>
       </div>
     </div>
   );

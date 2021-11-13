@@ -10,6 +10,8 @@ const initialState: ProcessMovies = {
   loadedMoviesCount: FIRST_LOADED_MOVIES,
   setSelectedMovie: undefined,
   setSelectedMovieId: 0,
+  favoriteListMovies: undefined,
+  favoriteMovie: false,
 };
 
 const processMovies = (state = initialState, action: Actions): ProcessMovies => {
@@ -22,6 +24,10 @@ const processMovies = (state = initialState, action: Actions): ProcessMovies => 
       return {...state, setSelectedMovie: action.payload as Movie};
     case ActionType.SetSelectedMovieId:
       return {...state, setSelectedMovieId: action.payload as number};
+    case ActionType.FavoriteListMovies:
+      return {...state, favoriteListMovies: action.payload as Movie[]};
+    // case ActionType.FavoriteMovie:
+    //   return {...state, favoriteMovie: action.payload as number};
     default:
       return state;
   }

@@ -10,13 +10,13 @@ import App from './components/app/app';
 import { AuthorizationStatus } from './types/enum';
 import { ThunkAppDispatch } from './types/action';
 import {
-  checkAuthAction,
+  checkAuthAction, fetchFavoriteListMovies,
   fetchMoviesAction,
   fetchPromoAction
 } from './store/api-action';
 import { requireAuthorization } from './store/action';
 import { redirect } from './store/middlewares/redirect';
-import {ToastContainer} from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const api = createAPI(
@@ -34,6 +34,7 @@ const store = createStore(
 (store.dispatch as ThunkAppDispatch)(checkAuthAction());
 (store.dispatch as ThunkAppDispatch)(fetchMoviesAction());
 (store.dispatch as ThunkAppDispatch)(fetchPromoAction());
+(store.dispatch as ThunkAppDispatch)(fetchFavoriteListMovies());
 
 ReactDOM.render(
   <React.StrictMode>
