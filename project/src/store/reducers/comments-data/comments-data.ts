@@ -8,7 +8,7 @@ const initialState: CommentsData = {
 
 const commentsData = (state = initialState, action: Actions): CommentsData => {
   switch (action.type) {
-    case ActionType.Comments:
+    case ActionType.LoadComments:
       return {...state, comments: action.payload as Comment[]};
     default:
       return state;

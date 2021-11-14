@@ -4,14 +4,13 @@ import { ProcessMovies } from '../../../types/state';
 import { Actions, ActionType } from '../../../types/action';
 import { Movie } from '../../../types/types';
 
-
 const initialState: ProcessMovies = {
   genre: Genres.AllGenres,
   loadedMoviesCount: FIRST_LOADED_MOVIES,
-  setSelectedMovie: undefined,
-  setSelectedMovieId: 0,
+  selectedMovie: undefined,
+  selectedMovieId: 0,
   favoriteListMovies: undefined,
-  favoriteMovie: false,
+  favoriteMovie: undefined,
 };
 
 const processMovies = (state = initialState, action: Actions): ProcessMovies => {
@@ -21,13 +20,13 @@ const processMovies = (state = initialState, action: Actions): ProcessMovies => 
     case ActionType.SetLoadedMoviesCount:
       return {...state, loadedMoviesCount: action.payload as number};
     case ActionType.SetSelectedMovie:
-      return {...state, setSelectedMovie: action.payload as Movie};
+      return {...state, selectedMovie: action.payload as Movie};
     case ActionType.SetSelectedMovieId:
-      return {...state, setSelectedMovieId: action.payload as number};
-    case ActionType.FavoriteListMovies:
+      return {...state, selectedMovieId: action.payload as number};
+    case ActionType.SetFavoriteListMovies:
       return {...state, favoriteListMovies: action.payload as Movie[]};
-    // case ActionType.FavoriteMovie:
-    //   return {...state, favoriteMovie: action.payload as number};
+    case ActionType.SetFavoriteMovie:
+      return {...state, favoriteMovie: action.payload as number};
     default:
       return state;
   }

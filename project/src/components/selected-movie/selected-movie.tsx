@@ -1,9 +1,10 @@
-import { State } from '../../types/state';
+import React, { MouseEvent, useEffect, useState } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router';
 import { Movie } from '../../types/types';
 import { MovieParam } from '../../types/types';
+import { State } from '../../types/state';
 import MovieTabs  from '../movie-tabs/movie-tabs';
 import Error from '../error/error';
 import Logo from '../logo/logo';
@@ -11,11 +12,18 @@ import { AuthorizationStatus } from '../../types/enum';
 import UserBlockLogged from '../user-block/user-block-logged';
 import UserBlockUnLogged from '../user-block/user-block-un-logged';
 import { ThunkAppDispatch } from '../../types/action';
-import { fetchCommentsAction, fetchSelectedMovieAction, fetchSimilarMoviesAction } from '../../store/api-action';
-import { MouseEvent, useEffect, useState } from 'react';
+import {
+  fetchCommentsAction,
+  fetchFavoriteMovie,
+  fetchMoviesAction,
+  fetchSelectedMovieAction,
+  fetchSimilarMoviesAction
+} from '../../store/api-action';
 import { setSelectedMovieId } from '../../store/action';
 import MovieItem from '../movie-item/movie-item';
 import Footer from '../footer/footer';
+import { FavoriteStatus, FavoriteStatusType } from '../../types/enum';
+import Loading from '../loading/loading';
 
 function mapStateToProps({MOVIES_DATA, USER_AUTH, COMMENTS_DATA}: State) {
   return {
@@ -39,6 +47,12 @@ function mapDispatchToProps(dispatch: ThunkAppDispatch) {
     },
     fetchComments(id: number) {
       dispatch(fetchCommentsAction(id));
+    },
+    async changeFavoriteStatus(movieId: number, status: FavoriteStatusType) {
+      await dispatch(fetchFavoriteMovie(movieId, status));
+    },
+    changeMoviesAction() {
+      dispatch(fetchMoviesAction());
     },
   };
 }
@@ -67,7 +81,7 @@ function SelectedMovie(props: ConnectedComponentProps): JSX.Element {
   useEffect(() => {
     saveSelectedMovieId(idIsNumber);
     fetchSelectedMovie(idIsNumber);
-  });
+  },[idIsNumber]);
 
   useEffect(() => {
     fetchComments(idIsNumber);
@@ -76,6 +90,17 @@ function SelectedMovie(props: ConnectedComponentProps): JSX.Element {
   useEffect(() => {
     fetchSimilarMovies(idIsNumber);
   },[fetchSimilarMovies, idIsNumber]);
+
+  if(!props.movies) {
+    return <Loading />;
+  }
+
+  const onFavoriteButtonClick = () => {
+    if(selectedMovie) {
+      props.changeFavoriteStatus(selectedMovie.id, selectedMovie.isFavorite ? FavoriteStatus.NotFavorite : FavoriteStatus.Favorite);
+      props.changeMoviesAction();
+    }
+  };
 
   if (!selectedMovie) {
     return <Error />;
@@ -115,20 +140,26 @@ function SelectedMovie(props: ConnectedComponentProps): JSX.Element {
               <div className="film-card__buttons">
                 <Link className="btn btn--play film-card__button" to={`/player/${selectedMovie.id}`}>
                   <svg viewBox="0 0 19 19" width="19" height="19">
-                    <use xlinkHref="#play-s"></use>
+                    <use xlinkHref="#play-s"/>
                   </svg>
                   <span>Play</span>
                 </Link>
-                <button className="btn btn--list film-card__button">
-                  <svg viewBox="0 0 19 20" width="19" height="20">
-                    <use xlinkHref="#add"></use>
-                  </svg>
-                  <span>My list</span>
-                </button>
 
                 {props.authorizationStatus === AuthorizationStatus.Auth
                   ?
-                  <Link to={`/films/${selectedMovie.id}/review`} className="btn film-card__button">Add review</Link>
+                  <>
+                    <button
+                      className="btn btn--list film-card__button"
+                      onClick={onFavoriteButtonClick}
+                    >
+                      <svg viewBox="0 0 19 20" width="19" height="20">
+                        <use xlinkHref={`#${!selectedMovie.isFavorite ? 'add' : 'in-list'}`} />
+                      </svg>
+                      <span>My list</span>
+                    </button>
+
+                    <Link to={`/films/${selectedMovie.id}/review`} className="btn film-card__button">Add review</Link>
+                  </>
                   :
                   ''}
 

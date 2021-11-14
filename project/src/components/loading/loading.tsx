@@ -10,7 +10,6 @@ function Loading(): JSX.Element {
       <div>A</div>
       <div>O</div>
       <div>L</div>
-
     </div>
   );
 }

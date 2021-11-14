@@ -2,21 +2,21 @@ import { ThunkActionResult } from '../types/action';
 import { toast } from 'react-toastify';
 import { generatePath } from 'react-router-dom';
 import {
-  commentsMovie,
-  loadedMovies,
-  promo,
+  loadCommentsMovie,
+  loadMovies,
+  loadPromo,
   setSelectedMovie,
-  similarMovies,
+  loadSimilarMovies,
   redirectToRoute,
   requireAuthInfo,
   requireAuthorization,
-  requireLogout, favoriteListMovies
+  requireLogout, setFavoriteListMovies
 } from './action';
 import { dropToken, saveToken, Token } from '../services/token';
 import { APIRoute, AppRoute, AuthorizationStatus } from '../types/enum';
 import { AuthData, Comment, PostedComment, Movie } from '../types/types';
 import { adapterAuthInfoToFrontEnd, adapterMoviesToFrontEnd } from '../utils/adapters';
-import { FavoriteStatusType } from '../types/const';
+import { FavoriteStatusType } from '../types/enum';
 
 const AUTH_FAIL_MESSAGE = 'Не забудьте авторизоваться!';
 
@@ -24,48 +24,39 @@ export const fetchMoviesAction = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     const {data} = await api.get<Movie[]>(APIRoute.Movies);
     const adaptedMoviesData = data.map((movie) => adapterMoviesToFrontEnd(movie));
-    dispatch(loadedMovies(adaptedMoviesData));
+    dispatch(loadMovies(adaptedMoviesData));
   };
 
 export const fetchFavoriteListMovies = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     const {data} = await api.get<Movie[]>(APIRoute.FavoriteMovies);
     const adaptedMoviesData = data.map((movie) => adapterMoviesToFrontEnd(movie));
-    dispatch(favoriteListMovies(adaptedMoviesData));
+    dispatch(setFavoriteListMovies(adaptedMoviesData));
   };
 
-export const fetchFavoriteMovie = (movieId: string | number, newStatus: FavoriteStatusType): ThunkActionResult =>
+export const fetchFavoriteMovie = (movieId: number, newStatus: FavoriteStatusType): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
-    const {data} = await api.post(`${APIRoute.FavoriteMovies}/${movieId}/${newStatus}`);
-    const adaptedMovie = adapterMoviesToFrontEnd(data);
-
-    if(_getState().PROCESS_MOVIES.setSelectedMovie?.id === data.id) {
-      dispatch(setSelectedMovie(adaptedMovie));
-    }
-
-    if(_getState().MOVIES_DATA.promo?.id === data.id) {
-      dispatch(promo(adaptedMovie));
-    }
+    await api.post(`${APIRoute.FavoriteMovies}/${movieId}/${newStatus}`);
   };
 
 export const fetchCommentsAction = (id: number): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     const {data} = await api.get<Comment[]>(`${APIRoute.Comments}/${id}`);
-    dispatch(commentsMovie(data));
+    dispatch(loadCommentsMovie(data));
   };
 
 export const fetchPromoAction = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     const {data} = await api.get<Movie>(APIRoute.Promo);
     const adaptedMoviesData = adapterMoviesToFrontEnd(data);
-    dispatch(promo(adaptedMoviesData));
+    dispatch(loadPromo(adaptedMoviesData));
   };
 
 export const fetchSimilarMoviesAction = (id: number): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     const {data} = await api.get<Movie[]>(generatePath(APIRoute.SimilarMovies.replace(':id', id.toString())));
     const adaptedMoviesData = data.map((movie) => adapterMoviesToFrontEnd(movie));
-    dispatch(similarMovies(adaptedMoviesData));
+    dispatch(loadSimilarMovies(adaptedMoviesData));
   };
 
 export const fetchSelectedMovieAction = (id: number): ThunkActionResult =>

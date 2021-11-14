@@ -3,55 +3,55 @@ import { AxiosInstance } from 'axios';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import {
   setGenre,
-  loadedMovies,
+  loadMovies,
   requireAuthorization,
   requireLogout,
   SetLoadedMoviesCountAction,
   redirectToRoute,
   setReviews,
   requireAuthInfo,
-  commentsMovie,
-  promo,
-  similarMovies,
+  loadCommentsMovie,
+  loadPromo,
+  loadSimilarMovies,
   setSelectedMovie,
   setSelectedMovieId,
-  favoriteListMovies,
-  favoriteMovie
+  setFavoriteListMovies,
+  setFavoriteMovie
 } from '../store/action';
 
 export enum ActionType {
   SetGenre = 'change/setGenre',
-  Movies = 'data/movie',
+  LoadMovies = 'data/movie',
   RequireAuthorization = 'user/requireAuthorization',
   RequireLogout = 'user/requireLogout',
   RequireAuthInfo = 'user/requireAuthInfo',
   SetLoadedMoviesCount = 'change/setLoadedMoviesCount',
   RedirectToRoute = 'app/redirectToRoute',
   SetReviews = 'app/setReviews',
-  Comments = 'data/comments',
-  Promo = 'data/promo',
-  SimilarMovies = 'data/similarMovie',
+  LoadComments = 'data/comments',
+  LoadPromo = 'data/promo',
+  LoadSimilarMovies = 'data/similarMovie',
   SetSelectedMovie = 'data/setSelectedMovie',
   SetSelectedMovieId = 'data/setSelectedMovieId',
-  FavoriteListMovies = 'change/favoriteListMovies',
-  FavoriteMovie = 'change/favoriteMovie',
+  SetFavoriteListMovies = 'change/setFavoriteListMovies',
+  SetFavoriteMovie = 'change/setFavoriteMovie',
 }
 
 export type Actions =
   | ReturnType<typeof setGenre>
-  | ReturnType<typeof loadedMovies>
+  | ReturnType<typeof loadMovies>
   | ReturnType<typeof requireAuthorization>
   | ReturnType<typeof requireLogout>
   | ReturnType<typeof requireAuthInfo>
   | ReturnType<typeof redirectToRoute>
   | ReturnType<typeof setReviews>
-  | ReturnType<typeof commentsMovie>
-  | ReturnType<typeof promo>
-  | ReturnType<typeof similarMovies>
+  | ReturnType<typeof loadCommentsMovie>
+  | ReturnType<typeof loadPromo>
+  | ReturnType<typeof loadSimilarMovies>
   | ReturnType<typeof setSelectedMovie>
   | ReturnType<typeof setSelectedMovieId>
-  | ReturnType<typeof favoriteListMovies>
-  | ReturnType<typeof favoriteMovie>
+  | ReturnType<typeof setFavoriteListMovies>
+  | ReturnType<typeof setFavoriteMovie>
   | SetLoadedMoviesCountAction
 
 export type ThunkActionResult<R = Promise<void>> = ThunkAction<R, State, AxiosInstance, Actions>;
