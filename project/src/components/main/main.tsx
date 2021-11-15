@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect, ConnectedProps } from 'react-redux';
 import { getFilterMovie } from '../../utils/get-filter-movie';
@@ -12,7 +13,9 @@ import { INCREMENT_MOVIES_STEP } from '../../types/const';
 import UserBlockLogged from '../user-block/user-block-logged';
 import UserBlockUnLogged from '../user-block/user-block-un-logged';
 import Footer from '../footer/footer';
-import React from 'react';
+import { fetchFavoriteMovie, fetchPromoAction } from '../../store/api-action';
+import Loading from '../loading/loading';
+import { FavoriteStatusType, FavoriteStatus } from '../../types/enum';
 
 function mapStateToProps({MOVIES_DATA, PROCESS_MOVIES, USER_AUTH}: State) {
   const moviesByGenre = getFilterMovie(MOVIES_DATA.movies, PROCESS_MOVIES.genre);
@@ -34,6 +37,12 @@ function mapDispatchToProps(dispatch: ThunkAppDispatch) {
     setLoadedMoviesCount(count: number) {
       dispatch(setLoadedMoviesCount(count));
     },
+    async changeFavoriteStatus(movieId: number, status: FavoriteStatusType) {
+      await dispatch(fetchFavoriteMovie(movieId, status));
+    },
+    changePromoAction() {
+      dispatch(fetchPromoAction());
+    },
   };
 }
 
@@ -43,9 +52,20 @@ type PropsFormRedux = ConnectedProps<typeof connector>;
 type ConnectedComponentProps = PropsFormRedux;
 
 function Main(props: ConnectedComponentProps): JSX.Element {
+  if(!props.promo) {
+    return <Loading />;
+  }
+
   const genres = Object.values(Genres) as Genres[];
+
+  const { id, isFavorite }: any = props.promo;
+
   const handleShowMoreClick = () => {
     props.setLoadedMoviesCount(props.loadedMoviesCount + INCREMENT_MOVIES_STEP);
+  };
+  const onFavoriteButtonClick = () => {
+    props.changeFavoriteStatus(id, isFavorite ? FavoriteStatus.NotFavorite : FavoriteStatus.Favorite);
+    props.changePromoAction();
   };
 
   return (
@@ -132,16 +152,23 @@ function Main(props: ConnectedComponentProps): JSX.Element {
               <div className="film-card__buttons">
                 <Link className="btn btn--play film-card__button" to={`/player/${props.promo?.id}`}>
                   <svg viewBox="0 0 19 19" width="19" height="19">
-                    <use xlinkHref="#play-s"></use>
+                    <use xlinkHref="#play-s" />
                   </svg>
                   <span>Play</span>
                 </Link>
-                <button className="btn btn--list film-card__button">
-                  <svg viewBox="0 0 19 20" width="19" height="20">
-                    <use xlinkHref="#add"/>
-                  </svg>
-                  <span>My list</span>
-                </button>
+                {props.authorizationStatus === AuthorizationStatus.Auth
+                  ?
+                  <button
+                    className="btn btn--list film-card__button"
+                    onClick={onFavoriteButtonClick}
+                  >
+                    <svg viewBox="0 0 19 20" width="19" height="20">
+                      <use xlinkHref={`#${!props.promo?.isFavorite ? 'add' : 'in-list'}`} />
+                    </svg>
+                    <span>My list</span>
+                  </button>
+                  :
+                  ''}
               </div>
             </div>
           </div>

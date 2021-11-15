@@ -15,7 +15,6 @@ export enum APIRoute {
   Promo = '/promo',
   SimilarMovies = '/films/:id/similar',
   FavoriteMovies = '/favorite',
-  FavoriteMovie = '/favorite/:id/:status',
 }
 
 export enum AuthorizationStatus {
@@ -38,3 +37,11 @@ export enum Genres {
   Thriller = 'Thrillers',
 }
 
+export enum FavoriteStatus {
+  Favorite = 1,
+  NotFavorite = 0,
+}
+
+export type ValuesOf<T> = T[keyof T];
+
+export type FavoriteStatusType = ValuesOf<typeof FavoriteStatus>;

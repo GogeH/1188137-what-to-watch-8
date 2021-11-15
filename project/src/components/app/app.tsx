@@ -5,13 +5,12 @@ import SignIn from '../sign-in/sign-in';
 import SelectedMovie from '../selected-movie/selected-movie';
 import Error from '../error/error';
 import Player  from '../player/player';
-import PrivateRoute from '../private-route/private-route';
-import MovieList from '../movie-list/movie-list';
 import Reviews from '../reviews/reviews';
 import { State} from '../../types/state';
 import { connect, ConnectedProps } from 'react-redux';
 import Loading from '../loading/loading';
 import browserHistory from '../../browser-history';
+import MyList from '../my-list/my-list';
 
 const isCheckedAuth = (authorizationStatus: AuthorizationStatus): boolean =>
   authorizationStatus === AuthorizationStatus.Unknown;
@@ -38,10 +37,7 @@ function App(props: PropsFromRedux): JSX.Element {
           <Main />
         </Route>
         <Route path={AppRoute.SignIn} exact component={SignIn} />
-        <PrivateRoute
-          exact path={AppRoute.MyList}
-          render={() => <MovieList />}
-        />
+        <Route path={AppRoute.MyList} exact component={MyList} />
         <Route path={AppRoute.Movie} exact component={SelectedMovie} />
         <Route path={AppRoute.Review} exact component={Reviews} />
         <Route path={AppRoute.Player} exact component={Player} />

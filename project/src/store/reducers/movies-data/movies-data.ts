@@ -11,14 +11,12 @@ const initialState: MoviesData = {
 
 const moviesData = (state = initialState, action: Actions): MoviesData => {
   switch (action.type) {
-    case ActionType.Movies:
+    case ActionType.LoadMovies:
       return {...state, movies: action.payload as Movie[], isMoviesLoaded: true};
-    case ActionType.Promo:
+    case ActionType.LoadPromo:
       return {...state, promo: action.payload as Movie};
-    case ActionType.SimilarMovies:
+    case ActionType.LoadSimilarMovies:
       return {...state, similarMovies: action.payload as Movie[]};
-
-
     default:
       return state;
   }

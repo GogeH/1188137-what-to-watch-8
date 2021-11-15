@@ -1,11 +1,11 @@
 import { MouseEventHandler, memo } from 'react';
 
-function PlayButton(props: {
+function PlayButton(onPlayButtonClick: {
   isPlay: boolean,
   isReady: boolean,
   playButtonClickHandler: MouseEventHandler<HTMLButtonElement>,
 } ): JSX.Element {
-  const { isPlay, isReady, playButtonClickHandler} = props;
+  const { isPlay, isReady, playButtonClickHandler} = onPlayButtonClick;
 
   return (
     <button type="button" className="player__play" disabled={!isReady} onClick={playButtonClickHandler}>

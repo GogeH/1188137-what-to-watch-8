@@ -9,7 +9,7 @@ import Error from '../error/error';
 import PlayButton from './player-button';
 import { Link } from 'react-router-dom';
 import { getRemainingTime } from '../../utils/get-remaining-time';
-import Spinner from '../spinner/spinnet';
+import Spinner from '../spinner/spinner';
 
 const GHOST_PERCENTAGE = 100;
 const LOADING_TIME = '00:00';
@@ -71,17 +71,17 @@ function Player(props: ConnectedComponentProps): JSX.Element {
     videoElement.pause();
   }, [isPlay, videoElement]);
 
-  const RemainingMovieTime = isReady ? getRemainingTime(remainingTime) : LOADING_TIME;
+  const remainingMovieTime  = isReady ? getRemainingTime(remainingTime) : LOADING_TIME;
 
-  const handlerClickPlayButton = () => {
+  const handlePlayButtonClick = () => {
     setPlay((prevState) => !prevState);
   };
 
-  const handlerLoadedData = () => {
+  const handleDataLoaded = () => {
     setReady(true);
   };
 
-  const handlerTrackingTimeMovie = () => {
+  const handleTimeUpdate = () => {
     if (!videoElement || !progressBarElement) {
       return;
     }
@@ -97,7 +97,7 @@ function Player(props: ConnectedComponentProps): JSX.Element {
     progressBarElement.value = currentVideoTime;
   };
 
-  const handlerClickFullscreen = () => {
+  const handleFullScreenClick = () => {
     if (videoElement) {
       videoElement.requestFullscreen();
     }
@@ -117,8 +117,8 @@ function Player(props: ConnectedComponentProps): JSX.Element {
         ref={videoRef}
         src={selectedMovie.videoLink}
         poster={selectedMovie.previewImage}
-        onTimeUpdate={handlerTrackingTimeMovie}
-        onLoadedData={handlerLoadedData}
+        onTimeUpdate={handleTimeUpdate}
+        onLoadedData={handleDataLoaded}
       />
 
       <Link
@@ -134,21 +134,21 @@ function Player(props: ConnectedComponentProps): JSX.Element {
             <progress className="player__progress" max={duration} ref={progressBarRef}/>
             <div className="player__toggler" style={{left: `${currentTime}%`}}>Toggler</div>
           </div>
-          <div className="player__time-value">{RemainingMovieTime}</div>
+          <div className="player__time-value">{remainingMovieTime }</div>
         </div>
 
         <div className="player__controls-row">
           <PlayButton
             isPlay={isPlay}
             isReady={isReady}
-            playButtonClickHandler={handlerClickPlayButton}
+            playButtonClickHandler={handlePlayButtonClick}
           />
 
           <button
             type="button"
             className="player__full-screen"
             disabled={!isReady}
-            onClick={handlerClickFullscreen}
+            onClick={handleFullScreenClick}
           >
 
             <svg viewBox="0 0 27 27" width="27" height="27">

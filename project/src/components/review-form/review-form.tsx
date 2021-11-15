@@ -21,7 +21,7 @@ const DEFAULT_RATING_VALUE = 0;
 
 function mapStateToProps({USER_AUTH, PROCESS_MOVIES}: State) {
   return {
-    setSelectedMovie: PROCESS_MOVIES.setSelectedMovie,
+    selectedMovie: PROCESS_MOVIES.selectedMovie,
     authorizationStatus: USER_AUTH.authorizationStatus,
   };
 }
@@ -52,7 +52,7 @@ function ReviewForm(props: PropsFromRedux): JSX.Element {
   const [formIsSending, setFormIsSending] = useState<boolean>(false);
   const { id } = useParams<MovieParam>();
   const idIsNumber = Number(id);
-  const movieId = Number(props.setSelectedMovie?.id);
+  const movieId = Number(props.selectedMovie?.id);
 
   useEffect(() => {
     saveSelectedMovieId(idIsNumber);

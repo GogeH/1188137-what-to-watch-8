@@ -16,7 +16,7 @@ type ConnectedComponentProps = PropsFormRedux;
 
 function UserBlockLogged(props: ConnectedComponentProps): JSX.Element {
   const dispatch = useDispatch();
-  const handlerButtonClickLogout = (evt: React.MouseEvent) => {
+  const handleSignInButtonClick = (evt: React.MouseEvent) => {
     evt.preventDefault();
     dispatch(logoutAction());
   };
@@ -31,7 +31,7 @@ function UserBlockLogged(props: ConnectedComponentProps): JSX.Element {
         </Link>
       </li>
       <li className="user-block__item">
-        <a className="user-block__link" href='/' onClick={handlerButtonClickLogout}>{props.authInfo.email}</a>
+        <a className="user-block__link" href='/' onClick={handleSignInButtonClick}>{props.authInfo.email}</a>
       </li>
     </ul>
   );

@@ -10,7 +10,7 @@ import App from './components/app/app';
 import { AuthorizationStatus } from './types/enum';
 import { ThunkAppDispatch } from './types/action';
 import {
-  checkAuthAction, fetchFavoriteListMovies,
+  checkAuthAction,
   fetchMoviesAction,
   fetchPromoAction
 } from './store/api-action';
@@ -34,7 +34,6 @@ const store = createStore(
 (store.dispatch as ThunkAppDispatch)(checkAuthAction());
 (store.dispatch as ThunkAppDispatch)(fetchMoviesAction());
 (store.dispatch as ThunkAppDispatch)(fetchPromoAction());
-(store.dispatch as ThunkAppDispatch)(fetchFavoriteListMovies());
 
 ReactDOM.render(
   <React.StrictMode>

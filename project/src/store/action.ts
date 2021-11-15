@@ -29,9 +29,9 @@ function setGenre(genre: Genres): Action<Genres> {
   }) as const;
 }
 
-function loadedMovies(movies: Movie[]): Action<Movie[]> {
+function loadMovies(movies: Movie[]): Action<Movie[]> {
   return ({
-    type: ActionType.Movies,
+    type: ActionType.LoadMovies,
     payload: movies,
   }) as const;
 }
@@ -68,23 +68,23 @@ function setReviews(reviews: PostedComment[]): Action<PostedComment[]> {
   } as const);
 }
 
-function commentsMovie(comments: Comment[]): Action<Comment[]> {
+function loadCommentsMovie(comments: Comment[]): Action<Comment[]> {
   return ({
-    type: ActionType.Comments,
+    type: ActionType.LoadComments,
     payload: comments,
   }) as const;
 }
 
-function promo(movie: Movie): Action<Movie> {
+function loadPromo(movie: Movie): Action<Movie> {
   return ({
-    type: ActionType.Promo,
+    type: ActionType.LoadPromo,
     payload: movie,
   }) as const;
 }
 
-function similarMovies(movies: Movie[]): Action<Movie[]> {
+function loadSimilarMovies(movies: Movie[]): Action<Movie[]> {
   return ({
-    type: ActionType.SimilarMovies,
+    type: ActionType.LoadSimilarMovies,
     payload: movies,
   }) as const;
 }
@@ -103,16 +103,16 @@ function setSelectedMovieId(id: number): Action<number> {
   }) as const;
 }
 
-function favoriteListMovies(movies: Movie[] | null): Action<Movie[] | null> {
+function setFavoriteListMovies(movies: Movie[] | null): Action<Movie[] | null> {
   return ({
-    type: ActionType.FavoriteListMovies,
+    type: ActionType.SetFavoriteListMovies,
     payload: movies,
   }) as const;
 }
 
-function favoriteMovie(status: number): Action<number> {
+function setFavoriteMovie(status: number): Action<number> {
   return ({
-    type: ActionType.FavoriteMovie,
+    type: ActionType.SetFavoriteMovie,
     payload: status,
   }) as const;
 }
@@ -120,17 +120,17 @@ function favoriteMovie(status: number): Action<number> {
 export {
   setLoadedMoviesCount,
   setGenre,
-  loadedMovies,
+  loadMovies,
   requireAuthorization,
   requireLogout,
   requireAuthInfo,
   redirectToRoute,
   setReviews,
-  commentsMovie,
-  promo,
-  similarMovies,
+  loadCommentsMovie,
+  loadPromo,
+  loadSimilarMovies,
   setSelectedMovie,
   setSelectedMovieId,
-  favoriteListMovies,
-  favoriteMovie
+  setFavoriteListMovies,
+  setFavoriteMovie
 };

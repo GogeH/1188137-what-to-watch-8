@@ -4,7 +4,7 @@ import { RootState } from '../store/root-reducer';
 
 export type MoviesData = {
   movies: Movie[],
-  promo?: Movie,
+  promo?: Movie | undefined,
   similarMovies: Movie[],
   isMoviesLoaded: boolean,
 };
@@ -12,10 +12,10 @@ export type MoviesData = {
 export type ProcessMovies = {
   genre: Genres,
   loadedMoviesCount: number,
-  setSelectedMovie?: Movie,
-  setSelectedMovieId: number,
+  selectedMovie?: Movie,
+  selectedMovieId: number,
   favoriteListMovies?: Movie[],
-  favoriteMovie: boolean,
+  favoriteMovie?: number,
 };
 
 export type UserAuth = {
