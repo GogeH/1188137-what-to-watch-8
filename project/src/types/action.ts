@@ -10,7 +10,7 @@ import {
   redirectToRoute,
   setReviews,
   requireAuthInfo,
-  loadCommentsMovie,
+  loadComments,
   loadPromo,
   loadSimilarMovies,
   setSelectedMovie,
@@ -45,7 +45,7 @@ export type Actions =
   | ReturnType<typeof requireAuthInfo>
   | ReturnType<typeof redirectToRoute>
   | ReturnType<typeof setReviews>
-  | ReturnType<typeof loadCommentsMovie>
+  | ReturnType<typeof loadComments>
   | ReturnType<typeof loadPromo>
   | ReturnType<typeof loadSimilarMovies>
   | ReturnType<typeof setSelectedMovie>

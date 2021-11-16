@@ -1,15 +1,9 @@
-import { CSSProperties } from 'react';
-
-const LOADER_STYLES: CSSProperties = {
-  position: 'fixed',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-};
+import styles from '../spinner/spinner.module.css';
 
 function Spinner(): JSX.Element {
   return (
-    <div style={LOADER_STYLES}>
+    <div className={styles.loader_styles}>
+      <div className={styles.loader_message}> Идёт загрузка фильма</div>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -20,7 +14,7 @@ function Spinner(): JSX.Element {
         preserveAspectRatio="xMidYMid"
       >
         <g transform="rotate(0 50 50)">
-          <rect x="47" y="2" rx="3" ry="6" width="6" height="12" fill="#df5127">
+          <rect x="47" y="2" rx="3" ry="6" width="6" height="12" fill="#2a2d30">
             <animate
               attributeName="opacity"
               values="1;0"
@@ -33,7 +27,7 @@ function Spinner(): JSX.Element {
           </rect>
         </g>
         <g transform="rotate(30 50 50)">
-          <rect x="47" y="2" rx="3" ry="6" width="6" height="12" fill="#df5127">
+          <rect x="47" y="2" rx="3" ry="6" width="6" height="12" fill="#2a2d30">
             <animate
               attributeName="opacity"
               values="1;0"
@@ -46,7 +40,7 @@ function Spinner(): JSX.Element {
           </rect>
         </g>
         <g transform="rotate(60 50 50)">
-          <rect x="47" y="2" rx="3" ry="6" width="6" height="12" fill="#df5127">
+          <rect x="47" y="2" rx="3" ry="6" width="6" height="12" fill="#2a2d30">
             <animate
               attributeName="opacity"
               values="1;0"
@@ -59,7 +53,7 @@ function Spinner(): JSX.Element {
           </rect>
         </g>
         <g transform="rotate(90 50 50)">
-          <rect x="47" y="2" rx="3" ry="6" width="6" height="12" fill="#df5127">
+          <rect x="47" y="2" rx="3" ry="6" width="6" height="12" fill="#2a2d30">
             <animate
               attributeName="opacity"
               values="1;0"
@@ -72,7 +66,7 @@ function Spinner(): JSX.Element {
           </rect>
         </g>
         <g transform="rotate(120 50 50)">
-          <rect x="47" y="2" rx="3" ry="6" width="6" height="12" fill="#df5127">
+          <rect x="47" y="2" rx="3" ry="6" width="6" height="12" fill="#2a2d30">
             <animate
               attributeName="opacity"
               values="1;0"
@@ -85,7 +79,7 @@ function Spinner(): JSX.Element {
           </rect>
         </g>
         <g transform="rotate(150 50 50)">
-          <rect x="47" y="2" rx="3" ry="6" width="6" height="12" fill="#df5127">
+          <rect x="47" y="2" rx="3" ry="6" width="6" height="12" fill="#2a2d30">
             <animate
               attributeName="opacity"
               values="1;0"
@@ -98,7 +92,7 @@ function Spinner(): JSX.Element {
           </rect>
         </g>
         <g transform="rotate(180 50 50)">
-          <rect x="47" y="2" rx="3" ry="6" width="6" height="12" fill="#df5127">
+          <rect x="47" y="2" rx="3" ry="6" width="6" height="12" fill="#2a2d30">
             <animate
               attributeName="opacity"
               values="1;0"
@@ -111,7 +105,7 @@ function Spinner(): JSX.Element {
           </rect>
         </g>
         <g transform="rotate(210 50 50)">
-          <rect x="47" y="2" rx="3" ry="6" width="6" height="12" fill="#df5127">
+          <rect x="47" y="2" rx="3" ry="6" width="6" height="12" fill="#2a2d30">
             <animate
               attributeName="opacity"
               values="1;0"
@@ -124,7 +118,7 @@ function Spinner(): JSX.Element {
           </rect>
         </g>
         <g transform="rotate(240 50 50)">
-          <rect x="47" y="2" rx="3" ry="6" width="6" height="12" fill="#df5127">
+          <rect x="47" y="2" rx="3" ry="6" width="6" height="12" fill="#2a2d30">
             <animate
               attributeName="opacity"
               values="1;0"
@@ -137,7 +131,7 @@ function Spinner(): JSX.Element {
           </rect>
         </g>
         <g transform="rotate(270 50 50)">
-          <rect x="47" y="2" rx="3" ry="6" width="6" height="12" fill="#df5127">
+          <rect x="47" y="2" rx="3" ry="6" width="6" height="12" fill="#2a2d30">
             <animate
               attributeName="opacity"
               values="1;0"
@@ -150,7 +144,7 @@ function Spinner(): JSX.Element {
           </rect>
         </g>
         <g transform="rotate(300 50 50)">
-          <rect x="47" y="2" rx="3" ry="6" width="6" height="12" fill="#df5127">
+          <rect x="47" y="2" rx="3" ry="6" width="6" height="12" fill="#2a2d30">
             <animate
               attributeName="opacity"
               values="1;0"
@@ -163,7 +157,7 @@ function Spinner(): JSX.Element {
           </rect>
         </g>
         <g transform="rotate(330 50 50)">
-          <rect x="47" y="2" rx="3" ry="6" width="6" height="12" fill="#df5127">
+          <rect x="47" y="2" rx="3" ry="6" width="6" height="12" fill="#2a2d30">
             <animate
               attributeName="opacity"
               values="1;0"

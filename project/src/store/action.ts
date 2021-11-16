@@ -68,7 +68,7 @@ function setReviews(reviews: PostedComment[]): Action<PostedComment[]> {
   } as const);
 }
 
-function loadCommentsMovie(comments: Comment[]): Action<Comment[]> {
+function loadComments(comments: Comment[]): Action<Comment[]> {
   return ({
     type: ActionType.LoadComments,
     payload: comments,
@@ -126,7 +126,7 @@ export {
   requireAuthInfo,
   redirectToRoute,
   setReviews,
-  loadCommentsMovie,
+  loadComments,
   loadPromo,
   loadSimilarMovies,
   setSelectedMovie,

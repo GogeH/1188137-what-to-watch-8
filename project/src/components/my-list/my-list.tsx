@@ -1,4 +1,4 @@
-import React, { MouseEvent, useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Logo from '../logo/logo';
 import UserBlockLogged from '../user-block/user-block-logged';
 import Footer from '../footer/footer';
@@ -34,19 +34,10 @@ type ConnectedComponentProps = PropsFormRedux;
 function MyList(props: ConnectedComponentProps): JSX.Element {
   const { changeFavoriteListMovies } = props;
 
-  const [activeMovie, setActiveMovie] = useState('');
-
   useEffect(()=> {
     changeFavoriteListMovies();
   }, [changeFavoriteListMovies]);
 
-  const onSmallMovieCardHover = (evt: MouseEvent) => {
-    setActiveMovie(evt.currentTarget.id);
-  };
-
-  const onSmallMovieCardLeave = () => {
-    setActiveMovie('');
-  };
 
   if (props.authorizationStatus !== AuthorizationStatus.Auth) {
     return <Redirect to={AppRoute.SignIn}/>;
@@ -65,18 +56,11 @@ function MyList(props: ConnectedComponentProps): JSX.Element {
 
         <div className="catalog__films-list">
 
-          {!props.favoriteListMovies
-            ?
-            ''
-            :
-            props.favoriteListMovies.map((movie) => (
-              <MovieItem movie={movie}
-                key={movie.id}
-                isActive={movie.id === Number(activeMovie)}
-                handleMouseOver={onSmallMovieCardHover}
-                handleMouseLeave={onSmallMovieCardLeave}
-              />
-            ))}
+          {props.favoriteListMovies &&
+          props.favoriteListMovies.map((movie) => (
+            <MovieItem movie={movie}
+              key={movie.id}
+            />))}
 
         </div>
       </section>

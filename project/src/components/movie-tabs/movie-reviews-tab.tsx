@@ -1,5 +1,6 @@
 import MovieReviewsTabItem from './movie-reviews-tab-item';
 import { Comment } from '../../types/types';
+import { memo } from 'react';
 
 function MovieReviewsTab(props: {
   reviews: Comment[],
@@ -23,4 +24,4 @@ function MovieReviewsTab(props: {
   );
 }
 
-export default MovieReviewsTab;
+export default memo(MovieReviewsTab);
