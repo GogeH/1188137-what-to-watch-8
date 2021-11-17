@@ -141,7 +141,7 @@ function Player(props: ConnectedComponentProps): JSX.Element {
           <PlayButton
             isPlay={isPlay}
             isReady={isReady}
-            playButtonClickHandler={handlePlayButtonClick}
+            onPlayButtonClick={handlePlayButtonClick}
           />
 
           <button

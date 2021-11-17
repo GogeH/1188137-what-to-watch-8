@@ -1,14 +1,14 @@
 import { MouseEventHandler, memo } from 'react';
 
-function PlayButton(onPlayButtonClick: {
+function PlayButton(props: {
   isPlay: boolean,
   isReady: boolean,
-  playButtonClickHandler: MouseEventHandler<HTMLButtonElement>,
+  onPlayButtonClick: MouseEventHandler<HTMLButtonElement>,
 } ): JSX.Element {
-  const { isPlay, isReady, playButtonClickHandler} = onPlayButtonClick;
+  const { isPlay, isReady, onPlayButtonClick} = props;
 
   return (
-    <button type="button" className="player__play" disabled={!isReady} onClick={playButtonClickHandler}>
+    <button type="button" className="player__play" disabled={!isReady} onClick={onPlayButtonClick}>
       {!isPlay ?
         <>
           <svg viewBox="0 0 19 19" width="19" height="19">

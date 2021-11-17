@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, Fragment, useEffect } from 'react';
+import { useState, ChangeEvent, useEffect } from 'react';
 import { generatePath, Redirect } from 'react-router-dom';
 import { connect, ConnectedProps } from 'react-redux';
 import { ThunkAppDispatch } from '../../types/action';
@@ -10,13 +10,13 @@ import { MovieParam } from '../../types/types';
 import { redirectToRoute, setSelectedMovieId } from '../../store/action';
 import { AppRoute } from '../../types/enum';
 import { AuthorizationStatus } from '../../types/enum';
+import StarListForMovie from '../star-list-for-movie/star-list-for-movie';
 
 const SUBMITTING_FEEDBACK_MESSAGE = 'Спасибо за ваш отзыв о фильме!';
 const ERROR_PUSH_REVIEW_MESSAGE = 'Что-то пошло не так, попробуйте написать отзыв немного позже!';
 
 const MIN_COMMENT_LENGTH = 50;
 const MAX_COMMENT_LENGTH = 400;
-const RATING_STARS_COUNT = 10;
 const DEFAULT_RATING_VALUE = 0;
 
 function mapStateToProps({USER_AUTH, PROCESS_MOVIES}: State) {
@@ -99,36 +99,11 @@ function ReviewForm(props: PropsFromRedux): JSX.Element {
     }
   };
 
-  const renderRating = () => (
-    new Array(RATING_STARS_COUNT).fill(null).map((currentValue, index) => {
-      const number = index + 1;
-
-      return (
-        <Fragment key={number}>
-          <input
-            className="rating__input"
-            id={`star-${number}`}
-            type="radio"
-            name="rating"
-            value={number}
-            checked={number === ratingValue}
-            onChange={onChangeRating}
-          />
-          <label
-            className="rating__label"
-            htmlFor={`star-${number}`}
-          >Rating {number}
-          </label>
-        </Fragment>
-      );
-    }).reverse()
-  );
-
   return (
     <form action="#" className="add-review__form" onSubmit={onFormSubmit} >
       <div className="rating">
         <div className="rating__stars">
-          {renderRating()}
+          <StarListForMovie ratingValue={ratingValue} onChangeRating={onChangeRating}/>
         </div>
       </div>
       <div className="add-review__text">

@@ -1,5 +1,6 @@
 import { getRatingMovie, getFormattedRating } from '../../utils/get-grade-movie';
 import { Movie } from '../../types/types';
+import { memo } from 'react';
 
 function MovieOverviewTab(props: {
   movie: Movie,
@@ -10,7 +11,7 @@ function MovieOverviewTab(props: {
         <div className="film-rating__score">{getFormattedRating(props.movie.rating)}</div>
         <p className="film-rating__meta">
           <span className="film-rating__level">{getRatingMovie(Number(Math.round(props.movie.rating)))}</span>
-          <span className="film-rating__count">{props.movie.rating} ratings</span>
+          <span className="film-rating__count">{props.movie.scoresCount} ratings</span>
         </p>
       </div>
 
@@ -23,4 +24,4 @@ function MovieOverviewTab(props: {
   );
 }
 
-export default MovieOverviewTab;
+export default memo(MovieOverviewTab);

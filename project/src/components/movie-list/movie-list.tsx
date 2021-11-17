@@ -1,4 +1,3 @@
-import { useState, MouseEvent } from 'react';
 import MovieItem from '../movie-item/movie-item';
 import { State } from '../../types/state';
 import { connect, ConnectedProps } from 'react-redux';
@@ -20,16 +19,6 @@ type PropsFormRedux = ConnectedProps<typeof connector>;
 type ConnectedComponentProps = PropsFormRedux;
 
 function MovieList(props: ConnectedComponentProps): JSX.Element {
-  const [activeMovie, setActiveMovie] = useState('');
-
-  const onSmallMovieCardHover = (evt: MouseEvent) => {
-    setActiveMovie(evt.currentTarget.id);
-  };
-
-  const onSmallMovieCardLeave = () => {
-    setActiveMovie('');
-  };
-
   if(!props.isMoviesLoaded) {
     <Loading />;
   }
@@ -39,9 +28,6 @@ function MovieList(props: ConnectedComponentProps): JSX.Element {
       {props.movies.slice(0, props.loadedMoviesCount).map((movie) => (
         <MovieItem movie={movie}
           key={movie.id}
-          isActive={movie.id === Number(activeMovie)}
-          handleMouseOver={onSmallMovieCardHover}
-          handleMouseLeave={onSmallMovieCardLeave}
         />
       ))}
     </div>

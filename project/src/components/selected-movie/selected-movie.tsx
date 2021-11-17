@@ -1,6 +1,5 @@
-import React, { MouseEvent, useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { useParams } from 'react-router';
 import { Movie } from '../../types/types';
 import { MovieParam } from '../../types/types';
@@ -24,6 +23,8 @@ import MovieItem from '../movie-item/movie-item';
 import Footer from '../footer/footer';
 import { FavoriteStatus, FavoriteStatusType } from '../../types/enum';
 import Loading from '../loading/loading';
+import MovieCardButtonAddReview from '../movie-card-button-add-review/movie-card-button-add-review';
+import MovieCardButtonPlay from '../movie-card-button-play/movie-card-button-play';
 
 function mapStateToProps({MOVIES_DATA, USER_AUTH, COMMENTS_DATA}: State) {
   return {
@@ -66,15 +67,6 @@ function SelectedMovie(props: ConnectedComponentProps): JSX.Element {
   const { saveSelectedMovieId, fetchSelectedMovie, fetchSimilarMovies, fetchComments } = props;
   const { id } = useParams<MovieParam>();
   const idIsNumber = Number(id);
-  const [activeMovie, setActiveMovie] = useState('');
-
-  const onSmallMovieCardHover = (evt: MouseEvent) => {
-    setActiveMovie(evt.currentTarget.id);
-  };
-
-  const onSmallMovieCardLeave = () => {
-    setActiveMovie('');
-  };
 
   const selectedMovie = props.movies.find((movie: Movie) => movie.id.toString() === id);
 
@@ -138,15 +130,10 @@ function SelectedMovie(props: ConnectedComponentProps): JSX.Element {
               </p>
 
               <div className="film-card__buttons">
-                <Link className="btn btn--play film-card__button" to={`/player/${selectedMovie.id}`}>
-                  <svg viewBox="0 0 19 19" width="19" height="19">
-                    <use xlinkHref="#play-s"/>
-                  </svg>
-                  <span>Play</span>
-                </Link>
 
-                {props.authorizationStatus === AuthorizationStatus.Auth
-                  ?
+                <MovieCardButtonPlay movie={selectedMovie}/>
+
+                {props.authorizationStatus === AuthorizationStatus.Auth &&
                   <>
                     <button
                       className="btn btn--list film-card__button"
@@ -158,10 +145,8 @@ function SelectedMovie(props: ConnectedComponentProps): JSX.Element {
                       <span>My list</span>
                     </button>
 
-                    <Link to={`/films/${selectedMovie.id}/review`} className="btn film-card__button">Add review</Link>
-                  </>
-                  :
-                  ''}
+                    <MovieCardButtonAddReview movie={selectedMovie} />
+                  </>}
 
               </div>
             </div>
@@ -190,9 +175,6 @@ function SelectedMovie(props: ConnectedComponentProps): JSX.Element {
             {props.similarMovies.map((movie) => (
               <MovieItem movie={movie}
                 key={movie.id}
-                isActive={movie.id === Number(activeMovie)}
-                handleMouseOver={onSmallMovieCardHover}
-                handleMouseLeave={onSmallMovieCardLeave}
               />
             )).slice(0, 4)}
           </div>

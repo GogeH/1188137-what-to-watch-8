@@ -2,7 +2,7 @@ import { ThunkActionResult } from '../types/action';
 import { toast } from 'react-toastify';
 import { generatePath } from 'react-router-dom';
 import {
-  loadCommentsMovie,
+  loadComments,
   loadMovies,
   loadPromo,
   setSelectedMovie,
@@ -42,7 +42,7 @@ export const fetchFavoriteMovie = (movieId: number, newStatus: FavoriteStatusTyp
 export const fetchCommentsAction = (id: number): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     const {data} = await api.get<Comment[]>(`${APIRoute.Comments}/${id}`);
-    dispatch(loadCommentsMovie(data));
+    dispatch(loadComments(data));
   };
 
 export const fetchPromoAction = (): ThunkActionResult =>

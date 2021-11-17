@@ -1,4 +1,5 @@
 import { Movie } from '../../types/types';
+import { memo } from 'react';
 
 function MovieDetailsTab(props: {
   movie: Movie,
@@ -35,4 +36,4 @@ function MovieDetailsTab(props: {
   );
 }
 
-export default MovieDetailsTab;
+export default memo(MovieDetailsTab);
