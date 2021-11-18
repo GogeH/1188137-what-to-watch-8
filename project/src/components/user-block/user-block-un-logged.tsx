@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../types/enum';
+import { memo } from 'react';
 
 function UserBlockUnLogged(): JSX.Element {
   return (
@@ -9,4 +10,4 @@ function UserBlockUnLogged(): JSX.Element {
   );
 }
 
-export default UserBlockUnLogged;
+export default memo(UserBlockUnLogged);

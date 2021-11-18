@@ -117,6 +117,13 @@ function setFavoriteMovie(status: number): Action<number> {
   }) as const;
 }
 
+function requireUnknown(authStatus: AuthorizationStatus): Action<AuthorizationStatus> {
+  return ({
+    type: ActionType.RequireUnknown,
+    payload: authStatus,
+  }) as const;
+}
+
 export {
   setLoadedMoviesCount,
   setGenre,
@@ -124,6 +131,7 @@ export {
   requireAuthorization,
   requireLogout,
   requireAuthInfo,
+  requireUnknown,
   redirectToRoute,
   setReviews,
   loadComments,

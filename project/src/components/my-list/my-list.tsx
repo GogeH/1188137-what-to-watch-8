@@ -2,10 +2,8 @@ import React, { useEffect } from 'react';
 import Logo from '../logo/logo';
 import UserBlockLogged from '../user-block/user-block-logged';
 import Footer from '../footer/footer';
-import { AppRoute, AuthorizationStatus } from '../../types/enum';
 import { State } from '../../types/state';
 import { connect, ConnectedProps } from 'react-redux';
-import { Redirect } from 'react-router-dom';
 import MovieItem from '../movie-item/movie-item';
 import { fetchFavoriteListMovies } from '../../store/api-action';
 import { ThunkAppDispatch } from '../../types/action';
@@ -37,11 +35,6 @@ function MyList(props: ConnectedComponentProps): JSX.Element {
   useEffect(()=> {
     changeFavoriteListMovies();
   }, [changeFavoriteListMovies]);
-
-
-  if (props.authorizationStatus !== AuthorizationStatus.Auth) {
-    return <Redirect to={AppRoute.SignIn}/>;
-  }
 
   return (
     <div className="user-page">

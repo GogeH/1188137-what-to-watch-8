@@ -58,7 +58,7 @@ function Main(props: ConnectedComponentProps): JSX.Element {
 
   const genres = Object.values(Genres) as Genres[];
 
-  const { id, isFavorite }: any = props.promo;
+  const { id, isFavorite } = props.promo;
 
   const handleShowMoreClick = () => {
     props.setLoadedMoviesCount(props.loadedMoviesCount + INCREMENT_MOVIES_STEP);

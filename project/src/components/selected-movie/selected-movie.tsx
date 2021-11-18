@@ -23,8 +23,8 @@ import MovieItem from '../movie-item/movie-item';
 import Footer from '../footer/footer';
 import { FavoriteStatus, FavoriteStatusType } from '../../types/enum';
 import Loading from '../loading/loading';
-import MovieCardButtonAddReview from '../movie-card-button-add-review/movie-card-button-add-review';
 import MovieCardButtonPlay from '../movie-card-button-play/movie-card-button-play';
+import { Link } from 'react-router-dom';
 
 function mapStateToProps({MOVIES_DATA, USER_AUTH, COMMENTS_DATA}: State) {
   return {
@@ -73,7 +73,7 @@ function SelectedMovie(props: ConnectedComponentProps): JSX.Element {
   useEffect(() => {
     saveSelectedMovieId(idIsNumber);
     fetchSelectedMovie(idIsNumber);
-  },[idIsNumber]);
+  },[saveSelectedMovieId, fetchSelectedMovie, idIsNumber]);
 
   useEffect(() => {
     fetchComments(idIsNumber);
@@ -145,7 +145,7 @@ function SelectedMovie(props: ConnectedComponentProps): JSX.Element {
                       <span>My list</span>
                     </button>
 
-                    <MovieCardButtonAddReview movie={selectedMovie} />
+                    <Link to={`/films/${selectedMovie.id}/review`} className="btn film-card__button">Add review</Link>
                   </>}
 
               </div>

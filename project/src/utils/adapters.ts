@@ -1,6 +1,6 @@
 import { AuthInfo, Movie, ServerAuthInfo } from '../types/types';
 
-export function adapterMoviesToFrontEnd(data: {[key: string]: any}): Movie {
+export function adapterMoviesToFrontEnd(data: Record<string, unknown>): Movie {
   const adaptedMovie = Object.assign({}, data, {
     posterImage: data['poster_image'],
     previewImage: data['preview_image'],
