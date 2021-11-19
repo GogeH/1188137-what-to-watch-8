@@ -10,7 +10,7 @@ export const createMockAuthInfo = (): AuthInfo => ({
 });
 
 export const createMockServerAuthInfo = (): ServerAuthInfo => ({
-  avatar_url: internet.url(),
+  'avatar_url': internet.url(),
   email: internet.email(),
   id: datatype.number(),
   name: internet.userName(),

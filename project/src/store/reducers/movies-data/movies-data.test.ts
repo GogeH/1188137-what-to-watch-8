@@ -12,7 +12,7 @@ describe('Reducer: movies-data', () => {
     promo: undefined,
     similarMovies: [],
     isMoviesLoaded: false,
-  }
+  };
 
   it('should return list movies', ()=> {
     const action = {

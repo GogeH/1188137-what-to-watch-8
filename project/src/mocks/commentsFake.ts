@@ -6,18 +6,16 @@ const movieStarsCount = datatype.number({
   max: 10,
 });
 
-export const createMockComment = (): Comment => {
-  return {
+export const createMockComment = (): Comment => ({
+  id: datatype.number(),
+  user: {
     id: datatype.number(),
-    user: {
-      id: datatype.number(),
-      name: lorem.words(),
-    },
-    rating: movieStarsCount,
-    comment: lorem.paragraph(),
-    date: new Date().toString(),
-  };
-};
+    name: lorem.words(),
+  },
+  rating: movieStarsCount,
+  comment: lorem.paragraph(),
+  date: new Date().toString(),
+});
 
 export const createMockComments = (): Comment[] => {
   const commentsCount = datatype.number({
@@ -25,12 +23,10 @@ export const createMockComments = (): Comment[] => {
     max: 6,
   });
 
- return new Array(commentsCount).fill(null).map(() => createMockComment());
+  return new Array(commentsCount).fill(null).map(() => createMockComment());
 };
 
-export const createMockCommentForMovie = (): PostedComment => {
-  return {
-    rating: movieStarsCount,
-    comment: lorem.paragraph(),
-  }
-}
+export const createMockCommentForMovie = (): PostedComment => ({
+  rating: movieStarsCount,
+  comment: lorem.paragraph(),
+});

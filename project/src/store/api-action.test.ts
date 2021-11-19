@@ -136,7 +136,7 @@ describe('Async actions', () => {
   });
 
   it('should dispatch RequriedAuthorization and RedirectToRoute when POST /login', async () => {
-   mockAPI
+    mockAPI
       .onPost(APIRoute.Login)
       .reply(200, {token: 'secret'});
 

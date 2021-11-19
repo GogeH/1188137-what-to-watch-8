@@ -30,12 +30,12 @@ export const createMockMovie = (): Movie => {
     released: date.past().getFullYear(),
     isFavorite: datatype.boolean(),
   };
-}
+};
 
 export const createMockMovies = (): Movie[] => {
   const moviesCount = datatype.number({
-    min: 16,
-    max: 24,
+    min: 8,
+    max: 8,
   });
 
   return new Array(moviesCount).fill(null).map(() => createMockMovie());
