@@ -13,18 +13,16 @@ import UserBlockUnLogged from '../user-block/user-block-un-logged';
 import { ThunkAppDispatch } from '../../types/action';
 import {
   fetchCommentsAction,
-  fetchFavoriteMovie,
-  fetchMoviesAction,
   fetchSelectedMovieAction,
   fetchSimilarMoviesAction
 } from '../../store/api-action';
 import { setSelectedMovieId } from '../../store/action';
 import MovieItem from '../movie-item/movie-item';
 import Footer from '../footer/footer';
-import { FavoriteStatus, FavoriteStatusType } from '../../types/enum';
 import Loading from '../loading/loading';
-import MovieCardButtonAddReview from '../movie-card-button-add-review/movie-card-button-add-review';
 import MovieCardButtonPlay from '../movie-card-button-play/movie-card-button-play';
+import { Link } from 'react-router-dom';
+import MovieCardButtonListFavorite from '../movie-card-button-favorite-list/movie-card-button-favorite-list';
 
 function mapStateToProps({MOVIES_DATA, USER_AUTH, COMMENTS_DATA}: State) {
   return {
@@ -49,12 +47,6 @@ function mapDispatchToProps(dispatch: ThunkAppDispatch) {
     fetchComments(id: number) {
       dispatch(fetchCommentsAction(id));
     },
-    async changeFavoriteStatus(movieId: number, status: FavoriteStatusType) {
-      await dispatch(fetchFavoriteMovie(movieId, status));
-    },
-    changeMoviesAction() {
-      dispatch(fetchMoviesAction());
-    },
   };
 }
 
@@ -73,7 +65,7 @@ function SelectedMovie(props: ConnectedComponentProps): JSX.Element {
   useEffect(() => {
     saveSelectedMovieId(idIsNumber);
     fetchSelectedMovie(idIsNumber);
-  },[idIsNumber]);
+  },[saveSelectedMovieId, fetchSelectedMovie, idIsNumber]);
 
   useEffect(() => {
     fetchComments(idIsNumber);
@@ -86,13 +78,6 @@ function SelectedMovie(props: ConnectedComponentProps): JSX.Element {
   if(!props.movies) {
     return <Loading />;
   }
-
-  const onFavoriteButtonClick = () => {
-    if(selectedMovie) {
-      props.changeFavoriteStatus(selectedMovie.id, selectedMovie.isFavorite ? FavoriteStatus.NotFavorite : FavoriteStatus.Favorite);
-      props.changeMoviesAction();
-    }
-  };
 
   if (!selectedMovie) {
     return <Error />;
@@ -135,17 +120,13 @@ function SelectedMovie(props: ConnectedComponentProps): JSX.Element {
 
                 {props.authorizationStatus === AuthorizationStatus.Auth &&
                   <>
-                    <button
-                      className="btn btn--list film-card__button"
-                      onClick={onFavoriteButtonClick}
-                    >
-                      <svg viewBox="0 0 19 20" width="19" height="20">
-                        <use xlinkHref={`#${!selectedMovie.isFavorite ? 'add' : 'in-list'}`} />
-                      </svg>
-                      <span>My list</span>
-                    </button>
+                    <MovieCardButtonListFavorite
+                      movie={selectedMovie}
+                      id={selectedMovie.id}
+                      isFavorite={selectedMovie.isFavorite}
+                    />
 
-                    <MovieCardButtonAddReview movie={selectedMovie} />
+                    <Link to={`/films/${selectedMovie.id}/review`} className="btn film-card__button">Add review</Link>
                   </>}
 
               </div>

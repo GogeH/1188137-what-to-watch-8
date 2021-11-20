@@ -15,7 +15,7 @@ export type Movie = {
   director: string,
   starring: string[],
   runTime: number,
-  genre: Genres,
+  genre: Genres | string,
   released: number,
   isFavorite: boolean,
 };
@@ -44,7 +44,7 @@ export type Comment = {
   },
   rating: number,
   comment: string,
-  date: Date,
+  date: string,
 }
 
 export type AuthData = {

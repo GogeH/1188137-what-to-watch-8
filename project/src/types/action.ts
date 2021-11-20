@@ -23,6 +23,7 @@ export enum ActionType {
   SetGenre = 'change/setGenre',
   LoadMovies = 'data/movie',
   RequireAuthorization = 'user/requireAuthorization',
+  RequireUnknown = 'user/requireUnknown',
   RequireLogout = 'user/requireLogout',
   RequireAuthInfo = 'user/requireAuthInfo',
   SetLoadedMoviesCount = 'change/setLoadedMoviesCount',
@@ -57,5 +58,3 @@ export type Actions =
 export type ThunkActionResult<R = Promise<void>> = ThunkAction<R, State, AxiosInstance, Actions>;
 
 export type ThunkAppDispatch = ThunkDispatch<State, AxiosInstance, Actions>;
-
-

@@ -10,7 +10,8 @@ import {
   redirectToRoute,
   requireAuthInfo,
   requireAuthorization,
-  requireLogout, setFavoriteListMovies
+  requireLogout,
+  setFavoriteListMovies
 } from './action';
 import { dropToken, saveToken, Token } from '../services/token';
 import { APIRoute, AppRoute, AuthorizationStatus } from '../types/enum';

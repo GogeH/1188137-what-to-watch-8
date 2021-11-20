@@ -18,14 +18,17 @@ type PropsFormRedux = PrivateRouteProps & ConnectedProps<typeof connector>;
 type ConnectedComponentProps = PropsFormRedux;
 
 function PrivateRoute(props: ConnectedComponentProps): JSX.Element {
+
   return (
     <Route
       exact={props.exact}
       path={props.path}
       render={() =>(
         props.authorizationStatus === AuthorizationStatus.Auth
-          ? props.render()
-          : <Redirect to={AppRoute.SignIn} />
+          ?
+          props.render()
+          :
+          <Redirect to={AppRoute.SignIn} />
       )}
     />
   );
