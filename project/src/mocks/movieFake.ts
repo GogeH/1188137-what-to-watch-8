@@ -10,10 +10,9 @@ export const createMockMovie = (): Movie => {
   });
 
   const actors = new Array(starringCount).fill(null).map(() => createFullName());
-  let count = 1;
 
   return {
-    id: count++,
+    id: datatype.number(),
     name: lorem.words(),
     posterImage: internet.url(),
     previewImage: internet.url(),

@@ -3,7 +3,6 @@ import { State } from '../../types/state';
 import { connect, ConnectedProps } from 'react-redux';
 import { getFilterMovie } from '../../utils/get-filter-movie';
 import Loading from '../loading/loading';
-import { useState } from 'react';
 
 function mapStateToProps({MOVIES_DATA, PROCESS_MOVIES}: State) {
   const moviesByGenre = getFilterMovie(MOVIES_DATA.movies, PROCESS_MOVIES.genre);
