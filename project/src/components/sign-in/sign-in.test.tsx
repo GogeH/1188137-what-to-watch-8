@@ -9,7 +9,7 @@ import { createMockAuthData } from '../../mocks/authorizationFake';
 const history = createMemoryHistory();
 const mockStore = configureMockStore();
 
-const authData = createMockAuthData()
+const authData = createMockAuthData();
 
 const store = mockStore({
   authData,
