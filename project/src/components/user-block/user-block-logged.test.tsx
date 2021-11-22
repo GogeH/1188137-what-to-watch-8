@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import { Router, Switch, Route } from 'react-router-dom';
+import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
-import userEvent from '@testing-library/user-event';
 import { createMockAuthInfo } from '../../mocks/authorizationFake';
 import { Provider } from 'react-redux';
 import { configureMockStore } from '@jedmao/redux-mock-store';
@@ -16,7 +15,7 @@ const store = mockStore({
 
 describe('Component: UserBlockLogged', () => {
   it('should render correctly', () => {
-    render(
+    const { container } = render(
       <Provider store={store}>
         <Router history={history}>
           <UserBlockLogged />
@@ -26,27 +25,7 @@ describe('Component: UserBlockLogged', () => {
 
     expect(screen.getAllByRole('link')[0].getAttribute('href')).toEqual(AppRoute.MyList);
     expect(screen.getAllByRole('link')[1].getAttribute('href')).toEqual('/');
-  });
-
-  it('should redirect to root url when user clicked to link in UserBlockLogged component', () => {
-    history.push('/fake');
-    render(
-      <Provider store={store}>
-        <Router history={history}>
-          <Switch>
-            <Route path={AppRoute.MyList} exact>
-              <h1>This is MyList page</h1>
-            </Route>
-            <Route>
-              <UserBlockLogged />
-            </Route>
-          </Switch>
-        </Router>
-      </Provider>,
-    );
-
-    expect(screen.queryByText(/This is MyList page/i)).not.toBeInTheDocument();
-    userEvent.click(screen.getByRole('link'));
-    expect(screen.queryByText(/This is MyList page/i)).toBeInTheDocument();
+    expect(container.querySelector('.user-block__link')).toBeInTheDocument();
+    expect(container.querySelector('.user-block__avatar')).toBeInTheDocument();
   });
 });

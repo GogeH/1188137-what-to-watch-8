@@ -18,8 +18,8 @@ function mapStateToProps({ USER_AUTH, PROCESS_MOVIES, MOVIES_DATA }: State) {
 
 function mapDispatchToProps(dispatch: ThunkAppDispatch) {
   return {
-    changeFavoriteListMovies() {
-      dispatch(fetchFavoriteListMovies());
+    async changeFavoriteListMovies() {
+      await dispatch(fetchFavoriteListMovies());
     },
   };
 }
@@ -48,13 +48,11 @@ function MyList(props: ConnectedComponentProps): JSX.Element {
         <h2 className="catalog__title visually-hidden">Catalog</h2>
 
         <div className="catalog__films-list">
-
           {props.favoriteListMovies &&
           props.favoriteListMovies.map((movie) => (
             <MovieItem movie={movie}
               key={movie.id}
             />))}
-
         </div>
       </section>
       <Footer />

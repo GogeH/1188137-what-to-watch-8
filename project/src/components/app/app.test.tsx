@@ -1,30 +1,43 @@
 import { render, screen } from '@testing-library/react';
-import { Router } from 'react-router-dom';
+import { generatePath, Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
 import { configureMockStore } from '@jedmao/redux-mock-store';
-import { AuthorizationStatus, AppRoute } from '../../types/enum';
+import { AuthorizationStatus, AppRoute, Genres } from '../../types/enum';
 import App from './app';
-import { createMockMovies } from '../../mocks/movieFake';
+import {  createStaticMockMovie, createStaticMockMovies } from '../../mocks/movieFake';
 import { FIRST_LOADED_MOVIES } from '../../types/const';
+import { createMockAuthInfo } from '../../mocks/authorizationFake';
+import { createMockComments } from '../../mocks/commentsFake';
 
 const mockStore = configureMockStore();
 const history = createMemoryHistory();
 
-const mockMovies = createMockMovies();
-
-const ID_MOVIE = 4;
+const mockMovies = createStaticMockMovies();
+const mockMovie = createStaticMockMovie();
+const mockAuth = createMockAuthInfo();
+const mockComments = createMockComments();
 
 const store = mockStore({
   USER_AUTH: {
     authorizationStatus: AuthorizationStatus.Auth,
+    authInfo: mockAuth,
   },
   MOVIES_DATA: {
-    isDataLoaded: true,
+    isMoviesLoaded: true,
     movies: mockMovies,
+    promo: mockMovie,
+    similarMovies: mockMovies,
   },
   PROCESS_MOVIES: {
+    genre: Genres.AllGenres,
     loadedMoviesCount: FIRST_LOADED_MOVIES,
+    favoriteListMovies: mockMovies,
+    selectedMovie: mockMovie,
+    favoriteMovie: mockMovie,
+  },
+  COMMENTS_DATA: {
+    comments: mockComments,
   },
 });
 
@@ -48,36 +61,8 @@ describe('Application Routing', () => {
     history.push(AppRoute.SignIn);
     render(fakeApp);
 
-    expect(screen.getByLabelText(/Email address/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Password/i)).toBeInTheDocument();
-  });
-
-  it('should render Movie when user navigate to "/films/:id"', () => {
-    history.push(`${AppRoute.Movie}/${ID_MOVIE}`);
-    render(fakeApp);
-
-    expect(screen.getByText(/More like this/i)).toBeInTheDocument();
-  });
-
-  it('should render Review when user navigate to /films/:id/review', () => {
-    history.push(AppRoute.Review.replace(':id', ID_MOVIE.toString()));
-    render(fakeApp);
-
-    expect(screen.getByText(/WTW/i)).toBeInTheDocument();
-  });
-
-  it('should render Player when user navigate to /player/:id', () => {
-    history.push(`${AppRoute.Player}/${ID_MOVIE}`);
-    render(fakeApp);
-
-    expect(screen.getByText(/Exit/i)).toBeInTheDocument();
-  });
-
-  it('should render Player when user navigate to /myList', () => {
-    history.push(AppRoute.MyList);
-    render(fakeApp);
-
-    expect(screen.getByText(/My list/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
   });
 
   it('should render Error when user navigate to non-existent route', () => {

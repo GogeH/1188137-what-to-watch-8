@@ -35,17 +35,17 @@ function mapStateToProps({MOVIES_DATA, USER_AUTH, COMMENTS_DATA}: State) {
 
 function mapDispatchToProps(dispatch: ThunkAppDispatch) {
   return {
-    fetchSelectedMovie(id: number) {
-      dispatch(fetchSelectedMovieAction(id));
+    async fetchSelectedMovie(id: number) {
+      await dispatch(fetchSelectedMovieAction(id));
     },
-    fetchSimilarMovies(id: number) {
-      dispatch(fetchSimilarMoviesAction(id));
+    async fetchSimilarMovies(id: number) {
+      await dispatch(fetchSimilarMoviesAction(id));
     },
-    saveSelectedMovieId(id: number) {
-      dispatch(setSelectedMovieId(id));
+    async saveSelectedMovieId(id: number) {
+      await dispatch(setSelectedMovieId(id));
     },
-    fetchComments(id: number) {
-      dispatch(fetchCommentsAction(id));
+    async fetchComments(id: number) {
+      await dispatch(fetchCommentsAction(id));
     },
   };
 }

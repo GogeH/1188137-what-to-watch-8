@@ -12,7 +12,7 @@ import Footer from '../footer/footer';
 import PromoMovie from '../promo-movie/promo-movie';
 import Loading from '../loading/loading';
 
-function mapStateToProps({MOVIES_DATA, PROCESS_MOVIES, USER_AUTH}: State) {
+function mapStateToProps({MOVIES_DATA, PROCESS_MOVIES}: State) {
   const moviesByGenre = getFilterMovie(MOVIES_DATA.movies, PROCESS_MOVIES.genre);
   return {
     movies: MOVIES_DATA.movies,
@@ -24,11 +24,11 @@ function mapStateToProps({MOVIES_DATA, PROCESS_MOVIES, USER_AUTH}: State) {
 
 function mapDispatchToProps(dispatch: ThunkAppDispatch) {
   return {
-    onGenreChange(genre: Genres) {
-      dispatch(setGenre(genre));
+    async onGenreChange(genre: Genres) {
+      await dispatch(setGenre(genre));
     },
-    setLoadedMoviesCount(count: number) {
-      dispatch(setLoadedMoviesCount(count));
+    async setLoadedMoviesCount(count: number) {
+      await dispatch(setLoadedMoviesCount(count));
     },
   };
 }
