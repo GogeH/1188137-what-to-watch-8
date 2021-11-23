@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { useParams } from 'react-router';
 import { Movie } from '../../types/types';
@@ -8,8 +8,8 @@ import MovieTabs  from '../movie-tabs/movie-tabs';
 import Error from '../error/error';
 import Logo from '../logo/logo';
 import { AuthorizationStatus } from '../../types/enum';
-import UserBlockLogged from '../user-block/user-block-logged';
-import UserBlockUnLogged from '../user-block/user-block-un-logged';
+import UserBlockLogged from '../user-block-logged/user-block-logged';
+import UserBlockUnLogged from '../user-block-logged/user-block-un-logged';
 import { ThunkAppDispatch } from '../../types/action';
 import {
   fetchCommentsAction,
@@ -132,7 +132,7 @@ function SelectedMovie(props: ConnectedComponentProps): JSX.Element {
               </div>
             </div>
           </div>
-        </div>s
+        </div>
 
         <div className="film-card__wrap film-card__translate-top">
           <div className="film-card__info">

@@ -1,24 +1,38 @@
-import React from 'react';
+import { MouseEvent, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { connect, ConnectedProps, useDispatch } from 'react-redux';
-import { logoutAction } from '../../store/api-action';
+import { checkAuthAction, logoutAction } from '../../store/api-action';
 import { State } from '../../types/state';
 import { AppRoute } from '../../types/enum';
+import { ThunkAppDispatch } from '../../types/action';
 
 const mapStateToProps = ({USER_AUTH}: State) => ({
   authInfo: USER_AUTH.authInfo,
 });
+function mapDispatchToProps(dispatch: ThunkAppDispatch) {
+  return {
+    async getAuthAction() {
+      await dispatch(checkAuthAction());
+    },
+  };
+}
 
-const connector = connect(mapStateToProps);
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFormRedux = ConnectedProps<typeof connector>;
 type ConnectedComponentProps = PropsFormRedux;
 
 function UserBlockLogged(props: ConnectedComponentProps): JSX.Element {
+  const { getAuthAction } = props;
+
   const dispatch = useDispatch();
 
-  const handleSignInButtonClick = (evt: React.MouseEvent) => {
-    evt.preventDefault();
+  useEffect(() => {
+    getAuthAction();
+  },[getAuthAction]);
+
+  const handleSignInButtonClick = (event: MouseEvent) => {
+    event.preventDefault();
     dispatch(logoutAction());
   };
 

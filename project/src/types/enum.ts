@@ -29,7 +29,6 @@ export enum Genres {
   Crime = 'Crime',
   Documentary = 'Documentary',
   Drama = 'Dramas',
-  Horror = 'Horror',
   KidsAndFamily = 'Kids & Family',
   Adventure = 'Adventure',
   Fantasy = 'Fantasy',

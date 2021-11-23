@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react';
-import { Router } from 'react-router-dom';
+import { generatePath, Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { AuthorizationStatus, AppRoute, Genres } from '../../types/enum';
 import App from './app';
-import {  createStaticMockMovie, createStaticMockMovies } from '../../mocks/movieFake';
+import { createMockMovie, createMockMovies } from '../../mocks/movieFake';
 import { FIRST_LOADED_MOVIES } from '../../types/const';
 import { createMockAuthInfo } from '../../mocks/authorizationFake';
 import { createMockComments } from '../../mocks/commentsFake';
@@ -13,8 +13,8 @@ import { createMockComments } from '../../mocks/commentsFake';
 const mockStore = configureMockStore();
 const history = createMemoryHistory();
 
-const mockMovies = createStaticMockMovies();
-const mockMovie = createStaticMockMovie();
+const mockMovies = createMockMovies();
+const mockMovie = createMockMovie();
 const mockAuth = createMockAuthInfo();
 const mockComments = createMockComments();
 
@@ -50,13 +50,6 @@ const fakeApp = (
 );
 
 describe('Application Routing', () => {
-  it('should render Main when user navigate to "/"', () => {
-    history.push(AppRoute.Main);
-    render(fakeApp);
-
-    expect(screen.getByText(/Catalog/i)).toBeInTheDocument();
-  });
-
   it('should render AuthScreen when user navigate to "/login"', () => {
     history.push(AppRoute.SignIn);
     render(fakeApp);
@@ -70,5 +63,12 @@ describe('Application Routing', () => {
     render(fakeApp);
 
     expect(screen.getByText(/Error 404!/i)).toBeInTheDocument();
+  });
+
+  it('should render Player when user navigate to "/Player/1"', () => {
+    history.push(generatePath(AppRoute.Player, { id: mockMovies[0].id }));
+    render(fakeApp);
+
+    expect(screen.getByText(/exit/i)).toBeInTheDocument();
   });
 });

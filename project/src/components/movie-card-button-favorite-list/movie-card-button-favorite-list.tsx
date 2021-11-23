@@ -15,11 +15,11 @@ function mapDispatchToProps(dispatch: ThunkAppDispatch) {
     async changeFavoriteStatus(movieId: number, status: FavoriteStatusType) {
       await dispatch(fetchFavoriteMovie(movieId, status));
     },
-    changeMoviesAction() {
-      dispatch(fetchMoviesAction());
+    async changeMoviesAction() {
+      await dispatch(fetchMoviesAction());
     },
-    changePromoAction() {
-      dispatch(fetchPromoAction());
+    async changePromoAction() {
+      await dispatch(fetchPromoAction());
     },
   };
 }

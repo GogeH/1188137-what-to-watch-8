@@ -1,8 +1,8 @@
 import { connect, ConnectedProps } from 'react-redux';
 import Logo from '../logo/logo';
 import { AuthorizationStatus } from '../../types/enum';
-import UserBlockLogged from '../user-block/user-block-logged';
-import UserBlockUnLogged from '../user-block/user-block-un-logged';
+import UserBlockLogged from '../user-block-logged/user-block-logged';
+import UserBlockUnLogged from '../user-block-logged/user-block-un-logged';
 import MovieCardButtonPlay from '../movie-card-button-play/movie-card-button-play';
 import { State } from '../../types/state';
 import Spinner from '../spinner/spinner';

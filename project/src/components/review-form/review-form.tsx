@@ -36,7 +36,7 @@ const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
   async saveSelectedMovieId(id: number) {
     await dispatch(setSelectedMovieId(id));
   },
-  async redirectToMoviePage(movieId: number) {
+  redirectToMoviePage(movieId: number) {
     dispatch(redirectToRoute(generatePath(AppRoute.Movie, { id: movieId })));
   },
 });

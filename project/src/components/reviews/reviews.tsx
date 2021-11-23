@@ -1,4 +1,3 @@
-import React from 'react';
 import { State } from '../../types/state';
 import { Link, Redirect } from 'react-router-dom';
 import { connect, ConnectedProps } from 'react-redux';
@@ -9,8 +8,8 @@ import { MovieParam } from '../../types/types';
 import { useParams } from 'react-router';
 import Error from '../error/error';
 import { AppRoute, AuthorizationStatus } from '../../types/enum';
-import UserBlockLogged from '../user-block/user-block-logged';
-import UserBlockUnLogged from '../user-block/user-block-un-logged';
+import UserBlockLogged from '../user-block-logged/user-block-logged';
+import UserBlockUnLogged from '../user-block-logged/user-block-un-logged';
 
 function mapStateToProps({USER_AUTH, MOVIES_DATA}: State) {
   return {
