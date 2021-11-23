@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import Logo from '../logo/logo';
-import UserBlockLogged from '../user-block/user-block-logged';
+import UserBlockLogged from '../user-block-logged/user-block-logged';
 import Footer from '../footer/footer';
 import { State } from '../../types/state';
 import { connect, ConnectedProps } from 'react-redux';

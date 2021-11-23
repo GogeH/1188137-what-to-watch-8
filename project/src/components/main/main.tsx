@@ -1,4 +1,3 @@
-import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { getFilterMovie } from '../../utils/get-filter-movie';
 import { Genres} from '../../types/enum';
@@ -7,10 +6,11 @@ import { ThunkAppDispatch } from '../../types/action';
 import { setGenre, setLoadedMoviesCount } from '../../store/action';
 import GenresList from '../genre-list/genres-list';
 import MovieList from '../movie-list/movie-list';
-import { INCREMENT_MOVIES_STEP } from '../../types/const';
+import { FIRST_LOADED_MOVIES, INCREMENT_MOVIES_STEP } from '../../types/const';
 import Footer from '../footer/footer';
 import PromoMovie from '../promo-movie/promo-movie';
 import Loading from '../loading/loading';
+import { useEffect } from 'react';
 
 function mapStateToProps({MOVIES_DATA, PROCESS_MOVIES}: State) {
   const moviesByGenre = getFilterMovie(MOVIES_DATA.movies, PROCESS_MOVIES.genre);
@@ -27,7 +27,7 @@ function mapDispatchToProps(dispatch: ThunkAppDispatch) {
     async onGenreChange(genre: Genres) {
       await dispatch(setGenre(genre));
     },
-    async setLoadedMoviesCount(count: number) {
+    async getLoadedMoviesCount(count: number) {
       await dispatch(setLoadedMoviesCount(count));
     },
   };
@@ -39,6 +39,12 @@ type PropsFormRedux = ConnectedProps<typeof connector>;
 type ConnectedComponentProps = PropsFormRedux;
 
 function Main(props: ConnectedComponentProps): JSX.Element {
+  const { getLoadedMoviesCount } = props;
+
+  useEffect(() => {
+    getLoadedMoviesCount(FIRST_LOADED_MOVIES);
+  }, [setLoadedMoviesCount]);
+
   if(!props.movies) {
     return <Loading />;
   }
@@ -46,7 +52,7 @@ function Main(props: ConnectedComponentProps): JSX.Element {
   const genres = Object.values(Genres) as Genres[];
 
   const handleShowMoreClick = () => {
-    props.setLoadedMoviesCount(props.loadedMoviesCount + INCREMENT_MOVIES_STEP);
+    getLoadedMoviesCount(props.loadedMoviesCount + INCREMENT_MOVIES_STEP);
   };
 
   return (

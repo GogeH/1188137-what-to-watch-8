@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import MovieList from './movie-list';
-import { createStaticMockMovie, createStaticMockMovies } from '../../mocks/movieFake';
+import { createMockMovie, createMockMovies } from '../../mocks/movieFake';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
@@ -10,8 +10,8 @@ import { FIRST_LOADED_MOVIES } from '../../types/const';
 const history = createMemoryHistory();
 const mockStore = configureMockStore();
 
-const mockMovies = createStaticMockMovies();
-const mockMovie = createStaticMockMovie();
+const mockMovies = createMockMovies();
+const mockMovie = createMockMovie();
 
 const store = mockStore({
   MOVIES_DATA: {

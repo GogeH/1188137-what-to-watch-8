@@ -1,5 +1,5 @@
 import { Movie } from '../../types/types';
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 
 function MovieCardButtonPlay(props: {

@@ -9,8 +9,8 @@ function MovieItem(props: {
   const [activeMovie, setActiveMovie] = useState('');
   const StringId = String(props.movie.id);
 
-  const onMovieItemHover = (evt: MouseEvent) => {
-    setActiveMovie(evt.currentTarget.id);
+  const onMovieItemHover = (event: MouseEvent) => {
+    setActiveMovie(event.currentTarget.id);
   };
 
   const onMovieItemLeave = () => {

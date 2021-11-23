@@ -4,11 +4,11 @@ import { createMemoryHistory } from 'history';
 import userEvent from '@testing-library/user-event';
 import MovieCardButtonPlay from './movie-card-button-play';
 import { AppRoute } from '../../types/enum';
-import { createStaticMockMovie } from '../../mocks/movieFake';
+import { createMockMovie } from '../../mocks/movieFake';
 
 const history = createMemoryHistory();
 
-const mockMovie = createStaticMockMovie();
+const mockMovie = createMockMovie();
 
 describe('Component: MovieCardButtonPlay', () => {
   it('should render correctly', () => {
