@@ -43,7 +43,7 @@ function Main(props: ConnectedComponentProps): JSX.Element {
 
   useEffect(() => {
     getLoadedMoviesCount(FIRST_LOADED_MOVIES);
-  }, [setLoadedMoviesCount]);
+  }, [getLoadedMoviesCount]);
 
   if(!props.movies) {
     return <Loading />;

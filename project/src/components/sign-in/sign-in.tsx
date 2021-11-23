@@ -66,8 +66,9 @@ function SignIn(props: ConnectedComponentProps): JSX.Element {
         >
           <div className="sign-in__message">
             <div className="sign-in__message">
-              {isEmailError && <p>Please enter a valid email address</p>}
-              {isPasswordError && <p>Please enter a valid password</p>}
+              {isEmailError && !isPasswordError && <p>We can’t recognize this email.<br/>Please try again.</p>}
+              {isPasswordError && !isEmailError && <p>We can’t recognize this password combination.<br/>Please try again.</p>}
+              {isEmailError && isPasswordError && <p>We can’t recognize this email <br/> and password combination. Please try again.</p> }
             </div>
           </div>
           <div className="sign-in__fields">
