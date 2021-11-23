@@ -30,13 +30,13 @@ const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
   async onSubmit(data: { ratingValue: number, commentValue: string, movieId: number }) {
     await dispatch(sendReview(data));
   },
-  fetchSelectedMovie(id: number) {
-    dispatch(fetchSelectedMovieAction(id));
+  async fetchSelectedMovie(id: number) {
+    await dispatch(fetchSelectedMovieAction(id));
   },
-  saveSelectedMovieId(id: number) {
-    dispatch(setSelectedMovieId(id));
+  async saveSelectedMovieId(id: number) {
+    await dispatch(setSelectedMovieId(id));
   },
-  redirectToMoviePage(movieId: number) {
+  async redirectToMoviePage(movieId: number) {
     dispatch(redirectToRoute(generatePath(AppRoute.Movie, { id: movieId })));
   },
 });

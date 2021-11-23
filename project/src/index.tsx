@@ -18,6 +18,8 @@ import { requireAuthorization } from './store/action';
 import { redirect } from './store/middlewares/redirect';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Router } from 'react-router-dom';
+import browserHistory from './browser-history';
 
 const api = createAPI(
   () => store.dispatch(requireAuthorization(AuthorizationStatus.NoAuth)),
@@ -38,8 +40,10 @@ const store = createStore(
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <ToastContainer />
-      <App />
+      <Router history={browserHistory}>
+        <ToastContainer />
+        <App />
+      </Router>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root'),

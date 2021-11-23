@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { memo, useEffect, useRef } from 'react';
 
 function VideoPreview(props: {
   poster: string,
@@ -37,4 +37,4 @@ function VideoPreview(props: {
   );
 }
 
-export default VideoPreview;
+export default memo(VideoPreview);

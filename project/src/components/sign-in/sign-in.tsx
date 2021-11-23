@@ -7,8 +7,8 @@ import Logo from '../logo/logo';
 import Footer from '../footer/footer';
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
-  onSubmit(authData: AuthData) {
-    dispatch(loginAction(authData));
+  async onSubmit(authData: AuthData) {
+    await dispatch(loginAction(authData));
   },
 });
 

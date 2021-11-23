@@ -21,6 +21,7 @@ function StarListForMovie(props: {
               value={number}
               checked={number === props.ratingValue}
               onChange={props.onChangeRating}
+              alt={`звезда номер ${number}`}
             />
             <label
               className="rating__label"

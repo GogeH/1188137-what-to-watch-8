@@ -1,0 +1,40 @@
+import { render } from '@testing-library/react';
+import MovieList from './movie-list';
+import { createStaticMockMovie, createStaticMockMovies } from '../../mocks/movieFake';
+import { Router } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
+import { Provider } from 'react-redux';
+import { configureMockStore } from '@jedmao/redux-mock-store';
+import { FIRST_LOADED_MOVIES } from '../../types/const';
+
+const history = createMemoryHistory();
+const mockStore = configureMockStore();
+
+const mockMovies = createStaticMockMovies();
+const mockMovie = createStaticMockMovie();
+
+const store = mockStore({
+  MOVIES_DATA: {
+    isMoviesLoaded: true,
+    movies: mockMovies,
+    promo: mockMovie,
+  },
+  PROCESS_MOVIES: {
+    loadedMoviesCount: FIRST_LOADED_MOVIES,
+    favoriteListMovies: mockMovies,
+    similarMovies: mockMovies,
+  },
+});
+
+describe('Component: MovieList', () => {
+  it('should render correctly', () => {
+    const { container } = render(
+      <Provider store={store}>
+        <Router history={history}>
+          <MovieList />
+        </Router>
+      </Provider>,
+    );
+    expect(container.querySelector('.catalog__films-list')).toBeInTheDocument();
+  });
+});

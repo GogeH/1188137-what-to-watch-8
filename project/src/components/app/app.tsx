@@ -1,4 +1,4 @@
-import { Router, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../types/enum';
 import Main from '../main/main';
 import SignIn from '../sign-in/sign-in';
@@ -9,7 +9,6 @@ import Reviews from '../reviews/reviews';
 import { State} from '../../types/state';
 import { connect, ConnectedProps } from 'react-redux';
 import Loading from '../loading/loading';
-import browserHistory from '../../browser-history';
 import PrivateRoute from '../private-route/private-route';
 import MyList from '../my-list/my-list';
 
@@ -32,23 +31,21 @@ function App(props: PropsFromRedux): JSX.Element {
   }
 
   return  (
-    <Router history={browserHistory}>
-      <Switch>
-        <Route path={AppRoute.Main} exact>
-          <Main />
-        </Route>
-        <Route path={AppRoute.SignIn} exact component={SignIn} />
-        <PrivateRoute
-          exact
-          path={AppRoute.MyList}
-          render={() => <MyList />}
-        />
-        <Route path={AppRoute.Movie} exact component={SelectedMovie} />
-        <Route path={AppRoute.Review} exact component={Reviews} />
-        <Route path={AppRoute.Player} exact component={Player} />
-        <Route component={Error}/>
-      </Switch>
-    </Router>
+    <Switch>
+      <Route path={AppRoute.Main} exact>
+        <Main />
+      </Route>
+      <Route path={AppRoute.SignIn} exact component={SignIn} />
+      <PrivateRoute
+        exact
+        path={AppRoute.MyList}
+        render={() => <MyList />}
+      />
+      <Route path={AppRoute.Movie} exact component={SelectedMovie} />
+      <Route path={AppRoute.Review} exact component={Reviews} />
+      <Route path={AppRoute.Player} exact component={Player} />
+      <Route component={Error}/>
+    </Switch>
   );
 }
 
