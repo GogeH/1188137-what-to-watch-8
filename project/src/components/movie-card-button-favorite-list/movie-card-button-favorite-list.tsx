@@ -30,16 +30,16 @@ type PropsFormRedux = ConnectedProps<typeof connector>;
 type ConnectedComponentProps = PropsFormRedux & MovieData;
 
 function MovieCardButtonFavoriteList(props: ConnectedComponentProps): JSX.Element {
-  const onFavoriteButtonClick = () => {
-    props.changeFavoriteStatus(props.id, props.isFavorite ? FavoriteStatus.NotFavorite : FavoriteStatus.Favorite);
-    props.changeMoviesAction();
-    props.changePromoAction();
+  const handleFavoriteButtonClick = async () => {
+    await props.changeFavoriteStatus(props.id, props.isFavorite ? FavoriteStatus.NotFavorite : FavoriteStatus.Favorite);
+    await props.changeMoviesAction();
+    await props.changePromoAction();
   };
 
   return (
     <button
       className="btn btn--list film-card__button"
-      onClick={onFavoriteButtonClick}
+      onClick={handleFavoriteButtonClick}
     >
       <svg viewBox="0 0 19 20" width="19" height="20">
         <use xlinkHref={`#${!props.movie.isFavorite ? 'add' : 'in-list'}`} />

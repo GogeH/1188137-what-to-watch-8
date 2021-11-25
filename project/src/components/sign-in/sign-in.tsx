@@ -12,6 +12,7 @@ const PASSWORD_VALID = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,16}$/;
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
   async onSubmit(authData: AuthData) {
     await dispatch(loginAction(authData));
+
   },
 });
 

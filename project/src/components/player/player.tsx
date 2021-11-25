@@ -4,10 +4,9 @@ import { useParams } from 'react-router';
 import { State } from '../../types/state';
 import { MovieParam } from '../../types/types';
 import { Movie } from '../../types/types';
-import { AppRoute } from '../../types/enum';
 import Error from '../error/error';
 import PlayButton from './player-button';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { getRemainingTime } from '../../utils/get-remaining-time';
 import Spinner from '../spinner/spinner';
 
@@ -27,6 +26,8 @@ type ConnectedComponentProps = PropsFormRedux;
 
 function Player(props: ConnectedComponentProps): JSX.Element {
   const { id } = useParams<MovieParam>();
+  const history = useHistory();
+
   const selectedMovie = props.movies.find((movie: Movie) => movie.id.toString() === id);
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -35,7 +36,7 @@ function Player(props: ConnectedComponentProps): JSX.Element {
   const {current: progressBarElement} = progressBarRef;
 
   const [isReady, setReady] = useState(false);
-  const [isPlay, setPlay] = useState(false);
+  const [isPlay, setPlay] = useState(true);
   const [currentTime, setCurrentTime] = useState(0);
   const [{duration, remainingTime}, setDuration] = useState({duration: 0, remainingTime: 0});
 
@@ -103,6 +104,10 @@ function Player(props: ConnectedComponentProps): JSX.Element {
     }
   };
 
+  const handleExitPlayer = (): void => {
+    history.goBack();
+  };
+
   if (!selectedMovie) {
     return <Error />;
   }
@@ -121,12 +126,9 @@ function Player(props: ConnectedComponentProps): JSX.Element {
         onLoadedData={handleDataLoaded}
       />
 
-      <Link
-        className="player__exit"
-        to={AppRoute.Movie.replace(':id', id.toString())}
-      >
+      <button type="button" className="player__exit" onClick={handleExitPlayer}>
         Exit
-      </Link>
+      </button>
 
       <div className="player__controls">
         <div className="player__controls-row">
@@ -141,8 +143,10 @@ function Player(props: ConnectedComponentProps): JSX.Element {
           <PlayButton
             isPlay={isPlay}
             isReady={isReady}
-            onPlayButtonClick={handlePlayButtonClick}
+            handlePlayButtonClick={handlePlayButtonClick}
           />
+
+          <div className="player__name">{selectedMovie.name}</div>
 
           <button
             type="button"

@@ -35,11 +35,11 @@ function mapStateToProps({MOVIES_DATA, USER_AUTH, COMMENTS_DATA}: State) {
 
 function mapDispatchToProps(dispatch: ThunkAppDispatch) {
   return {
-    async fetchSelectedMovie(id: number) {
-      await dispatch(fetchSelectedMovieAction(id));
+    fetchSelectedMovie(id: number) {
+      dispatch(fetchSelectedMovieAction(id));
     },
-    async fetchSimilarMovies(id: number) {
-      await dispatch(fetchSimilarMoviesAction(id));
+    fetchSimilarMovies(id: number) {
+      dispatch(fetchSimilarMoviesAction(id));
     },
     async saveSelectedMovieId(id: number) {
       await dispatch(setSelectedMovieId(id));

@@ -26,7 +26,7 @@ import {
   setFavoriteListMovies,
   setSelectedMovie
 } from './action';
-import { adapterAuthInfoToFrontEnd, adapterMoviesToFrontEnd } from '../utils/adapters';
+import { adapterAuthInfoDataToClient, adapterMoviesDataToClient } from '../utils/adapters';
 import { createMockAuthData, createMockServerAuthInfo } from '../mocks/authorizationFake';
 import { createMockMovie, createMockMovies } from '../mocks/movieFake';
 import { createMockCommentForMovie, createMockComments } from '../mocks/commentsFake';
@@ -63,7 +63,7 @@ describe('Async actions', () => {
     await store.dispatch(fetchMoviesAction());
 
     expect(store.getActions()).toEqual([
-      loadMovies(mockMovies.map(adapterMoviesToFrontEnd)),
+      loadMovies(mockMovies.map(adapterMoviesDataToClient)),
     ]);
   });
 
@@ -76,7 +76,7 @@ describe('Async actions', () => {
     await store.dispatch(fetchPromoAction());
 
     expect(store.getActions()).toEqual([
-      loadPromo(adapterMoviesToFrontEnd(mockMovie)),
+      loadPromo(adapterMoviesDataToClient(mockMovie)),
     ]);
   });
 
@@ -89,7 +89,7 @@ describe('Async actions', () => {
     await store.dispatch(fetchSimilarMoviesAction(idMockMovie));
 
     expect(store.getActions()).toEqual([
-      loadSimilarMovies(mockMovies.map(adapterMoviesToFrontEnd)),
+      loadSimilarMovies(mockMovies.map(adapterMoviesDataToClient)),
     ]);
   });
 
@@ -102,7 +102,7 @@ describe('Async actions', () => {
     await store.dispatch(fetchSelectedMovieAction(idMockMovie));
 
     expect(store.getActions()).toEqual([
-      setSelectedMovie(adapterMoviesToFrontEnd(mockMovie)),
+      setSelectedMovie(adapterMoviesDataToClient(mockMovie)),
     ]);
   });
 
@@ -115,7 +115,7 @@ describe('Async actions', () => {
     await store.dispatch(fetchFavoriteListMovies());
 
     expect(store.getActions()).toEqual([
-      setFavoriteListMovies(mockMovies.map(adapterMoviesToFrontEnd)),
+      setFavoriteListMovies(mockMovies.map(adapterMoviesDataToClient)),
     ]);
   });
 
@@ -131,7 +131,7 @@ describe('Async actions', () => {
 
     expect(store.getActions()).toEqual([
       requireAuthorization(AuthorizationStatus.Auth),
-      requireAuthInfo(adapterAuthInfoToFrontEnd(mockServerAuthInfo)),
+      requireAuthInfo(adapterAuthInfoDataToClient(mockServerAuthInfo)),
     ]);
   });
 

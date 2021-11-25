@@ -16,15 +16,15 @@ function MovieTabs(props: {
 }): JSX.Element {
   const [activeTab, setActiveTab] = useState<MovieTab>(MovieTab.OverviewTab);
 
-  const showOverviewTab = () => {
+  const handleOverviewTab = () => {
     setActiveTab(MovieTab.OverviewTab);
   };
 
-  const showDetailsTab = () => {
+  const handleDetailsTab = () => {
     setActiveTab(MovieTab.DetailsTab);
   };
 
-  const showReviewsTab = () => {
+  const handleReviewsTab = () => {
     setActiveTab(MovieTab.ReviewsTab);
   };
 
@@ -33,17 +33,17 @@ function MovieTabs(props: {
       <nav className="film-nav film-card__nav">
         <ul className="film-nav__list">
           <li className={activeTab === MovieTab.OverviewTab ? 'film-nav__item film-nav__item--active' : 'film-nav__item'}
-            onClick={showOverviewTab}
+            onClick={handleOverviewTab}
           >
             <div className="film-nav__link">Overview</div>
           </li>
           <li className={activeTab === MovieTab.DetailsTab ? 'film-nav__item film-nav__item--active' : 'film-nav__item'}
-            onClick={showDetailsTab}
+            onClick={handleDetailsTab}
           >
             <div className="film-nav__link">Details</div>
           </li>
           <li className={activeTab === MovieTab.ReviewsTab ? 'film-nav__item film-nav__item--active' : 'film-nav__item'}
-            onClick={showReviewsTab}
+            onClick={handleReviewsTab}
           >
             <div className="film-nav__link">Reviews</div>
           </li>

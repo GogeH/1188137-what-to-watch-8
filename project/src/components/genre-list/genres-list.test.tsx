@@ -4,7 +4,7 @@ import { Genres } from '../../types/enum';
 
 describe('Component: GenresList', () => {
   it('should render correctly', () => {
-    const { container } = render(<GenresList genres={[Genres.AllGenres, Genres.Drama, Genres.Crime]} activeGenre={Genres.AllGenres} onGenreChange={() => Genres.AllGenres}/>);
+    const { container } = render(<GenresList genres={[Genres.AllGenres, Genres.Dramas, Genres.Crime]} activeGenre={Genres.AllGenres} onGenreChange={() => Genres.AllGenres}/>);
 
     expect(container.querySelector('.catalog__genres-list')).toBeInTheDocument();
     expect(screen.getByText(/All genres/i)).toBeInTheDocument();

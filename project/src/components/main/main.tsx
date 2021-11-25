@@ -1,6 +1,6 @@
 import { connect, ConnectedProps } from 'react-redux';
 import { getFilterMovie } from '../../utils/get-filter-movie';
-import { Genres} from '../../types/enum';
+import { Genres } from '../../types/enum';
 import { State } from '../../types/state';
 import { ThunkAppDispatch } from '../../types/action';
 import { setGenre, setLoadedMoviesCount } from '../../store/action';
@@ -11,6 +11,7 @@ import Footer from '../footer/footer';
 import PromoMovie from '../promo-movie/promo-movie';
 import Loading from '../loading/loading';
 import { useEffect } from 'react';
+import ShowMore from '../show-more/show-more';
 
 function mapStateToProps({MOVIES_DATA, PROCESS_MOVIES}: State) {
   const moviesByGenre = getFilterMovie(MOVIES_DATA.movies, PROCESS_MOVIES.genre);
@@ -39,11 +40,11 @@ type PropsFormRedux = ConnectedProps<typeof connector>;
 type ConnectedComponentProps = PropsFormRedux;
 
 function Main(props: ConnectedComponentProps): JSX.Element {
-  const { getLoadedMoviesCount } = props;
+  const { getLoadedMoviesCount, activeGenre } = props;
 
   useEffect(() => {
     getLoadedMoviesCount(FIRST_LOADED_MOVIES);
-  }, [getLoadedMoviesCount]);
+  }, [getLoadedMoviesCount, activeGenre]);
 
   if(!props.movies) {
     return <Loading />;
@@ -69,14 +70,8 @@ function Main(props: ConnectedComponentProps): JSX.Element {
           <MovieList />
 
           {props.totalMoviesCount > props.loadedMoviesCount &&
-          <div className="catalog__more">
-            <button className="catalog__button"
-              type="button"
-              onClick={handleShowMoreClick}
-            >
-              Show more
-            </button>
-          </div>}
+            <ShowMore handleLoadMore={handleShowMoreClick} />}
+
         </section>
 
         <Footer />
