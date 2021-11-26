@@ -2,8 +2,7 @@ import { processMovies } from './process-movies';
 import { ActionType } from '../../../types/action';
 import { createMockMovie, createMockMovies } from '../../../mocks/movieFake';
 import { ProcessMovies } from '../../../types/state';
-import { Genres } from '../../../types/enum';
-import { FIRST_LOADED_MOVIES } from '../../../types/const';
+import { ALL_GENRES, FIRST_LOADED_MOVIES } from '../../../types/const';
 
 const mockMovies = createMockMovies();
 const mockMovie = createMockMovie();
@@ -12,7 +11,7 @@ const SELECTED_MOVIES_ID = 4;
 
 describe('Reducer: process-movies', () => {
   const state: ProcessMovies = {
-    genre: Genres.AllGenres,
+    genre: ALL_GENRES,
     loadedMoviesCount: FIRST_LOADED_MOVIES,
     selectedMovie: undefined,
     selectedMovieId: 0,
@@ -23,12 +22,12 @@ describe('Reducer: process-movies', () => {
   it('should return set genre', ()=> {
     const action = {
       type: ActionType.SetGenre,
-      payload: Genres.Crime,
+      payload: ALL_GENRES,
     };
 
     expect(processMovies(state, action))
       .toEqual({
-        genre: Genres.Crime,
+        genre: ALL_GENRES,
         loadedMoviesCount: FIRST_LOADED_MOVIES,
         selectedMovie: undefined,
         selectedMovieId: 0,
@@ -45,7 +44,7 @@ describe('Reducer: process-movies', () => {
 
     expect(processMovies(state, action))
       .toEqual({
-        genre: Genres.AllGenres,
+        genre: ALL_GENRES,
         loadedMoviesCount: LOADED_MOVIES,
         selectedMovie: undefined,
         selectedMovieId: 0,
@@ -62,7 +61,7 @@ describe('Reducer: process-movies', () => {
 
     expect(processMovies(state, action))
       .toEqual({
-        genre: Genres.AllGenres,
+        genre: ALL_GENRES,
         loadedMoviesCount: FIRST_LOADED_MOVIES,
         selectedMovie: mockMovie,
         selectedMovieId: 0,
@@ -79,7 +78,7 @@ describe('Reducer: process-movies', () => {
 
     expect(processMovies(state, action))
       .toEqual({
-        genre: Genres.AllGenres,
+        genre: ALL_GENRES,
         loadedMoviesCount: FIRST_LOADED_MOVIES,
         selectedMovie: undefined,
         selectedMovieId: SELECTED_MOVIES_ID,
@@ -96,7 +95,7 @@ describe('Reducer: process-movies', () => {
 
     expect(processMovies(state, action))
       .toEqual({
-        genre: Genres.AllGenres,
+        genre: ALL_GENRES,
         loadedMoviesCount: FIRST_LOADED_MOVIES,
         selectedMovie: undefined,
         selectedMovieId: 0,
@@ -113,7 +112,7 @@ describe('Reducer: process-movies', () => {
 
     expect(processMovies(state, action))
       .toEqual({
-        genre: Genres.AllGenres,
+        genre: ALL_GENRES,
         loadedMoviesCount: FIRST_LOADED_MOVIES,
         selectedMovie: undefined,
         selectedMovieId: 0,

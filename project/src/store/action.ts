@@ -1,6 +1,5 @@
 import { ActionType } from '../types/action';
 import { AuthInfo, Comment, Movie } from '../types/types';
-import { Genres } from '../types/enum';
 import { AuthorizationStatus } from '../types/enum';
 import { AppRoute } from '../types/enum';
 import { PostedComment } from '../types/types';
@@ -22,7 +21,7 @@ function setLoadedMoviesCount(count: number): SetLoadedMoviesCountAction {
   }) as const;
 }
 
-function setGenre(genre: Genres): Action<Genres> {
+function setGenre(genre: string): Action<string> {
   return ({
     type: ActionType.SetGenre,
     payload: genre,
@@ -49,7 +48,7 @@ function requireLogout(): Action<undefined> {
   }) as const;
 }
 
-function requireAuthInfo(authInfo: AuthInfo): Action<AuthInfo> {
+function requireAuthInfo(authInfo: AuthInfo | undefined): Action<AuthInfo> {
   return ({
     type: ActionType.RequireAuthInfo,
     payload: authInfo,
@@ -75,10 +74,17 @@ function loadComments(comments: Comment[]): Action<Comment[]> {
   }) as const;
 }
 
-function loadPromo(movie: Movie): Action<Movie> {
+function loadPromo(movie: Movie | undefined): Action<Movie>  {
   return ({
     type: ActionType.LoadPromo,
     payload: movie,
+  }) as const;
+}
+
+function setPromoLoadingStatus(status: boolean): Action<boolean>  {
+  return ({
+    type: ActionType.SetPromoLoadingStatus,
+    payload: status,
   }) as const;
 }
 
@@ -140,5 +146,6 @@ export {
   setSelectedMovie,
   setSelectedMovieId,
   setFavoriteListMovies,
-  setFavoriteMovie
+  setFavoriteMovie,
+  setPromoLoadingStatus
 };

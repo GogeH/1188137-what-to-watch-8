@@ -16,7 +16,6 @@ const isCheckedAuth = (authorizationStatus: AuthorizationStatus): boolean =>
   authorizationStatus === AuthorizationStatus.Unknown;
 
 const mapStateToProps = ({MOVIES_DATA, USER_AUTH}: State) => ({
-  movies: MOVIES_DATA.movies,
   authorizationStatus: USER_AUTH.authorizationStatus,
   isMoviesLoaded: MOVIES_DATA.isMoviesLoaded,
 });

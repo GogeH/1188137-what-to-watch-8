@@ -1,35 +1,25 @@
-import { MouseEvent, useEffect } from 'react';
+import { MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { connect, ConnectedProps, useDispatch } from 'react-redux';
-import { checkAuthAction, logoutAction } from '../../store/api-action';
+import { logoutAction } from '../../store/api-action';
 import { State } from '../../types/state';
 import { AppRoute } from '../../types/enum';
-import { ThunkAppDispatch } from '../../types/action';
+
 
 const mapStateToProps = ({USER_AUTH}: State) => ({
   authInfo: USER_AUTH.authInfo,
 });
-function mapDispatchToProps(dispatch: ThunkAppDispatch) {
-  return {
-    async getAuthAction() {
-      await dispatch(checkAuthAction());
-    },
-  };
-}
 
-const connector = connect(mapStateToProps, mapDispatchToProps);
+
+const connector = connect(mapStateToProps);
 
 type PropsFormRedux = ConnectedProps<typeof connector>;
 type ConnectedComponentProps = PropsFormRedux;
 
 function UserBlockLogged(props: ConnectedComponentProps): JSX.Element {
-  const { getAuthAction } = props;
+
 
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    getAuthAction();
-  },[getAuthAction]);
 
   const handleSignInButtonClick = (event: MouseEvent) => {
     event.preventDefault();
@@ -46,7 +36,7 @@ function UserBlockLogged(props: ConnectedComponentProps): JSX.Element {
         </Link>
       </li>
       <li className="user-block__item">
-        <a className="user-block__link" href='/' onClick={handleSignInButtonClick}>{props.authInfo.email}</a>
+        <a className="user-block__link" href='/' onClick={handleSignInButtonClick}>Sign out</a>
       </li>
     </ul>
   );

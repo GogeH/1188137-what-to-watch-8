@@ -11,59 +11,95 @@ import {
   requireAuthInfo,
   requireAuthorization,
   requireLogout,
-  setFavoriteListMovies
+  setFavoriteListMovies, setPromoLoadingStatus
 } from './action';
-import { dropToken, saveToken, Token } from '../services/token';
+import { dropToken, saveToken } from '../services/token';
 import { APIRoute, AppRoute, AuthorizationStatus } from '../types/enum';
 import { AuthData, Comment, PostedComment, Movie } from '../types/types';
-import { adapterAuthInfoToFrontEnd, adapterMoviesToFrontEnd } from '../utils/adapters';
+import { adaptAuthInfoDataToClient, adaptMoviesDataToClient } from '../utils/adapters';
 import { FavoriteStatusType } from '../types/enum';
 
 const AUTH_FAIL_MESSAGE = 'Не забудьте авторизоваться!';
+const AUTH_MESSAGE = 'Спасибо за авторизацию!';
+const LOGIN_ACTION_ERROR = 'При авторизации возникли проблемы с сервером!';
+const LOGOUT_ACTION_ERROR = 'При выходе из профиля возникли проблемы с сервером!';
+const MOVIES_ACTION_ERROR = 'Во время загрузки фильмов возникли проблемы!';
+const PROMO_ACTION_ERROR = 'Во время загрузки промо фильма возникли проблемы!';
+const SIMILAR_MOVIES_ACTION_ERROR = 'Во время загрузки похожих фильма возникли проблемы!';
+const COMMENTS_MOVIES_ACTION_ERROR = 'Во время загрузки комметариев к фильму возникли проблемы!';
+const SELECT_FAVORITE_MOVIE_ERROR = 'При добавлнении фильма произошла ошибка!';
 
 export const fetchMoviesAction = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
-    const {data} = await api.get<Movie[]>(APIRoute.Movies);
-    const adaptedMoviesData = data.map((movie) => adapterMoviesToFrontEnd(movie));
-    dispatch(loadMovies(adaptedMoviesData));
+    try {
+      const {data} = await api.get<Movie[]>(APIRoute.Movies);
+      const adaptedMoviesData = data.map((movie) => adaptMoviesDataToClient(movie));
+      dispatch(loadMovies(adaptedMoviesData));
+    } catch(exception) {
+      dispatch(loadMovies([]));
+      toast.error(MOVIES_ACTION_ERROR);
+    }
   };
 
 export const fetchFavoriteListMovies = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     const {data} = await api.get<Movie[]>(APIRoute.FavoriteMovies);
-    const adaptedMoviesData = data.map((movie) => adapterMoviesToFrontEnd(movie));
+    const adaptedMoviesData = data.map((movie) => adaptMoviesDataToClient(movie));
     dispatch(setFavoriteListMovies(adaptedMoviesData));
   };
 
 export const fetchFavoriteMovie = (movieId: number, newStatus: FavoriteStatusType): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
-    await api.post(`${APIRoute.FavoriteMovies}/${movieId}/${newStatus}`);
+    try {
+      await api.post(`${APIRoute.FavoriteMovies}/${movieId}/${newStatus}`);
+    } catch(exception) {
+      toast.error(SELECT_FAVORITE_MOVIE_ERROR);
+    }
   };
 
 export const fetchCommentsAction = (id: number): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
-    const {data} = await api.get<Comment[]>(`${APIRoute.Comments}/${id}`);
-    dispatch(loadComments(data));
+    try {
+      const {data} = await api.get<Comment[]>(`${APIRoute.Comments}/${id}`);
+      dispatch(loadComments(data));
+    } catch(exception) {
+      dispatch(loadComments([]));
+      toast.error(COMMENTS_MOVIES_ACTION_ERROR);
+    }
   };
 
 export const fetchPromoAction = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
-    const {data} = await api.get<Movie>(APIRoute.Promo);
-    const adaptedMoviesData = adapterMoviesToFrontEnd(data);
-    dispatch(loadPromo(adaptedMoviesData));
+    try {
+      const {data} = await api.get<Movie>(APIRoute.Promo);
+      const adaptedMoviesData = adaptMoviesDataToClient(data);
+
+      dispatch(setPromoLoadingStatus(true));
+      dispatch(loadPromo(adaptedMoviesData));
+    } catch(exception) {
+      dispatch(loadPromo(undefined));
+      toast.error(PROMO_ACTION_ERROR);
+    } finally {
+      dispatch(setPromoLoadingStatus(false));
+    }
   };
 
 export const fetchSimilarMoviesAction = (id: number): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
-    const {data} = await api.get<Movie[]>(generatePath(APIRoute.SimilarMovies.replace(':id', id.toString())));
-    const adaptedMoviesData = data.map((movie) => adapterMoviesToFrontEnd(movie));
-    dispatch(loadSimilarMovies(adaptedMoviesData));
+    try {
+      const {data} = await api.get<Movie[]>(generatePath(APIRoute.SimilarMovies.replace(':id', id.toString())));
+      const adaptedMoviesData = data.map((movie) => adaptMoviesDataToClient(movie));
+      dispatch(loadSimilarMovies(adaptedMoviesData));
+    } catch(exception) {
+      dispatch(loadSimilarMovies([]));
+      toast.error(SIMILAR_MOVIES_ACTION_ERROR);
+    }
   };
 
 export const fetchSelectedMovieAction = (id: number): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     const {data} = await api.get<Movie>(`${APIRoute.Movies}/${id}`);
-    const adaptedMoviesData =  adapterMoviesToFrontEnd(data);
+    const adaptedMoviesData =  adaptMoviesDataToClient(data);
     dispatch(setSelectedMovie(adaptedMoviesData));
   };
 
@@ -78,27 +114,40 @@ export const sendReview = (data: { ratingValue: number, commentValue: string, mo
 
 export const checkAuthAction = (): ThunkActionResult =>
   async (dispatch, _getState, api) => {
-    const { data } = await api.get(APIRoute.Login);
-    if(!data) {
+    try {
+      const { data } = await api.get(APIRoute.Login);
+      dispatch(requireAuthorization(AuthorizationStatus.Auth));
+      dispatch(requireAuthInfo(adaptAuthInfoDataToClient(data)));
+    } catch {
       dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
       toast.info(AUTH_FAIL_MESSAGE);
-    } else {
-      dispatch(requireAuthorization(AuthorizationStatus.Auth));
-      dispatch(requireAuthInfo(adapterAuthInfoToFrontEnd(data)));
     }
   };
 
 export const loginAction = ({login: email, password}: AuthData): ThunkActionResult =>
   async (dispatch, _getState, api) => {
-    const {data: {token}} = await api.post<{token: Token}>(APIRoute.Login, {email, password});
-    saveToken(token);
-    dispatch(requireAuthorization(AuthorizationStatus.Auth));
-    dispatch(redirectToRoute(AppRoute.Main));
+    try {
+      const {data} = await api.post(APIRoute.Login, {email, password});
+      const authData = adaptAuthInfoDataToClient(data);
+
+      saveToken(data.token);
+      dispatch(requireAuthorization(AuthorizationStatus.Auth));
+      dispatch(redirectToRoute(AppRoute.Main));
+      dispatch(requireAuthInfo(authData));
+      toast.info(AUTH_MESSAGE);
+    } catch(exception) {
+      dispatch(requireAuthInfo(undefined));
+      toast.error(LOGIN_ACTION_ERROR);
+    }
   };
 
 export const logoutAction = (): ThunkActionResult =>
   async (dispatch, _getState, api) => {
-    await api.delete(APIRoute.Logout);
-    dropToken();
-    dispatch(requireLogout());
+    try {
+      await api.delete(APIRoute.Logout);
+      dropToken();
+      dispatch(requireLogout());
+    } catch(exception) {
+      toast.error(LOGOUT_ACTION_ERROR);
+    }
   };

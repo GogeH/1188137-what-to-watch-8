@@ -24,22 +24,19 @@ function MovieItem(props: {
       onMouseLeave={onMovieItemLeave}
       id={StringId}
     >
-      <div className="small-film-card__image">
-        <VideoPreview
-          poster={props.movie.previewImage}
-          src={props.movie.videoLink}
-          isPlaying={props.movie.id === Number(activeMovie)}
-        />
-      </div>
-      <h3 className="small-film-card__title">
-        <Link
-          className="small-film-card__link"
-          to={`/films/${props.movie.id}`}
-          href="/"
-        >
+      <Link className="small-film-card__link" to={`/films/${props.movie.id}`}>
+        <div className="small-film-card__image">
+          <VideoPreview
+            poster={props.movie.previewImage}
+            src={props.movie.videoLink}
+            isPlaying={props.movie.id === Number(activeMovie)}
+          />
+        </div>
+
+        <h3 className="small-film-card__title">
           {props.movie.name}
-        </Link>
-      </h3>
+        </h3>
+      </Link>
     </article>
   );
 }

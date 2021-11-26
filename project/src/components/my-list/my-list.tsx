@@ -8,11 +8,10 @@ import MovieItem from '../movie-item/movie-item';
 import { fetchFavoriteListMovies } from '../../store/api-action';
 import { ThunkAppDispatch } from '../../types/action';
 
-function mapStateToProps({ USER_AUTH, PROCESS_MOVIES, MOVIES_DATA }: State) {
+function mapStateToProps({ USER_AUTH, PROCESS_MOVIES }: State) {
   return {
     authorizationStatus: USER_AUTH.authorizationStatus,
     favoriteListMovies: PROCESS_MOVIES.favoriteListMovies,
-    movies: MOVIES_DATA.movies,
   };
 }
 

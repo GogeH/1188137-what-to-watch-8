@@ -57,7 +57,7 @@ function ReviewForm(props: PropsFromRedux): JSX.Element {
   useEffect(() => {
     saveSelectedMovieId(idIsNumber);
     fetchSelectedMovie(idIsNumber);
-  });
+  }, [saveSelectedMovieId, fetchSelectedMovie, idIsNumber]);
 
   if (props.authorizationStatus !== AuthorizationStatus.Auth) {
     return <Redirect to={AppRoute.SignIn}/>;
@@ -67,7 +67,7 @@ function ReviewForm(props: PropsFromRedux): JSX.Element {
     setRatingValue(Number(event.currentTarget.value));
   };
 
-  const onMessageChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+  const handleMessageChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setCommentValue(event.target.value);
   };
 
@@ -103,7 +103,7 @@ function ReviewForm(props: PropsFromRedux): JSX.Element {
     <form action="#" className="add-review__form" onSubmit={onFormSubmit} >
       <div className="rating">
         <div className="rating__stars">
-          <StarListForMovie ratingValue={ratingValue} onChangeRating={onChangeRating}/>
+          <StarListForMovie ratingValue={ratingValue} onChangeRating={onChangeRating} disabled={formIsSending}/>
         </div>
       </div>
       <div className="add-review__text">
@@ -111,7 +111,7 @@ function ReviewForm(props: PropsFromRedux): JSX.Element {
           name="review-text"
           id="review-text"
           placeholder="Review text"
-          onChange={onMessageChange}
+          onChange={handleMessageChange}
           value={commentValue}
           disabled={formIsSending}
         >

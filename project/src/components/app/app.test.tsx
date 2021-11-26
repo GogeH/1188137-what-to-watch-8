@@ -3,10 +3,10 @@ import { generatePath, Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
 import { configureMockStore } from '@jedmao/redux-mock-store';
-import { AuthorizationStatus, AppRoute, Genres } from '../../types/enum';
+import { AuthorizationStatus, AppRoute } from '../../types/enum';
 import App from './app';
 import { createMockMovie, createMockMovies } from '../../mocks/movieFake';
-import { FIRST_LOADED_MOVIES } from '../../types/const';
+import { ALL_GENRES, FIRST_LOADED_MOVIES } from '../../types/const';
 import { createMockAuthInfo } from '../../mocks/authorizationFake';
 import { createMockComments } from '../../mocks/commentsFake';
 
@@ -30,7 +30,7 @@ const store = mockStore({
     similarMovies: mockMovies,
   },
   PROCESS_MOVIES: {
-    genre: Genres.AllGenres,
+    genre: ALL_GENRES,
     loadedMoviesCount: FIRST_LOADED_MOVIES,
     favoriteListMovies: mockMovies,
     selectedMovie: mockMovie,

@@ -1,6 +1,6 @@
 import { State } from '../../types/state';
 import { Link, Redirect } from 'react-router-dom';
-import { connect, ConnectedProps } from 'react-redux';
+import { connect, ConnectedProps, useSelector } from 'react-redux';
 import Logo from '../logo/logo';
 import ReviewForm from '../review-form/review-form';
 import { Movie } from '../../types/types';
@@ -10,10 +10,10 @@ import Error from '../error/error';
 import { AppRoute, AuthorizationStatus } from '../../types/enum';
 import UserBlockLogged from '../user-block-logged/user-block-logged';
 import UserBlockUnLogged from '../user-block-logged/user-block-un-logged';
+import { getMovies } from '../../store/reducers/movies-data/selector-movies-data';
 
-function mapStateToProps({USER_AUTH, MOVIES_DATA}: State) {
+function mapStateToProps({ USER_AUTH }: State) {
   return {
-    movies: MOVIES_DATA.movies,
     authorizationStatus: USER_AUTH.authorizationStatus,
   };
 }
@@ -24,8 +24,10 @@ type PropsFormRedux = ConnectedProps<typeof connector>;
 type ConnectedComponentProps = PropsFormRedux;
 
 function Review(props: ConnectedComponentProps): JSX.Element {
+  const movies = useSelector(getMovies);
+
   const { id } = useParams<MovieParam>();
-  const selectedMovie = props.movies.find((movie: Movie) => movie.id.toString() === id);
+  const selectedMovie = movies.find((movie: Movie) => movie.id.toString() === id);
 
   if (!selectedMovie) {
     return <Error />;

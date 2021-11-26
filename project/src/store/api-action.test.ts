@@ -23,10 +23,10 @@ import {
   requireAuthInfo,
   requireAuthorization,
   requireLogout,
-  setFavoriteListMovies,
+  setFavoriteListMovies, setPromoLoadingStatus,
   setSelectedMovie
 } from './action';
-import { adapterAuthInfoToFrontEnd, adapterMoviesToFrontEnd } from '../utils/adapters';
+import { adaptAuthInfoDataToClient, adaptMoviesDataToClient } from '../utils/adapters';
 import { createMockAuthData, createMockServerAuthInfo } from '../mocks/authorizationFake';
 import { createMockMovie, createMockMovies } from '../mocks/movieFake';
 import { createMockCommentForMovie, createMockComments } from '../mocks/commentsFake';
@@ -63,7 +63,7 @@ describe('Async actions', () => {
     await store.dispatch(fetchMoviesAction());
 
     expect(store.getActions()).toEqual([
-      loadMovies(mockMovies.map(adapterMoviesToFrontEnd)),
+      loadMovies(mockMovies.map(adaptMoviesDataToClient)),
     ]);
   });
 
@@ -76,7 +76,9 @@ describe('Async actions', () => {
     await store.dispatch(fetchPromoAction());
 
     expect(store.getActions()).toEqual([
-      loadPromo(adapterMoviesToFrontEnd(mockMovie)),
+      setPromoLoadingStatus(true),
+      loadPromo(adaptMoviesDataToClient(mockMovie)),
+      setPromoLoadingStatus(false),
     ]);
   });
 
@@ -89,7 +91,7 @@ describe('Async actions', () => {
     await store.dispatch(fetchSimilarMoviesAction(idMockMovie));
 
     expect(store.getActions()).toEqual([
-      loadSimilarMovies(mockMovies.map(adapterMoviesToFrontEnd)),
+      loadSimilarMovies(mockMovies.map(adaptMoviesDataToClient)),
     ]);
   });
 
@@ -102,7 +104,7 @@ describe('Async actions', () => {
     await store.dispatch(fetchSelectedMovieAction(idMockMovie));
 
     expect(store.getActions()).toEqual([
-      setSelectedMovie(adapterMoviesToFrontEnd(mockMovie)),
+      setSelectedMovie(adaptMoviesDataToClient(mockMovie)),
     ]);
   });
 
@@ -115,7 +117,7 @@ describe('Async actions', () => {
     await store.dispatch(fetchFavoriteListMovies());
 
     expect(store.getActions()).toEqual([
-      setFavoriteListMovies(mockMovies.map(adapterMoviesToFrontEnd)),
+      setFavoriteListMovies(mockMovies.map(adaptMoviesDataToClient)),
     ]);
   });
 
@@ -131,14 +133,14 @@ describe('Async actions', () => {
 
     expect(store.getActions()).toEqual([
       requireAuthorization(AuthorizationStatus.Auth),
-      requireAuthInfo(adapterAuthInfoToFrontEnd(mockServerAuthInfo)),
+      requireAuthInfo(adaptAuthInfoDataToClient(mockServerAuthInfo)),
     ]);
   });
 
   it('should dispatch RequriedAuthorization and RedirectToRoute when POST /login', async () => {
     mockAPI
       .onPost(APIRoute.Login)
-      .reply(200, {token: 'secret'});
+      .reply(200, mockServerAuthInfo);
 
     const store = mockStore();
     Storage.prototype.setItem = jest.fn();
@@ -148,10 +150,11 @@ describe('Async actions', () => {
     expect(store.getActions()).toEqual([
       requireAuthorization(AuthorizationStatus.Auth),
       redirectToRoute(AppRoute.Main),
+      requireAuthInfo(adaptAuthInfoDataToClient(mockServerAuthInfo)),
     ]);
 
     expect(Storage.prototype.setItem).toBeCalledTimes(1);
-    expect(Storage.prototype.setItem).toBeCalledWith('user-token', 'secret');
+    expect(Storage.prototype.setItem).toBeCalledWith('user-token', mockServerAuthInfo.token);
   });
 
   it('should dispatch Logout when Delete /logout', async () => {

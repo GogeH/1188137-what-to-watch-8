@@ -5,17 +5,17 @@ import { userAuth } from './reducers/user-auth/user-auth';
 import { processMovies } from './reducers/process-movies/process-movies';
 
 export enum NameSpace {
-  movies = 'MOVIES_DATA',
-  comments = 'COMMENTS_DATA',
-  user = 'USER_AUTH',
-  moviesProcess = 'PROCESS_MOVIES',
+  MoviesData = 'MOVIES_DATA',
+  CommentsData = 'COMMENTS_DATA',
+  UserAuth = 'USER_AUTH',
+  ProcessMovies = 'PROCESS_MOVIES',
 }
 
 export const rootReducer = combineReducers({
-  [NameSpace.movies]: moviesData,
-  [NameSpace.comments]: commentsData,
-  [NameSpace.user]: userAuth,
-  [NameSpace.moviesProcess]: processMovies,
+  [NameSpace.MoviesData]: moviesData,
+  [NameSpace.CommentsData]: commentsData,
+  [NameSpace.UserAuth]: userAuth,
+  [NameSpace.ProcessMovies]: processMovies,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

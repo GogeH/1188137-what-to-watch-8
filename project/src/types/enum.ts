@@ -23,19 +23,6 @@ export enum AuthorizationStatus {
   Unknown = 'UNKNOWN',
 }
 
-export enum Genres {
-  AllGenres = 'All genres',
-  Comedy = 'Comedies',
-  Crime = 'Crime',
-  Documentary = 'Documentary',
-  Drama = 'Dramas',
-  KidsAndFamily = 'Kids & Family',
-  Adventure = 'Adventure',
-  Fantasy = 'Fantasy',
-  Action = 'Action',
-  Thriller = 'Thrillers',
-}
-
 export enum FavoriteStatus {
   Favorite = 1,
   NotFavorite = 0,

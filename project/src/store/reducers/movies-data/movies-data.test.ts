@@ -12,6 +12,7 @@ describe('Reducer: movies-data', () => {
     promo: undefined,
     similarMovies: [],
     isMoviesLoaded: false,
+    promoIsLoading: false,
   };
 
   it('should return list movies', ()=> {
@@ -26,6 +27,7 @@ describe('Reducer: movies-data', () => {
         promo: undefined,
         similarMovies: [],
         isMoviesLoaded: true,
+        promoIsLoading: false,
       });
   });
 
@@ -41,6 +43,7 @@ describe('Reducer: movies-data', () => {
         promo: mockMovie,
         similarMovies: [],
         isMoviesLoaded: false,
+        promoIsLoading: false,
       });
   });
 
@@ -56,6 +59,23 @@ describe('Reducer: movies-data', () => {
         promo: undefined  ,
         similarMovies: mockMovies,
         isMoviesLoaded: false,
+        promoIsLoading: false,
+      });
+  });
+
+  it('should return promoIsLoading movies', ()=> {
+    const action = {
+      type: ActionType.SetPromoLoadingStatus,
+      payload: true,
+    };
+
+    expect(moviesData(state, action))
+      .toEqual({
+        movies: [],
+        promo: undefined,
+        similarMovies: [],
+        isMoviesLoaded: false,
+        promoIsLoading: true,
       });
   });
 });

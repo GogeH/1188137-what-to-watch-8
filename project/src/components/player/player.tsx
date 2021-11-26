@@ -1,33 +1,25 @@
-import { useEffect, useRef, useState } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
+import { memo, useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
-import { State } from '../../types/state';
 import { MovieParam } from '../../types/types';
 import { Movie } from '../../types/types';
-import { AppRoute } from '../../types/enum';
 import Error from '../error/error';
 import PlayButton from './player-button';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { getRemainingTime } from '../../utils/get-remaining-time';
 import Spinner from '../spinner/spinner';
+import { getMovies } from '../../store/reducers/movies-data/selector-movies-data';
 
 const GHOST_PERCENTAGE = 100;
 const LOADING_TIME = '00:00';
 
-function mapStateToProps({MOVIES_DATA}: State) {
-  return {
-    movies: MOVIES_DATA.movies,
-  };
-}
+function Player(): JSX.Element {
+  const movies = useSelector(getMovies);
 
-const connector = connect(mapStateToProps);
-
-type PropsFormRedux = ConnectedProps<typeof connector>;
-type ConnectedComponentProps = PropsFormRedux;
-
-function Player(props: ConnectedComponentProps): JSX.Element {
   const { id } = useParams<MovieParam>();
-  const selectedMovie = props.movies.find((movie: Movie) => movie.id.toString() === id);
+  const history = useHistory();
+
+  const selectedMovie = movies.find((movie: Movie) => movie.id.toString() === id);
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const {current: videoElement} = videoRef;
@@ -35,7 +27,7 @@ function Player(props: ConnectedComponentProps): JSX.Element {
   const {current: progressBarElement} = progressBarRef;
 
   const [isReady, setReady] = useState(false);
-  const [isPlay, setPlay] = useState(false);
+  const [isPlay, setPlay] = useState(true);
   const [currentTime, setCurrentTime] = useState(0);
   const [{duration, remainingTime}, setDuration] = useState({duration: 0, remainingTime: 0});
 
@@ -103,6 +95,10 @@ function Player(props: ConnectedComponentProps): JSX.Element {
     }
   };
 
+  const handleExitPlayer = (): void => {
+    history.goBack();
+  };
+
   if (!selectedMovie) {
     return <Error />;
   }
@@ -121,12 +117,9 @@ function Player(props: ConnectedComponentProps): JSX.Element {
         onLoadedData={handleDataLoaded}
       />
 
-      <Link
-        className="player__exit"
-        to={AppRoute.Movie.replace(':id', id.toString())}
-      >
+      <button type="button" className="player__exit" onClick={handleExitPlayer}>
         Exit
-      </Link>
+      </button>
 
       <div className="player__controls">
         <div className="player__controls-row">
@@ -141,8 +134,10 @@ function Player(props: ConnectedComponentProps): JSX.Element {
           <PlayButton
             isPlay={isPlay}
             isReady={isReady}
-            onPlayButtonClick={handlePlayButtonClick}
+            handlePlayButtonClick={handlePlayButtonClick}
           />
+
+          <div className="player__name">{selectedMovie.name}</div>
 
           <button
             type="button"
@@ -162,6 +157,5 @@ function Player(props: ConnectedComponentProps): JSX.Element {
   );
 }
 
-export { Player };
-export default connector(Player);
+export default memo(Player);
 

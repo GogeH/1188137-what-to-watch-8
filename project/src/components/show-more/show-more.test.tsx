@@ -5,7 +5,7 @@ const LOAD_MOVIES = 16;
 
 describe('Component: ShowMore', () => {
   it('should render correctly', () => {
-    render(<ShowMore loadMore={() => LOAD_MOVIES}/>);
+    render(<ShowMore handleLoadMore={() => LOAD_MOVIES}/>);
     expect(screen.getByText(/Show more/i)).toBeInTheDocument();
   });
 });

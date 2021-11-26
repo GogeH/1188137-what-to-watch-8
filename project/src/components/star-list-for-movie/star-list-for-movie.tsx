@@ -4,6 +4,7 @@ const RATING_STARS_COUNT = 10;
 
 function StarListForMovie(props: {
   ratingValue: number,
+  disabled: boolean,
   onChangeRating: (event: ChangeEvent<HTMLInputElement>) => void;
 }): JSX.Element {
   return (
@@ -22,6 +23,7 @@ function StarListForMovie(props: {
               checked={number === props.ratingValue}
               onChange={props.onChangeRating}
               alt={`звезда номер ${number}`}
+              disabled={props.disabled}
             />
             <label
               className="rating__label"

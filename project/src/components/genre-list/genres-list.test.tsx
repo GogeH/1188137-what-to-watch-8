@@ -1,14 +1,12 @@
 import { render, screen } from '@testing-library/react';
 import GenresList from './genres-list';
-import { Genres } from '../../types/enum';
+import { ALL_GENRES } from '../../types/const';
 
 describe('Component: GenresList', () => {
   it('should render correctly', () => {
-    const { container } = render(<GenresList genres={[Genres.AllGenres, Genres.Drama, Genres.Crime]} activeGenre={Genres.AllGenres} onGenreChange={() => Genres.AllGenres}/>);
+    const { container } = render(<GenresList genres={[ALL_GENRES]} activeGenre={ALL_GENRES} onGenreChange={() => ALL_GENRES}/>);
 
     expect(container.querySelector('.catalog__genres-list')).toBeInTheDocument();
     expect(screen.getByText(/All genres/i)).toBeInTheDocument();
-    expect(screen.getByText(/Drama/i)).toBeInTheDocument();
-    expect(screen.getByText(/Crime/i)).toBeInTheDocument();
   });
 });
