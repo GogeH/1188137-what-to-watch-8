@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
+import { connect, ConnectedProps, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { Movie } from '../../types/types';
 import { MovieParam } from '../../types/types';
@@ -23,13 +23,12 @@ import Loading from '../loading/loading';
 import MovieCardButtonPlay from '../movie-card-button-play/movie-card-button-play';
 import { Link } from 'react-router-dom';
 import MovieCardButtonListFavorite from '../movie-card-button-favorite-list/movie-card-button-favorite-list';
+import { getMovies, getSimilarMovies } from '../../store/reducers/movies-data/selector-movies-data';
+import { getComments } from '../../store/reducers/comments-data/selector-comments-data';
 
-function mapStateToProps({MOVIES_DATA, USER_AUTH, COMMENTS_DATA}: State) {
+function mapStateToProps({USER_AUTH}: State) {
   return {
-    movies: MOVIES_DATA.movies,
     authorizationStatus: USER_AUTH.authorizationStatus,
-    comments: COMMENTS_DATA.comments,
-    similarMovies: MOVIES_DATA.similarMovies,
   };
 }
 
@@ -56,11 +55,15 @@ type PropsFormRedux = ConnectedProps<typeof connector>;
 type ConnectedComponentProps = PropsFormRedux;
 
 function SelectedMovie(props: ConnectedComponentProps): JSX.Element {
+  const movies = useSelector(getMovies);
+  const similarMovies = useSelector(getSimilarMovies);
+  const comments = useSelector(getComments);
+
   const { saveSelectedMovieId, fetchSelectedMovie, fetchSimilarMovies, fetchComments } = props;
   const { id } = useParams<MovieParam>();
   const idIsNumber = Number(id);
 
-  const selectedMovie = props.movies.find((movie: Movie) => movie.id.toString() === id);
+  const selectedMovie = movies.find((movie: Movie) => movie.id.toString() === id);
 
   useEffect(() => {
     saveSelectedMovieId(idIsNumber);
@@ -75,7 +78,7 @@ function SelectedMovie(props: ConnectedComponentProps): JSX.Element {
     fetchSimilarMovies(idIsNumber);
   },[fetchSimilarMovies, idIsNumber]);
 
-  if(!props.movies) {
+  if(!movies) {
     return <Loading />;
   }
 
@@ -142,7 +145,7 @@ function SelectedMovie(props: ConnectedComponentProps): JSX.Element {
               />
             </div>
 
-            <MovieTabs movie={selectedMovie} reviews={props.comments}/>
+            <MovieTabs movie={selectedMovie} reviews={comments}/>
 
           </div>
         </div>
@@ -153,7 +156,7 @@ function SelectedMovie(props: ConnectedComponentProps): JSX.Element {
           <h2 className="catalog__title">More like this</h2>
 
           <div className="catalog__films-list">
-            {props.similarMovies.map((movie) => (
+            {similarMovies.map((movie) => (
               <MovieItem movie={movie}
                 key={movie.id}
               />

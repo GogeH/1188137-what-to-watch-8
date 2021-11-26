@@ -1,7 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
+import { memo, useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
-import { State } from '../../types/state';
 import { MovieParam } from '../../types/types';
 import { Movie } from '../../types/types';
 import Error from '../error/error';
@@ -9,26 +8,18 @@ import PlayButton from './player-button';
 import { useHistory } from 'react-router-dom';
 import { getRemainingTime } from '../../utils/get-remaining-time';
 import Spinner from '../spinner/spinner';
+import { getMovies } from '../../store/reducers/movies-data/selector-movies-data';
 
 const GHOST_PERCENTAGE = 100;
 const LOADING_TIME = '00:00';
 
-function mapStateToProps({MOVIES_DATA}: State) {
-  return {
-    movies: MOVIES_DATA.movies,
-  };
-}
+function Player(): JSX.Element {
+  const movies = useSelector(getMovies);
 
-const connector = connect(mapStateToProps);
-
-type PropsFormRedux = ConnectedProps<typeof connector>;
-type ConnectedComponentProps = PropsFormRedux;
-
-function Player(props: ConnectedComponentProps): JSX.Element {
   const { id } = useParams<MovieParam>();
   const history = useHistory();
 
-  const selectedMovie = props.movies.find((movie: Movie) => movie.id.toString() === id);
+  const selectedMovie = movies.find((movie: Movie) => movie.id.toString() === id);
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const {current: videoElement} = videoRef;
@@ -166,6 +157,5 @@ function Player(props: ConnectedComponentProps): JSX.Element {
   );
 }
 
-export { Player };
-export default connector(Player);
+export default memo(Player);
 
