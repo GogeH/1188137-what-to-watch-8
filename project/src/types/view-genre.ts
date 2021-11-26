@@ -1,4 +1,3 @@
-
 export type ViewGenre = {
   genres: string[],
   activeGenre: string,
