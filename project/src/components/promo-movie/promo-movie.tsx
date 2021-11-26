@@ -13,6 +13,7 @@ function mapStateToProps({MOVIES_DATA, USER_AUTH}: State) {
     movies: MOVIES_DATA.movies,
     authorizationStatus: USER_AUTH.authorizationStatus,
     promo: MOVIES_DATA.promo,
+    promoIsLoading: MOVIES_DATA.promoIsLoading,
   };
 }
 
@@ -22,8 +23,12 @@ type PropsFormRedux = ConnectedProps<typeof connector>;
 type ConnectedComponentProps = PropsFormRedux;
 
 function PromoMovie(props: ConnectedComponentProps): JSX.Element {
-  if(!props.promo) {
+  if(props.promoIsLoading) {
     return <Spinner />;
+  }
+
+  if(!props.promo) {
+    return <div>Во время загрузки промо фильма возникли проблемы с сервером!</div>;
   }
 
   const { id, isFavorite } = props.promo;

@@ -1,6 +1,5 @@
 import { connect, ConnectedProps } from 'react-redux';
 import { getFilterMovie } from '../../utils/get-filter-movie';
-import { Genres } from '../../types/enum';
 import { State } from '../../types/state';
 import { ThunkAppDispatch } from '../../types/action';
 import { setGenre, setLoadedMoviesCount } from '../../store/action';
@@ -12,10 +11,12 @@ import PromoMovie from '../promo-movie/promo-movie';
 import Loading from '../loading/loading';
 import { useEffect } from 'react';
 import ShowMore from '../show-more/show-more';
+import { getGenresForMovie } from '../../utils/get-genres-for-movie';
 
 function mapStateToProps({MOVIES_DATA, PROCESS_MOVIES}: State) {
   const moviesByGenre = getFilterMovie(MOVIES_DATA.movies, PROCESS_MOVIES.genre);
   return {
+    genres: getGenresForMovie(MOVIES_DATA.movies),
     movies: MOVIES_DATA.movies,
     activeGenre: PROCESS_MOVIES.genre,
     loadedMoviesCount: PROCESS_MOVIES.loadedMoviesCount,
@@ -25,7 +26,7 @@ function mapStateToProps({MOVIES_DATA, PROCESS_MOVIES}: State) {
 
 function mapDispatchToProps(dispatch: ThunkAppDispatch) {
   return {
-    async onGenreChange(genre: Genres) {
+    async onGenreChange(genre: string) {
       await dispatch(setGenre(genre));
     },
     async getLoadedMoviesCount(count: number) {
@@ -50,8 +51,6 @@ function Main(props: ConnectedComponentProps): JSX.Element {
     return <Loading />;
   }
 
-  const genres = Object.values(Genres) as Genres[];
-
   const handleShowMoreClick = () => {
     getLoadedMoviesCount(props.loadedMoviesCount + INCREMENT_MOVIES_STEP);
   };
@@ -65,7 +64,7 @@ function Main(props: ConnectedComponentProps): JSX.Element {
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-          <GenresList genres={genres} activeGenre={props.activeGenre} onGenreChange={props.onGenreChange} />
+          <GenresList genres={props.genres} activeGenre={props.activeGenre} onGenreChange={props.onGenreChange} />
 
           <MovieList />
 

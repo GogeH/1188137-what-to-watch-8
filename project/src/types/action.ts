@@ -16,7 +16,8 @@ import {
   setSelectedMovie,
   setSelectedMovieId,
   setFavoriteListMovies,
-  setFavoriteMovie
+  setFavoriteMovie,
+  setPromoLoadingStatus
 } from '../store/action';
 
 export enum ActionType {
@@ -31,6 +32,7 @@ export enum ActionType {
   SetReviews = 'app/setReviews',
   LoadComments = 'data/comments',
   LoadPromo = 'data/promo',
+  SetPromoLoadingStatus = 'data/setPromoLoadingStatus',
   LoadSimilarMovies = 'data/similarMovie',
   SetSelectedMovie = 'data/setSelectedMovie',
   SetSelectedMovieId = 'data/setSelectedMovieId',
@@ -53,6 +55,7 @@ export type Actions =
   | ReturnType<typeof setSelectedMovieId>
   | ReturnType<typeof setFavoriteListMovies>
   | ReturnType<typeof setFavoriteMovie>
+  | ReturnType<typeof setPromoLoadingStatus>
   | SetLoadedMoviesCountAction
 
 export type ThunkActionResult<R = Promise<void>> = ThunkAction<R, State, AxiosInstance, Actions>;

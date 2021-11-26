@@ -1,5 +1,3 @@
-import {Genres} from './enum';
-
 export type Movie = {
   id: number,
   name: string,
@@ -15,7 +13,7 @@ export type Movie = {
   director: string,
   starring: string[],
   runTime: number,
-  genre: Genres | string,
+  genre: string,
   released: number,
   isFavorite: boolean,
 };

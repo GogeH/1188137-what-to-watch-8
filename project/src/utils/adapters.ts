@@ -1,6 +1,6 @@
 import { AuthInfo, Movie, ServerAuthInfo } from '../types/types';
 
-export function adapterMoviesDataToClient(data: Record<string, unknown>): Movie {
+export function adaptMoviesDataToClient(data: Record<string, unknown>): Movie {
   const adaptedMovie = Object.assign({}, data, {
     posterImage: data['poster_image'],
     previewImage: data['preview_image'],
@@ -26,7 +26,7 @@ export function adapterMoviesDataToClient(data: Record<string, unknown>): Movie 
   return adaptedMovie as Movie;
 }
 
-export const adapterAuthInfoDataToClient = (data: ServerAuthInfo): AuthInfo => ({
+export const adaptAuthInfoDataToClient = (data: ServerAuthInfo): AuthInfo => ({
   avatarUrl: data['avatar_url'],
   email: data.email,
   id: data.id,
