@@ -20,4 +20,3 @@ export const getPromoSelector = createSelector(getPromo, (movie) =>
 export const getSimilarMoviesSelector = createSelector(getSimilarMovies, (movies) =>
   movies.slice(0, SIMILAR_MOVIES_COUNT),
 );
-
