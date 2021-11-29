@@ -16,6 +16,9 @@ function VideoPreview(props: {
       }, 1000);
     }
 
+    if (videoRef.current && !props.isPlaying) {
+      videoRef.current.load();
+    }
 
     return () => {
       clearTimeout(timeoutId);
