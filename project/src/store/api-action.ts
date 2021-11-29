@@ -27,7 +27,7 @@ const MOVIES_ACTION_ERROR = 'Во время загрузки фильмов в�
 const PROMO_ACTION_ERROR = 'Во время загрузки промо фильма возникли проблемы!';
 const SIMILAR_MOVIES_ACTION_ERROR = 'Во время загрузки похожих фильма возникли проблемы!';
 const COMMENTS_MOVIES_ACTION_ERROR = 'Во время загрузки комметариев к фильму возникли проблемы!';
-const SELECT_FAVORITE_MOVIE_ERROR = 'При добавлнении фильма произошла ошибка!';
+const SELECT_FAVORITE_MOVIE_ERROR = 'При добавлнении или удалении фильма произошла ошибка!';
 
 export const fetchMoviesAction = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {

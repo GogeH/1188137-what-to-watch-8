@@ -11,8 +11,8 @@ import PromoMovie from '../promo-movie/promo-movie';
 import Loading from '../loading/loading';
 import { useEffect } from 'react';
 import ShowMore from '../show-more/show-more';
-import { getGenresForMovie } from '../../utils/get-genres-for-movie';
-import { getMovies } from '../../store/reducers/movies-data/selector-movies-data';
+import { getMoviesSelector } from '../../store/reducers/movies-data/selector-movies-data';
+import { getGenresSelector } from '../../store/reducers/process-movies/selector-process-movies';
 
 function mapStateToProps({MOVIES_DATA, PROCESS_MOVIES}: State) {
   const moviesByGenre = getFilterMovie(MOVIES_DATA.movies, PROCESS_MOVIES.genre);
@@ -40,8 +40,8 @@ type PropsFormRedux = ConnectedProps<typeof connector>;
 type ConnectedComponentProps = PropsFormRedux;
 
 function Main(props: ConnectedComponentProps): JSX.Element {
-  const movies = useSelector(getMovies);
-  const genres = getGenresForMovie(movies);
+  const movies = useSelector(getMoviesSelector);
+  const genres = useSelector(getGenresSelector);
 
   const { getLoadedMoviesCount, activeGenre } = props;
 

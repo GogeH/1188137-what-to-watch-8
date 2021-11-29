@@ -7,11 +7,11 @@ import MovieCardButtonPlay from '../movie-card-button-play/movie-card-button-pla
 import { State } from '../../types/state';
 import Spinner from '../spinner/spinner';
 import MovieCardButtonListFavorite from '../movie-card-button-favorite-list/movie-card-button-favorite-list';
-import { getPromo } from '../../store/reducers/movies-data/selector-movies-data';
+import { getPromoSelector } from '../../store/reducers/movies-data/selector-movies-data';
+import { getAuthorizationStatus } from '../../store/reducers/user-auth/selector-user-auth';
 
-function mapStateToProps({MOVIES_DATA, USER_AUTH}: State) {
+function mapStateToProps({ MOVIES_DATA }: State) {
   return {
-    authorizationStatus: USER_AUTH.authorizationStatus,
     promoIsLoading: MOVIES_DATA.promoIsLoading,
   };
 }
@@ -22,7 +22,8 @@ type PropsFormRedux = ConnectedProps<typeof connector>;
 type ConnectedComponentProps = PropsFormRedux;
 
 function PromoMovie(props: ConnectedComponentProps): JSX.Element {
-  const promo = useSelector(getPromo);
+  const promo = useSelector(getPromoSelector);
+  const authorizationStatus = useSelector(getAuthorizationStatus);
 
   if(props.promoIsLoading) {
     return <Spinner />;
@@ -47,7 +48,7 @@ function PromoMovie(props: ConnectedComponentProps): JSX.Element {
           <Logo />
         </div>
 
-        {props.authorizationStatus === AuthorizationStatus.Auth
+        {authorizationStatus === AuthorizationStatus.Auth
           ?
           <UserBlockLogged />
           :
@@ -72,7 +73,7 @@ function PromoMovie(props: ConnectedComponentProps): JSX.Element {
 
               <MovieCardButtonPlay movie={promo}/>
 
-              {props.authorizationStatus === AuthorizationStatus.Auth &&
+              {authorizationStatus === AuthorizationStatus.Auth &&
               <MovieCardButtonListFavorite
                 movie={promo}
                 id={id}

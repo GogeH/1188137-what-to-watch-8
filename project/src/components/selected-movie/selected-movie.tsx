@@ -3,7 +3,6 @@ import { connect, ConnectedProps, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { Movie } from '../../types/types';
 import { MovieParam } from '../../types/types';
-import { State } from '../../types/state';
 import MovieTabs  from '../movie-tabs/movie-tabs';
 import Error from '../error/error';
 import Logo from '../logo/logo';
@@ -23,14 +22,9 @@ import Loading from '../loading/loading';
 import MovieCardButtonPlay from '../movie-card-button-play/movie-card-button-play';
 import { Link } from 'react-router-dom';
 import MovieCardButtonListFavorite from '../movie-card-button-favorite-list/movie-card-button-favorite-list';
-import { getMovies, getSimilarMovies } from '../../store/reducers/movies-data/selector-movies-data';
-import { getComments } from '../../store/reducers/comments-data/selector-comments-data';
-
-function mapStateToProps({USER_AUTH}: State) {
-  return {
-    authorizationStatus: USER_AUTH.authorizationStatus,
-  };
-}
+import { getMoviesSelector, getSimilarMoviesSelector } from '../../store/reducers/movies-data/selector-movies-data';
+import { getCommentsSelector } from '../../store/reducers/comments-data/selector-comments-data';
+import { getAuthorizationStatus } from '../../store/reducers/user-auth/selector-user-auth';
 
 function mapDispatchToProps(dispatch: ThunkAppDispatch) {
   return {
@@ -49,15 +43,16 @@ function mapDispatchToProps(dispatch: ThunkAppDispatch) {
   };
 }
 
-const connector = connect(mapStateToProps, mapDispatchToProps);
+const connector = connect(null, mapDispatchToProps);
 
 type PropsFormRedux = ConnectedProps<typeof connector>;
 type ConnectedComponentProps = PropsFormRedux;
 
 function SelectedMovie(props: ConnectedComponentProps): JSX.Element {
-  const movies = useSelector(getMovies);
-  const similarMovies = useSelector(getSimilarMovies);
-  const comments = useSelector(getComments);
+  const movies = useSelector(getMoviesSelector);
+  const similarMovies = useSelector(getSimilarMoviesSelector);
+  const comments = useSelector(getCommentsSelector);
+  const authorizationStatus = useSelector(getAuthorizationStatus);
 
   const { saveSelectedMovieId, fetchSelectedMovie, fetchSimilarMovies, fetchComments } = props;
   const { id } = useParams<MovieParam>();
@@ -101,7 +96,7 @@ function SelectedMovie(props: ConnectedComponentProps): JSX.Element {
               <Logo/>
             </div>
 
-            {props.authorizationStatus === AuthorizationStatus.Auth
+            {authorizationStatus === AuthorizationStatus.Auth
               ?
               <UserBlockLogged />
               :
@@ -121,7 +116,7 @@ function SelectedMovie(props: ConnectedComponentProps): JSX.Element {
 
                 <MovieCardButtonPlay movie={selectedMovie}/>
 
-                {props.authorizationStatus === AuthorizationStatus.Auth &&
+                {authorizationStatus === AuthorizationStatus.Auth &&
                   <>
                     <MovieCardButtonListFavorite
                       movie={selectedMovie}
@@ -160,7 +155,7 @@ function SelectedMovie(props: ConnectedComponentProps): JSX.Element {
               <MovieItem movie={movie}
                 key={movie.id}
               />
-            )).slice(0, 4)}
+            ))}
           </div>
 
         </section>

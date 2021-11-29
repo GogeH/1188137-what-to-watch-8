@@ -2,18 +2,11 @@ import { useEffect } from 'react';
 import Logo from '../logo/logo';
 import UserBlockLogged from '../user-block-logged/user-block-logged';
 import Footer from '../footer/footer';
-import { State } from '../../types/state';
-import { connect, ConnectedProps } from 'react-redux';
+import { connect, ConnectedProps, useSelector } from 'react-redux';
 import MovieItem from '../movie-item/movie-item';
 import { fetchFavoriteListMovies } from '../../store/api-action';
 import { ThunkAppDispatch } from '../../types/action';
-
-function mapStateToProps({ USER_AUTH, PROCESS_MOVIES }: State) {
-  return {
-    authorizationStatus: USER_AUTH.authorizationStatus,
-    favoriteListMovies: PROCESS_MOVIES.favoriteListMovies,
-  };
-}
+import { getFavoriteListMoviesSelector } from '../../store/reducers/process-movies/selector-process-movies';
 
 function mapDispatchToProps(dispatch: ThunkAppDispatch) {
   return {
@@ -23,12 +16,14 @@ function mapDispatchToProps(dispatch: ThunkAppDispatch) {
   };
 }
 
-const connector = connect(mapStateToProps, mapDispatchToProps);
+const connector = connect(null, mapDispatchToProps);
 
 type PropsFormRedux = ConnectedProps<typeof connector>;
 type ConnectedComponentProps = PropsFormRedux;
 
 function MyList(props: ConnectedComponentProps): JSX.Element {
+  const favoriteListMovies = useSelector(getFavoriteListMoviesSelector);
+
   const { changeFavoriteListMovies } = props;
 
   useEffect(()=> {
@@ -47,8 +42,8 @@ function MyList(props: ConnectedComponentProps): JSX.Element {
         <h2 className="catalog__title visually-hidden">Catalog</h2>
 
         <div className="catalog__films-list">
-          {props.favoriteListMovies &&
-          props.favoriteListMovies.map((movie) => (
+          {favoriteListMovies &&
+          favoriteListMovies.map((movie) => (
             <MovieItem movie={movie}
               key={movie.id}
             />))}

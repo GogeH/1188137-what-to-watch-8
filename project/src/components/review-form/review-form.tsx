@@ -1,6 +1,6 @@
 import { useState, ChangeEvent, useEffect } from 'react';
 import { generatePath, Redirect } from 'react-router-dom';
-import { connect, ConnectedProps } from 'react-redux';
+import { connect, ConnectedProps, useSelector } from 'react-redux';
 import { ThunkAppDispatch } from '../../types/action';
 import { fetchSelectedMovieAction, sendReview } from '../../store/api-action';
 import { State } from '../../types/state';
@@ -11,6 +11,7 @@ import { redirectToRoute, setSelectedMovieId } from '../../store/action';
 import { AppRoute } from '../../types/enum';
 import { AuthorizationStatus } from '../../types/enum';
 import StarListForMovie from '../star-list-for-movie/star-list-for-movie';
+import { getAuthorizationStatus } from '../../store/reducers/user-auth/selector-user-auth';
 
 const SUBMITTING_FEEDBACK_MESSAGE = 'Спасибо за ваш отзыв о фильме!';
 const ERROR_PUSH_REVIEW_MESSAGE = 'Что-то пошло не так, попробуйте написать отзыв немного позже!';
@@ -19,10 +20,9 @@ const MIN_COMMENT_LENGTH = 50;
 const MAX_COMMENT_LENGTH = 400;
 const DEFAULT_RATING_VALUE = 0;
 
-function mapStateToProps({USER_AUTH, PROCESS_MOVIES}: State) {
+function mapStateToProps({ PROCESS_MOVIES }: State) {
   return {
     selectedMovie: PROCESS_MOVIES.selectedMovie,
-    authorizationStatus: USER_AUTH.authorizationStatus,
   };
 }
 
@@ -46,6 +46,8 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 function ReviewForm(props: PropsFromRedux): JSX.Element {
+  const authorizationStatus = useSelector(getAuthorizationStatus);
+
   const { saveSelectedMovieId, fetchSelectedMovie} = props;
   const [ratingValue, setRatingValue] = useState<number>(DEFAULT_RATING_VALUE);
   const [commentValue, setCommentValue] = useState<string>('');
@@ -59,7 +61,7 @@ function ReviewForm(props: PropsFromRedux): JSX.Element {
     fetchSelectedMovie(idIsNumber);
   }, [saveSelectedMovieId, fetchSelectedMovie, idIsNumber]);
 
-  if (props.authorizationStatus !== AuthorizationStatus.Auth) {
+  if (authorizationStatus !== AuthorizationStatus.Auth) {
     return <Redirect to={AppRoute.SignIn}/>;
   }
 

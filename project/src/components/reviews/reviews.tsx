@@ -1,6 +1,5 @@
-import { State } from '../../types/state';
 import { Link, Redirect } from 'react-router-dom';
-import { connect, ConnectedProps, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Logo from '../logo/logo';
 import ReviewForm from '../review-form/review-form';
 import { Movie } from '../../types/types';
@@ -10,21 +9,13 @@ import Error from '../error/error';
 import { AppRoute, AuthorizationStatus } from '../../types/enum';
 import UserBlockLogged from '../user-block-logged/user-block-logged';
 import UserBlockUnLogged from '../user-block-logged/user-block-un-logged';
-import { getMovies } from '../../store/reducers/movies-data/selector-movies-data';
+import { getMoviesSelector } from '../../store/reducers/movies-data/selector-movies-data';
+import { getAuthorizationStatus } from '../../store/reducers/user-auth/selector-user-auth';
+import { memo } from 'react';
 
-function mapStateToProps({ USER_AUTH }: State) {
-  return {
-    authorizationStatus: USER_AUTH.authorizationStatus,
-  };
-}
-
-const connector = connect(mapStateToProps);
-
-type PropsFormRedux = ConnectedProps<typeof connector>;
-type ConnectedComponentProps = PropsFormRedux;
-
-function Review(props: ConnectedComponentProps): JSX.Element {
-  const movies = useSelector(getMovies);
+function Review(): JSX.Element {
+  const movies = useSelector(getMoviesSelector);
+  const authorizationStatus = useSelector(getAuthorizationStatus);
 
   const { id } = useParams<MovieParam>();
   const selectedMovie = movies.find((movie: Movie) => movie.id.toString() === id);
@@ -33,7 +24,7 @@ function Review(props: ConnectedComponentProps): JSX.Element {
     return <Error />;
   }
 
-  if (props.authorizationStatus !== AuthorizationStatus.Auth) {
+  if (authorizationStatus !== AuthorizationStatus.Auth) {
     return <Redirect to={AppRoute.SignIn}/>;
   }
 
@@ -62,7 +53,7 @@ function Review(props: ConnectedComponentProps): JSX.Element {
             </ul>
           </nav>
 
-          {props.authorizationStatus === AuthorizationStatus.Auth
+          {authorizationStatus === AuthorizationStatus.Auth
             ?
             <UserBlockLogged />
             :
@@ -85,5 +76,4 @@ function Review(props: ConnectedComponentProps): JSX.Element {
   );
 }
 
-export { Review };
-export default connector(Review);
+export default memo(Review);

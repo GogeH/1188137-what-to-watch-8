@@ -1,23 +1,12 @@
-import { MouseEvent } from 'react';
+import { memo, MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
-import { connect, ConnectedProps, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logoutAction } from '../../store/api-action';
-import { State } from '../../types/state';
 import { AppRoute } from '../../types/enum';
+import { getAuthInfo } from '../../store/reducers/user-auth/selector-user-auth';
 
-
-const mapStateToProps = ({USER_AUTH}: State) => ({
-  authInfo: USER_AUTH.authInfo,
-});
-
-
-const connector = connect(mapStateToProps);
-
-type PropsFormRedux = ConnectedProps<typeof connector>;
-type ConnectedComponentProps = PropsFormRedux;
-
-function UserBlockLogged(props: ConnectedComponentProps): JSX.Element {
-
+function UserBlockLogged(): JSX.Element {
+  const authInfo = useSelector(getAuthInfo);
 
   const dispatch = useDispatch();
 
@@ -31,7 +20,7 @@ function UserBlockLogged(props: ConnectedComponentProps): JSX.Element {
       <li className="user-block__item">
         <Link to={AppRoute.MyList}>
           <div className="user-block__avatar">
-            <img src={props.authInfo.avatarUrl} alt={props.authInfo.name} width="63" height="63" />
+            <img src={authInfo.avatarUrl} alt={authInfo.name} width="63" height="63" />
           </div>
         </Link>
       </li>
@@ -42,6 +31,5 @@ function UserBlockLogged(props: ConnectedComponentProps): JSX.Element {
   );
 }
 
-export { UserBlockLogged };
-export default connector(UserBlockLogged);
+export default memo(UserBlockLogged);
 

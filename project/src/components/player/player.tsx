@@ -8,13 +8,13 @@ import PlayButton from './player-button';
 import { useHistory } from 'react-router-dom';
 import { getRemainingTime } from '../../utils/get-remaining-time';
 import Spinner from '../spinner/spinner';
-import { getMovies } from '../../store/reducers/movies-data/selector-movies-data';
+import { getMoviesSelector } from '../../store/reducers/movies-data/selector-movies-data';
 
 const GHOST_PERCENTAGE = 100;
 const LOADING_TIME = '00:00';
 
 function Player(): JSX.Element {
-  const movies = useSelector(getMovies);
+  const movies = useSelector(getMoviesSelector);
 
   const { id } = useParams<MovieParam>();
   const history = useHistory();

@@ -7,16 +7,16 @@ import Error from '../error/error';
 import Player  from '../player/player';
 import Reviews from '../reviews/reviews';
 import { State} from '../../types/state';
-import { connect, ConnectedProps } from 'react-redux';
+import { connect, ConnectedProps, useSelector } from 'react-redux';
 import Loading from '../loading/loading';
 import PrivateRoute from '../private-route/private-route';
 import MyList from '../my-list/my-list';
+import { getAuthorizationStatus } from '../../store/reducers/user-auth/selector-user-auth';
 
 const isCheckedAuth = (authorizationStatus: AuthorizationStatus): boolean =>
   authorizationStatus === AuthorizationStatus.Unknown;
 
-const mapStateToProps = ({MOVIES_DATA, USER_AUTH}: State) => ({
-  authorizationStatus: USER_AUTH.authorizationStatus,
+const mapStateToProps = ({ MOVIES_DATA }: State) => ({
   isMoviesLoaded: MOVIES_DATA.isMoviesLoaded,
 });
 
@@ -25,7 +25,9 @@ const connector = connect(mapStateToProps);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 function App(props: PropsFromRedux): JSX.Element {
-  if (isCheckedAuth(props.authorizationStatus) || !props.isMoviesLoaded) {
+  const authorizationStatus = useSelector(getAuthorizationStatus);
+
+  if (isCheckedAuth(authorizationStatus) || !props.isMoviesLoaded) {
     return <Loading />;
   }
 
